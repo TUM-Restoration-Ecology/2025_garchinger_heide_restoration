@@ -4,13 +4,13 @@
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Sina Appeltauer, Markus Bauer
-# 2025-03-03
+# 2025-07-13
 
 
 
 ### Packages ###
 library(renv)
-library(installr)
+suppressPackageStartupMessages(library(installr))
 library(here)
 library(tidyverse)
 library(TNRS)
@@ -18,7 +18,7 @@ library(GIFT)
 library(FD)
 library(vegan)
 library(adespatial)
-library(indicspecies)
+#library(indicspecies)
 
 ### Start ###
 rm(list = ls())
@@ -52,17 +52,17 @@ sites_reference <- read_csv2(
       aufnahmedatum_2021 = col_date(format = "%d.%m.%Y")
     )
 ) %>%
-  select(!ends_with("_2026")) %>%
   rename(
     location = verortung,
-    botanist_2021 = botaniker_2021,
-    survey_date_2021 = aufnahmedatum_2021,
-    height_vegetation_2021 = vegetationshoehe_2021,
-    cover_vegetation_2021 = vegetationsdeckung_2021,
-    cover_moss_2021 = moosdeckung_2021,
-    cover_litter_2021 = streudeckung_2021,
-    cover_soil_2021 = rohbodendeckung_2021
-  )
+    botanist = botaniker_2021,
+    survey_year = aufnahmedatum_2021,
+    cover_vegetation = vegetationsdeckung_2021,
+    height_vegetation = vegetationshoehe_2021
+  ) %>%
+  filter(!str_detect(location, "rollfeld")) %>%
+  select(
+    plot, location, botanist, survey_year, cover_vegetation, height_vegetation
+    )
 
 sites_restoration <- read_csv(
   here("data", "raw", "data_raw_sites_restoration.csv"),
@@ -70,19 +70,48 @@ sites_restoration <- read_csv(
     cols(
     .default = "?"
   )
-)
-
-coordinates_reference <- read_csv2(
-  here("data", "raw", "data_raw_coordinates_reference.csv"),
-  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
-  ) %>%
-  sf::st_as_sf(coords = c("longitude", "latitude"), crs = 25832) %>%
-  sf::st_transform(4326) %>%
-  mutate(
-    latitude = sf::st_coordinates(.)[, 2],
-    longitude = sf::st_coordinates(.)[, 1]
+) %>%
+  rename(
+    botanist = botanist_2024,
+    survey_date = survey_date_2024,
+    cover_vegetation = cover_vegetation_2024,
+    height_vegetation = height_vegetation_2024
     ) %>%
-  sf::st_drop_geometry()
+  select(
+    plot, elevation, plot_size, treatment, mowing,
+    cover_vegetation, height_vegetation
+    )
+
+sites_bauer_etal_2020 <- read_csv(
+  here("data", "raw", "data_raw_sites_bauer_etal-2020.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types =
+    cols(
+      .default = "?"
+    )
+) %>%
+  rename(
+    id = ID, plot_size = plotSize, cover_vegetation = herbCover,
+    height_vegetation = herbHeight
+    ) %>%
+  filter(dataset == "blocks") %>%
+  select(
+    id, plot, block, plot_size, dataset, botanist,
+    cover_vegetation, height_vegetation
+    )
+
+# The following coordinates have an embargo due to occurences of extremely rare species
+
+# coordinates_reference <- read_csv2(
+#   here("data", "raw", "data_raw_coordinates_reference.csv"),
+#   col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+#   ) %>%
+#   sf::st_as_sf(coords = c("longitude", "latitude"), crs = 25832) %>%
+#   sf::st_transform(4326) %>%
+#   mutate(
+#     latitude = sf::st_coordinates(.)[, 2],
+#     longitude = sf::st_coordinates(.)[, 1]
+#     ) %>%
+#   sf::st_drop_geometry()
 
 coordinates_restoration <- read_csv(
   here("data", "raw", "data_raw_coordinates_restoration.csv"),
@@ -95,8 +124,21 @@ coordinates_restoration <- read_csv(
     ) %>%
   select(id, plot, latitude, longitude)
 
-coordinates <- coordinates_reference %>%
-  bind_rows(coordinates_restoration)
+coordinates_bauer_etal_2020 <- read_csv(
+  here("data", "raw", "data_raw_sites_bauer_etal-2020.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+) %>%
+  filter(dataset == "blocks") %>%
+  select(ID, longitude, latitude) %>%
+  rename(id = ID) %>%
+  mutate(
+    id = str_replace(id, "^X03", "X2003roeder"),
+    id = str_replace(id, "^X18", "X2018roeder")
+  ) %>%
+  filter()
+
+# coordinates <- coordinates_reference %>%
+#   bind_rows(coordinates_restoration)
 
 
 
@@ -113,6 +155,13 @@ species_restoration <- read_csv(
   here("data", "raw", "data_raw_species_restoration.csv"),
   col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
   )
+
+species_bauer_etal_2020 <- read_csv(
+  here("data", "raw", "data_raw_species_bauer_etal-2020.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+) %>%
+  mutate(name = str_replace_all(name, "_", " ")) %>%
+  select(name, starts_with("X03"), starts_with("X18"))
 
 
 
@@ -131,14 +180,6 @@ traits <- readxl::read_excel(
 )
 
 
-rm(
-  list = setdiff(ls(), c(
-    "species_reference", "species_restoration", "sites_reference",
-    "sites_restoration", "traits", "coordinates"
-    ))
-  )
-
-
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # B Create variables ###########################################################
@@ -151,51 +192,43 @@ rm(
 
 species <- species_reference %>%
   full_join(species_restoration, by = "name") %>%
+  full_join(species_bauer_etal_2020, by = "name") %>%
   pivot_longer(-name, names_to = "plot", values_to = "value") %>%
   mutate(
-    id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), plot)
+    id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), plot),
+    id = str_replace(id, "^X03", "X2003roeder"),
+    id = str_replace(id, "^X18", "X2018roeder")
   ) %>%
   filter(!is.na(value)) %>%
   select(-plot) %>%
-  pivot_wider(names_from = "id", values_from = "value")
+  arrange(id) %>%
+  pivot_wider(names_from = "id", values_from = "value") %>%
+  arrange(name)
 
 sites <- sites_reference %>%
-  full_join(sites_restoration, by = "plot") %>%
+  bind_rows(sites_restoration) %>%
+  bind_rows(sites_bauer_etal_2020) %>%
   mutate(
-    id = if_else(str_detect(plot, "^tum"), paste0("X2021", plot), plot),
+    id = str_replace(id, "^X03", "X2003roeder"),
+    id = str_replace(id, "^X18", "X2018roeder"),
+    id = if_else(str_detect(plot, "^tum"), paste0("X2021", plot), id),
     id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), id),
     elevation = if_else(is.na(elevation), 469, elevation),
     plot_size = if_else(is.na(plot_size), 4, plot_size),
     treatment = if_else(is.na(treatment), "control", treatment)
   ) %>%
-  relocate(id, .before = "plot") %>%
-  unite("botanist", c("botanist_2021", "botanist_2024"), na.rm = TRUE) %>%
-  unite(
-    "survey_date", c("survey_date_2021", "survey_date_2024"), na.rm = TRUE
-    ) %>%
-  unite(
-    "height_vegetation", c("height_vegetation_2021", "height_vegetation_2024"),
-    na.rm = TRUE
-    ) %>%
-  unite(
-    "cover_vegetation", c("cover_vegetation_2021", "cover_vegetation_2024"),
-    na.rm = TRUE
-    ) %>%
-  unite("cover_moss", c("cover_moss_2021", "cover_moss_2024"), na.rm = TRUE) %>%
-  unite(
-    "cover_litter", c("cover_litter_2021", "cover_litter_2024"), na.rm = TRUE
-    ) %>%
-  unite("cover_soil", c("cover_soil_2021", "cover_soil_2024"), na.rm = TRUE)
-  
+  arrange(id) %>%
+  relocate(id, .before = "plot")
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 
 
-## 2 Select target species from FloraVeg.EU ###################################
+## 2 Select target species #####################################################
 
 
-# Get target species and put them in 'traits' matrix.
+# Chytrý et al. (2024) FloraVeg.EU. Appl Veg Sci 27, e12798.
+# https://doi.org/10.1111/avsc.12798
 
 data <- traits %>%
   rename_with(~ tolower(gsub(" ", "_", .x))) %>%
@@ -211,37 +244,10 @@ data <- traits %>%
   mutate(
     across(c("R1A", "R22"), ~ if_else(. > 0, 1, 0)),
     both = if_else(R1A > 0 & R22 > 0, 1, 0)
-    )
-traits <- data %>%
-  rename(name = species)
-
-# Harmonization ran once and were than saved --> load below processed file
-#
-# harmonized_names <- traits %>%
-#     rowid_to_column("id") %>%
-#     select(id, name) %>%
-#     TNRS::TNRS(
-#       sources = c("wcvp", "wfo"), # first use WCVP and alternatively WFO
-#       classification = "wfo", # family classification
-#       mode = "resolve"
-#     )
-# 
-# write_csv(
-#     harmonized_names, here("data", "processed", "data_processed_traits_tnrs.csv")
-#     )
-
-names_traits <- read.csv(
-  here("data", "processed", "data_processed_traits_tnrs.csv")
-  )
-
-traits <- traits %>%
-  rename("Name_submitted" = "name") %>%
-  left_join(
-    names_traits %>% select(Name_submitted, Name_matched), by = "Name_submitted"
     ) %>%
-  select(Name_submitted, Name_matched, everything())
-
-
+  rename(name = species) %>%
+  full_join(species %>% select(name), by = "name")
+traits <- data
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
@@ -250,23 +256,56 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 ## 3 Names from TNRS database #################################################
 
 
-### a Harmonize names of species and traits matrices ---------------------------
+### a Harmonize species and traits matrices ------------------------------------
 
 metadata <- TNRS_metadata()
 metadata$version
 metadata$sources %>% tibble()
 
-traits <- traits %>%
+data_traits <- traits %>%
   mutate(
-    Name_submitted = str_replace(
-      Name_submitted, "Cirsium acaulon", "Cirsium acaule"
-      )
+    name = str_replace(name, "Anemone pulsatilla", "Pulsatilla vulgaris Mill."),
+    name = str_replace(name, "Carex cary eric", "Carex spp_cary_eric"),
+    name = str_replace(name, "Carlina vulgaris aggr.", "Carlina vulgaris L."),
+    name = str_replace(name, "Centaurea pannonica", "Centaurea jacea"),
+    name = str_replace(
+      name, "Cirsium acaulon", "Cirsium acaule (L.) A.A.Weber ex Wigg."
+      ),
+    name = str_replace(name, "Erica herbacea", "Erica carnea"),
+    name = str_replace(
+      name, "Festuca arundinacea", "Festuca arundinacea Schreb."
+      ),
+    name = str_replace(name, "Inula hirta", "Inula hirta L."),
+    name = str_replace(name, "Inula salicina", "Inula salicina L."),
+    name = str_replace(name, "Knautia arvensis", "Knautia arvensis L."),
+    name = str_replace(
+      name, "Lotus corniculatus ssp corniculatus", "Lotus corniculatus"
+      ),
+    name = str_replace(
+      name, "Lotus corniculatus ssp hirsutus", "Lotus corniculatus"
+      ),
+    name = str_replace(
+      name, "Lotus corniculatus var corniculatus", "Lotus corniculatus"
+      ),
+    name = str_replace(
+      name, "Lotus corniculatus var hirsutus", "Lotus corniculatus"
+      ),
+    name = str_replace(
+      name, "Linum catharticum subsp. suecicum", "Linum catharticum"
+      ),
+    name = str_replace(
+      name, "Picris hieracioides", "Picris hieracioides L."
+      ),
+    name = str_replace(name, "Potentilla incana", "Potentilla cinerea"),
+    name = str_replace(name, "Potentilla tabernaemontani", "Potentilla verna"),
+    name = str_replace(name, "Pulicaria vulgaris", "Pulicaria vulgaris Gaertn"),
+    name = str_replace(name, "Pulsatilla grandis", "Pulsatilla grandis Wender."),
+    name = str_replace(name, "Stachys officinalis", "Betonica officinalis")
     )
 
 # Harmonization ran once and were than saved --> load below processed file
-#
-# harmonized_names <- species %>%
-#   full_join(traits, by = "name") %>% # combine with target species list
+
+# harmonized_names <- data_traits %>%
 #   rowid_to_column("id") %>%
 #   select(id, name) %>%
 #   TNRS::TNRS(
@@ -275,22 +314,25 @@ traits <- traits %>%
 #     mode = "resolve"
 #   )
 # write.csv(
-#   harmonized_names, here("data", "processed", "data_processed_names_tnrs.csv")
+#   harmonized_names,
+#   here("data", "processed", "data_processed_harmonized_taxonomy.csv")
 #   )
 
 data_names <- read.csv(
-  here("data", "processed", "data_processed_names_tnrs.csv")
+  here("data", "processed", "data_processed_harmonized_taxonomy.csv")
   ) %>%
   select(
-    Name_submitted, Taxonomic_status, Accepted_name, Accepted_name_url,
-    Accepted_family
+    Name_submitted, Taxonomic_status, Accepted_name, Accepted_name_rank,
+    Overall_score, Warnings, WarningsEng,
+    Accepted_name_url, Accepted_family, Source
   ) %>%
-  rename_with(tolower)
+  rename_with(tolower) %>%
+  arrange(desc(warnings), overall_score)
 
 
-### b Summarize duplicates of species matrix -----------------------------------
+### b Summarize species matrix -------------------------------------------------
 
-data <- species %>% 
+data_species <- species %>% 
   rename(name_submitted = name) %>%
   left_join(
     data_names %>% select(name_submitted, accepted_name),
@@ -298,9 +340,9 @@ data <- species %>%
   ) %>%
   select(name_submitted, accepted_name, everything())
 
-data %>% filter(duplicated(accepted_name))
+data_species %>% filter(duplicated(accepted_name))
 
-data_summarized <- data %>%
+data_summarized <- data_species %>%
   group_by(accepted_name) %>%
   summarize(across(where(is.numeric), ~ sum(.x, na.rm = TRUE)))
 
@@ -309,41 +351,30 @@ data_summarized %>% filter(duplicated(accepted_name))
 species <- data_summarized
 
 
-### c Summarize duplicates of traits matrix ------------------------------------
+### c Summarize traits matrix --------------------------------------------------
 
-data <- traits %>%
-  right_join(
-    species %>% select(accepted_name), by = c("Name_matched" = "accepted_name")
-    ) %>%
-  rename(accepted_name = Name_matched) %>%
-  left_join(data_names, by = "accepted_name") %>%
-  select(name_submitted, accepted_name, everything())
-
-# traits <- traits %>%
-#   merge(
-#     species %>% select(accepted_name), 
-#     by.x = "Name_matched", by.y ="accepted_name", all.y = T
-#   )
-
-data %>% filter(duplicated(accepted_name))
-
-data_summarized <- data %>%
-  group_by(accepted_name) %>%
-  summarize(across(everything(), ~ first(.x))) %>%
+data_traits <- traits %>% 
+  rename(name_submitted = name) %>%
+  left_join(data_names, by = "name_submitted") %>%
   select(
-    name_submitted, accepted_name, taxonomic_status, accepted_family,
-    everything()
+    name_submitted, accepted_name, taxonomic_status, accepted_name_rank,
+    accepted_family, R1A, R22, both, accepted_name_url
     )
+
+data_traits %>% filter(duplicated(accepted_name))
+
+data_summarized <- data_traits %>%
+  group_by(
+    accepted_name, accepted_name_rank, accepted_family, accepted_name_url
+    ) %>%
+  summarize(across(where(is.numeric), ~ sum(.x, na.rm = TRUE)))
 
 data_summarized %>% filter(duplicated(accepted_name))
 
 traits <- data_summarized %>%
-  select(
-    accepted_name, taxonomic_status, accepted_family, R1A, R22, both,
-    accepted_name_url
-    ) %>%
+  semi_join(species, by = "accepted_name") %>%
+  relocate(accepted_name_url, .after = last_col()) %>%
   mutate(across(where(is.numeric), replace_na, 0))
-
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
@@ -379,11 +410,11 @@ data_redlist <- readxl::read_excel(
 #   )
 # write_csv(
 #   harmonized_names,
-#   here("data", "processed", "data_processed_redlist_tnrs.csv")
+#   here("data", "processed", "data_processed_harmonized_redlist.csv")
 #   )
 
 redlist <- read_csv(
-  here("data", "processed", "data_processed_redlist_tnrs.csv"),
+  here("data", "processed", "data_processed_harmonized_redlist.csv"),
   col_names = TRUE, na = c("", "NA", "na"), col_types =
     cols(.default = "?")
   ) %>%
@@ -396,29 +427,21 @@ redlist <- read_csv(
     data_redlist %>% rename(name_submitted = name), by = "name_submitted"
     )
 
+redlist %>% filter(duplicated(accepted_name))
+
+redlist_summarized <- redlist %>%
+  group_by(accepted_name) %>%
+  summarize(across(c(status, redlist_germany), ~ first(.x)))
+
+redlist_summarized  %>% filter(duplicated(accepted_name))
+
 
 ### b Combine red list status and traits --------------------------------------
 
 data <- traits %>%
-  left_join(
-    redlist %>% select(accepted_name, status, redlist_germany),
-    by = "accepted_name"
-  )
-
-data %>% filter(duplicated(accepted_name))
-
-data_summarized <- data %>%
-  group_by(accepted_name) %>%
-  summarize(across(everything(), ~ first(.x))) %>%
-  select(
-    accepted_name, taxonomic_status, accepted_family,
-    everything()
-  )
-
-data_summarized  %>% filter(duplicated(accepted_name))
-
-traits <- data_summarized
-
+  left_join(redlist_summarized, by = "accepted_name") %>%
+  relocate(accepted_name_url, .after = last_col())
+traits <- data
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
@@ -435,82 +458,93 @@ GIFT::GIFT_traits_meta() %>%
   filter(Lvl3 %in% trait_ids) %>%
   tibble()
 
-data_gift <- GIFT::GIFT_traits(
-  trait_IDs = trait_ids,
-  agreement = 0.66, bias_ref = FALSE, bias_deriv = FALSE
-)
+# Download of traits data ran once and were than saved --> load below processed file
 
-# # Harmonization ran once and were than saved --> load below processed file
-# 
-# harmonized_names <- data_gift %>%
-#   rowid_to_column("id") %>%
-#   select(id, work_species) %>%
-#   TNRS::TNRS(
-#     sources = c("wcvp", "wfo"), # first use WCVP and alternatively WFO
-#     classification = "wfo", # family classification
-#     mode = "resolve"
-#   )
+# data_gift <- GIFT::GIFT_traits(
+#   trait_IDs = trait_ids,
+#   agreement = 0.66, bias_ref = FALSE, bias_deriv = FALSE
+# )
 # 
 # write_csv(
-#   harmonized_names, here("data", "processed", "data_processed_gift_tnrs.csv")
+#   data_gift, here("data", "processed", "data_processed_gift_traits.csv")
 #   )
 
-# data_gift %>% filter(str_detect(work_species, "Cerastium f")) %>% select(1:2)
-
 gift <- data.table::fread(
-  here("data", "processed", "data_processed_gift_tnrs.csv")
-  ) %>%
-  rename_with(tolower) %>%
-  select(accepted_name) %>%
-  left_join(
-    data_gift %>%
-      mutate(
-        work_species = str_replace(
-          work_species, "Betonica officinalis", "Stachys officinalis"
-          ),
-        work_species = str_replace(
-          work_species, "Cerastium fontanum",
-          "Cerastium fontanum subsp. vulgare"
-          ),
-        work_species = str_replace(
-          work_species, "Asperula cynanchica",
-          "Cynanchica pyrenaica subsp. cynanchica"
-          ),
-        work_species = str_replace(
-          work_species, "Potentilla verna", "Potentilla tabernaemontani"
-          ),
-      ),
-    by = c("accepted_name" = "work_species")
-    ) %>%
+  here("data", "processed", "data_processed_gift_traits.csv")
+) %>%
   rename(
+    accepted_name = work_species,
     growth_form = trait_value_1.2.2,
-    plant_height = trait_value_1.6.3,
-    seed_mass = trait_value_3.2.3,
+    height = trait_value_1.6.3,
+    seedmass = trait_value_3.2.3,
     sla = trait_value_4.1.3
+  ) %>%
+  select(accepted_name, growth_form, sla, height, seedmass) %>%
+  mutate(
+    accepted_name = str_replace(
+      accepted_name, "Asperula cynanchica",
+      "Cynanchica pyrenaica subsp. cynanchica"
+    ),
+    accepted_name = str_replace(
+      accepted_name, "Avenula pubescens", "Helictotrichon pubescens"
+    ),
+    accepted_name = str_replace(
+      accepted_name, "Euphrasia officinalis subsp. pratensis",
+      "Euphrasia officinalis"
+    ),
+    accepted_name = str_replace(
+      accepted_name, "Helianthemum nummularium",
+      "Helianthemum nummularium subsp. obscurum"
+    ),
+    accepted_name = str_replace(
+      accepted_name, "Lotus dorycnium", "Lotus germanicus"
     )
-
+  )
 
 ### b Combine gift and traits -------------------------------------------------
 
-data <- traits %>%
+data_traits <- traits %>%
   left_join(
     gift %>%
-      select(accepted_name, growth_form, plant_height, seed_mass, sla),
+      select(accepted_name, growth_form, sla, height, seedmass),
     by = "accepted_name"
   )
 
-data %>% filter(duplicated(accepted_name))
+### c Check completeness -------------------------------------------------------
 
-data_summarized <- data %>%
-  group_by(accepted_name) %>%
-  summarize(across(everything(), ~ first(.x))) %>%
-  select(
-    accepted_name, growth_form, plant_height, seed_mass, sla, everything()
-  )
+data <- data_traits %>%
+  filter(
+    accepted_name_rank %in% c("subspecies", "species") &
+    !(growth_form %in% c("tree", "shrub")) &
+      !(accepted_name %in% c(
+        "Acer platanoides"
+      ))
+  ) %>%
+  ungroup() %>% 
+  select(accepted_name, sla, seedmass, height)
 
-data_summarized  %>% filter(duplicated(accepted_name))
+data %>%
+  naniar::miss_var_summary(order = TRUE)
+data %>%
+  naniar::vis_miss(cluster = FALSE, sort_miss = TRUE)
+data %>%
+  filter(is.na(sla) & is.na(height) & is.na(seedmass)) %>%
+  filter(str_detect(accepted_name, " ")) %>%
+  print(n = 20)
+data %>%
+  filter(is.na(sla)) %>%
+  filter(str_detect(accepted_name, " "))
+data %>%
+  filter(is.na(height)) %>%
+  filter(str_detect(accepted_name, " "))
+data %>%
+  filter(is.na(seedmass)) %>%
+  filter(str_detect(accepted_name, " "))
 
-traits <- data_summarized
+
+### d Add values manually ------------------------------------------------------
+
+
 
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
