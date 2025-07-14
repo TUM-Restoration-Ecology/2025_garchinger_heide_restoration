@@ -1,0 +1,4 @@
+﻿attributeName,attributeDefinition,formatString,definition,unit,numberType,type,factor,"comment			"
+name,botanical species name,NA,botanical species name,NA,NA,character,NA,"NA			"
+X73I1,Countings per plot of species according to frequency method (Raunkiaer 1918),NA,NA,dimensionless,integer,numeric,NA,X=nothing / 73 = year of survey / I = transect I / 1 = plot 1 / Raunkiær C (1918) Recherches statistiques sur les formations végétales. Biologiske Meddelelser/Kongelige Danske Videnskabernes Selskab 1: 1–80.
+X03N1,Abundance estimations of species per plot according to Braun-Blanquet (1964) and with Londo-scale (Londo 1976),NA,NA,percent,real,numeric,NA,Braun-Blanquet J (1964) Pﬂanzensoziologie: Grundzüge der Vegetationskunde (3rd ed.). Wien-New York: Springer (Original work published 1928) / Londo G (1976) The decimal scale for releves of permanent quadrats. Vegetatio 33: 61–64. http://dx.doi.org/10.1007/BF00055300

@@ -1,0 +1,26 @@
+attributeName,attributeDefinition,formatString,definition,unit,numberType,type,factor
+no,continual number,NA,NA,NA,integer,numeric,NA
+ID,plot ID with unique time marker,NA,plot ID with unique time marker,NA,NA,character,NA
+plot,plot ID,NA,plot ID,NA,NA,character,NA
+plot_old,plot ID of former studies,NA,plot ID of former studies,NA,NA,character,NA
+block,block ID,NA,NA,NA,NA,factor,I / II / III / north / middle / south
+dataset,two datasets were used with different monitoring designs,NA,NA,NA,NA,factor,selection = Briemle (1973) / transects = Pfadenhauer & Lieberman (1986) and Hoengdobler (1995) / blocks = Roeder (2003)
+year,year of survey,NA,NA,NA,integer,numeric,NA
+herbHeight,average height of vegetation in the plot measured in the field,NA,NA,centimeter,integer,numeric,NA
+herbCover,coverage of herbal vegetation,NA,NA,percent,integer,numeric,NA
+mossCover,coverage of mosses,NA,NA,percent,integer,numeric,NA
+litterCover,coverage of litter,NA,NA,percent,integer,numeric,NA
+soilCover,coverage of bare soil,NA,NA,percent,integer,numeric,NA
+botanist,name of botanist who surveyed the vegetation,NA,name of botanist who surveyed the vegetation,NA,NA,character,NA
+plotSize,size of vegetation survey,NA,NA,meterSquared,integer,numeric,NA
+photoName_June,name of the photo of the plot in June,NA,name of the photo of the plot in June,NA,NA,character,NA
+photoDate_June,date of the photo of the pot in June,YYYY-mm-dd,NA,NA,NA,date,NA
+photoName_April,name of the photo of the plot in April,NA,name of the photo of the plot in April,NA,NA,character,NA
+photoDate_April,date of the photo of the pot in April,YYYY-mm-dd,NA,NA,NA,date,NA
+longitude,Longitude of the plot WGS84 (EPSG 4326),NA,NA,NA,integer,numeric,NA
+latitude,Latitude of the plot in WGS84 (EPSG 4326),NA,NA,NA,integer,numeric,NA
+,,,,,,,references
+,,,,,,,Briemle H (1973) Vegetationskundliche Untersuchungen in der Garchinger Haide (Diplomarbeit). Technische Universität München.
+,,,,,,,Hoengdobler M (1995) Passives Umweltmonitoring auf geobotanischen Dauerbeobachtungs?ächen: Statistische Auswertung und Interpretation der Vegetationsaufnahmen von 1973 1984 und 1993 im Naturschutzgebiet Garchinger Haide (Diplomarbeit). Freising: Technische Universität München.
+,,,,,,,Pfadenhauer J & Liebermann C (1986) Eine geobotanische Dauerbeobachtungsaeche im Naturschutzgebiet Garchinger Heide. Berichte der Bayerischen Botanischen Gesellschaft 57: 99-110.
+,,,,,,,Roeder D (2003) Populationsökologische Untersuchungen an Pulsatilla patens (L.) Mill im Naturschutzgebiet Garchinger Heide (Diplomarbeit). Technische Universität München.
