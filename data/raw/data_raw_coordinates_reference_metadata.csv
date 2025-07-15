@@ -1,0 +1,5 @@
+attributeName;attributeDefinition;formatString;definition;unit;numberType;type;factor;comment
+id;Jahrspezifische ID fuer jeden Plot;NA;year specifi plot ID;NA;NA;character;NA;NA
+plot;plot ID unabhaengig vom Jahr;NA;plot ID independent of year;NA;NA;character;NA;NA
+longitude;Laengengrad in UTM32 / EPSG 25832      ;NA;NA;meter;integer;numeric;NA;NA
+latitude;Breitengrad in UTM32 / EPSG 25832      ;NA;NA;meter;integer;numeric;NA;NA
