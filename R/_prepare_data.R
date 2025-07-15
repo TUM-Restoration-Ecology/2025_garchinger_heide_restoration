@@ -18,7 +18,8 @@ library(GIFT)
 library(FD)
 library(vegan)
 library(adespatial)
-#library(indicspecies)
+library(vegdata)
+library(profvis)
 
 ### Start ###
 rm(list = ls())
@@ -95,7 +96,7 @@ sites_bauer_etal_2020 <- read_csv(
     ) %>%
   filter(dataset == "blocks") %>%
   select(
-    id, plot, block, plot_size, dataset, botanist,
+    id, plot, block, plot_size, dataset, botanist, year,
     cover_vegetation, height_vegetation
     )
 
@@ -139,8 +140,9 @@ coordinates_bauer_etal_2020 <- read_csv(
   ) %>%
   filter()
 
-# coordinates <- coordinates_reference %>%
-#   bind_rows(coordinates_restoration)
+coordinates <- coordinates_reference %>%
+  bind_rows(coordinates_restoration) %>%
+  bind_rows(coordinates_bauer_etal_2020)
 
 
 
@@ -192,21 +194,6 @@ traits <- readxl::read_excel(
 ## 1 Combine reference and restoration plots ##################################
 
 
-species <- species_reference %>%
-  full_join(species_restoration, by = "name") %>%
-  full_join(species_bauer_etal_2020, by = "name") %>%
-  pivot_longer(-name, names_to = "plot", values_to = "value") %>%
-  mutate(
-    id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), plot),
-    id = str_replace(id, "^X03", "X2003roeder"),
-    id = str_replace(id, "^X18", "X2018roeder")
-  ) %>%
-  filter(!is.na(value)) %>%
-  select(-plot) %>%
-  arrange(id) %>%
-  pivot_wider(names_from = "id", values_from = "value") %>%
-  arrange(name)
-
 sites <- sites_reference %>%
   bind_rows(sites_restoration) %>%
   bind_rows(sites_bauer_etal_2020) %>%
@@ -221,6 +208,22 @@ sites <- sites_reference %>%
   ) %>%
   arrange(id) %>%
   relocate(id, .before = "plot")
+
+species <- species_reference %>%
+  full_join(species_restoration, by = "name") %>%
+  full_join(species_bauer_etal_2020, by = "name") %>%
+  pivot_longer(-name, names_to = "plot", values_to = "value") %>%
+  mutate(
+    id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), plot),
+    id = str_replace(id, "^X03", "X2003roeder"),
+    id = str_replace(id, "^X18", "X2018roeder")
+  ) %>%
+  filter(!is.na(value)) %>%
+  select(-plot) %>%
+  arrange(id) %>%
+  semi_join(sites, by = "id") %>%
+  pivot_wider(names_from = "id", values_from = "value") %>%
+  arrange(name)
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
@@ -962,7 +965,7 @@ source(
 ### c Summary and integration --------------------------------------------------
 
 table(result.classification)
-eval.EUNIS(which(result.classification == "H26a")[10], "H26a")
+eval.EUNIS(which(result.classification == "R18")[1])
 # H26a (= U27) = Temperate, lowland to montane base-rich scree
 # R = Grassland
 # R18 = Perennial rocky calcareous grassland of subatlantic-submediterranean Europe
@@ -973,19 +976,19 @@ eval.EUNIS(which(result.classification == "H26a")[10], "H26a")
 data <- sites %>%
   mutate(
     esy = result.classification,
-    esy = if_else(id == "X2024res44", "R", esy), # R18
-    esy = if_else(id == "X2024res61", "R", esy), # S22
-    esy = if_else(id == "X2021tum20", "R", esy), # ?
-    esy = if_else(id == "X2024res20", "R1A", esy), # H26a (= U27)
-    esy = if_else(id == "X2024res21", "R", esy),
-    esy = if_else(id == "X2024res06", "R", esy),
-    esy = if_else(id == "X2024res85", "R", esy),
-    esy = if_else(id == "X2024res90", "R", esy),
-    esy = if_else(id == "X2024res75", "R", esy),
-    esy = if_else(id == "X2024res66", "R", esy),
-    esy = if_else(id == "X2024res69", "R", esy),
-    esy = if_else(id == "X2024res78", "R", esy),
-    esy = if_else(id == "X2024res72", "R", esy)
+    esy = if_else(id == "X2003roederM13", "R", esy), # ?
+    esy = if_else(id == "X2021tum11", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum40", "R", esy), # S22
+    esy = if_else(id == "X2021tum52", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum58", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum63", "R1A", esy), # S22
+    esy = if_else(id == "X2024res07", "R1A", esy), # S22
+    esy = if_else(id == "X2024res41", "R1A", esy), # H26a
+    esy = if_else(id == "X2024res44", "R1A", esy), # H26a
+    esy = if_else(id == "X2024res57", "R", esy), # H26a
+    esy = if_else(id == "X2024res59", "R", esy), # H26a
+    esy = if_else(id == "X2024res61", "R", esy), # H26a
+    esy = if_else(id == "X2024res88", "R", esy) # R18
   )
 table(data$esy)
 sites <- data
@@ -1003,7 +1006,6 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 source("https://raw.githubusercontent.com/zdealveindy/anadat-r/master/scripts/NumEcolR2/quickMEM.R")
 data_sites <- sites %>%
-  filter(location != "rollfeld" | is.na(location)) %>%
   left_join(coordinates, by = "id") %>%
   select(id, longitude, latitude) %>%
   arrange(id)
@@ -1027,14 +1029,32 @@ m <- quickMEM(
   perm.max = 9999
 )
 
-# OUTPUT (2025-02-06)
-# Truncation level = 2.397639 
-# Time to compute dbMEMs = 0.030000  sec 
-# 
-# *** Procedure stopped ***
-# p-value of global test:  0.2556
-# No significant spatial structure detected by global dbMEM analysis.
-# Selection of dbMEM variables would lead to spurious model.
+# OUTPUT (2025-07-14)
+# -------------------------------------------------------
+#   A significant linear trend has been found in the response data.
+# The response data have been detrended prior to dbMEM analysis.
+# -------------------------------------------------------
+#   20 dbMEM eigenvectors have been produced 
+# R2 of global model =  0.1382 
+# Adjusted R2 of global model =  0.058 
+# 5  dbMEM eigenvectors have been selected 
+# R2 of minimum (final) model =  0.0753                      
+# Adjusted R2 of minimum (final) model =  0.0552          
+# The final model has 2 significant canonical axes 
+# ---------------------------------------------------------
+
+m$RDA_test # p: 0.001
+m$RDA_axes_test #  RDA1 and RDA2: sig. axis
+m$RDA # Eigenvalues: RDA1: 0.02, RDA2: 0.006
+
+data <- m$dbMEM %>%
+  rownames_to_column(var = "id") %>%
+  select(id, MEM1, MEM2) %>%
+  rename(mem1 = MEM1, mem2 = MEM2)
+sites <- sites %>%
+  left_join(data, by = "id")
+
+rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 
 
@@ -1043,8 +1063,8 @@ m <- quickMEM(
 
 sites <- sites %>%
   relocate(botanist, .after = last_col()) %>%
-  relocate(comments, .after = last_col()) %>%
-  select(-streuhoehe_2021, -flechtendeckung_2021, -rlg_LC, -rlg_NA, -rlg_NE)
+  relocate(block, .after = "location") %>%
+  select(-rlg_LC, -rlg_NA, -rlg_NE, -dataset)
 
 
 
