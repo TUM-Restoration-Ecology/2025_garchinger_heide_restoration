@@ -88,7 +88,7 @@ data <- sites %>%
     geom_quasirandom(color = "grey20", dodge.width = .6, size = 1, shape = 16) +
     geom_boxplot(alpha = .5, color = "black") +
     annotate(
-      "text", x = 1.5, y = 0, size = 2.5,
+      "text", x = 1.5, y = 0, size = 3,
       label = expression(4^th~corner*": n.s.")
     ) +
     scale_y_continuous(limits = c(0, 5.6), breaks = seq(-100, 400, .5)) +
