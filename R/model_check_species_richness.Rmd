@@ -144,6 +144,11 @@ m_1 <- m1
 m_2 <- m2
 ```
 
+```{r formulas, collapse = TRUE}
+m_1
+m_2
+```
+
 ## Model check
 
 ### DHARMa
@@ -156,14 +161,14 @@ simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ```{r dharma_single, collapse = TRUE, fig.height = 3, fig.width = 4.5}
 plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
 plotResiduals(simulation_output_2$scaledResiduals, sites$treatment)
-plotResiduals(simulation_output_1$scaledResiduals, sites$mem1)
-plotResiduals(simulation_output_2$scaledResiduals, sites$mem1)
 plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
 plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
 plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
 plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
+plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
+plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
 ```
 
 ### Check collinearity part 2 (Step 5)
@@ -203,7 +208,7 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ```{r summary}
-summary(m_1)
+summary(m_2)
 ```
 
 ### Forest plot
@@ -224,7 +229,7 @@ necessary.
 
 ```{r effect-sizes, message = FALSE}
 (emm <- emmeans(
-  m_1,
+  m_2,
   revpairwise ~ treatment,
   type = "response"
   ))

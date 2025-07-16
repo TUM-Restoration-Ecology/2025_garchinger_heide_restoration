@@ -3,7 +3,7 @@
 # Species richness red list Germany ####
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Markus Bauer & Sina Appeltauer
+# Sina Appeltauer, Markus Bauer
 # 2025-07-15
 
 
@@ -87,5 +87,5 @@ simulateResiduals(m2, plot = TRUE)
 
 ### Save ####
 
-save(m1, file = here("outputs", "models", "model_richness_RLG_1.Rdata"))
-save(m2, file = here("outputs", "models", "model_richness_RLG_2.Rdata"))
+save(m1, file = here("outputs", "models", "model_richness_rlg_1.Rdata"))
+save(m2, file = here("outputs", "models", "model_richness_rlg_2.Rdata"))

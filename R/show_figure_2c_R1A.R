@@ -64,8 +64,8 @@ sites <- read_csv(
   )
 
 ### * Model ####
-load(file = here("outputs", "models", "model_richness_R1A_1.Rdata"))
-m <- m1
+load(file = here("outputs", "models", "model_richness_r1a_2.Rdata"))
+m <- m2
 m
 
 
@@ -97,11 +97,6 @@ data <- sites %>%
       aes(x = x, predicted, color = x),
       dodge.width = .6, size = 1, shape = 16
     ) +
-    # geom_hline(
-    #   yintercept = c(12.98, 12.23, 13.73),
-    #   linetype = c(1, 2, 2),
-    #   color = "grey70"
-    # ) +
     geom_errorbar(
       data = data_model,
       aes(x, predicted, ymin = conf.low, ymax = conf.high),
@@ -118,6 +113,10 @@ data <- sites %>%
     annotate("text", label = "a", x = 4, y = 49) +
     annotate("text", label = "a", x = 5, y = 49) +
     annotate("text", label = "b", x = 6, y = 49) +
+    annotate(
+      "text", label = expression(italic(R)^2~"="~0.33),
+      x = 6, y = 40, size = 2.5
+    ) +
     scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
     scale_color_manual(
       values = c(

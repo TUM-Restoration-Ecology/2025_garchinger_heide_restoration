@@ -3,7 +3,7 @@
 # Species richness ####
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Sina Appeltauer & Markus Bauer
+# Sina Appeltauer, Markus Bauer
 # 2025-07-15
 
 

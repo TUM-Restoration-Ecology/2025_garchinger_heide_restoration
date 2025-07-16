@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> R1A indicator richness
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-07-15</b>
+<b>2025-07-16</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -113,7 +113,7 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Graphs of raw data (Step 2, 6, 7)
 
-![](model_check_richness_R1A_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_richness_R1A_files/figure-gfm/data-exploration-2.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_richness_r1a_files/figure-gfm/data-exploration-2.png)<!-- -->
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
@@ -127,7 +127,7 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
     ## 5 cut_autumn      30
     ## 6 grazing         30
 
-![](model_check_richness_R1A_files/figure-gfm/outliers-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/outliers-1.png)<!-- -->
 
 ### Check collinearity part 1 (Step 5)
 
@@ -141,15 +141,15 @@ sites %>%
   theme(strip.text = element_text(size = 7))
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/collinearity-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/collinearity-1.png)<!-- -->
 
 ## Models
 
 Only here you have to modify the script to compare other models
 
 ``` r
-load(file = here("outputs", "models", "model_richness_R1A_1.Rdata"))
-load(file = here("outputs", "models", "model_richness_R1A_2.Rdata"))
+load(file = here("outputs", "models", "model_richness_r1a_1.Rdata"))
+load(file = here("outputs", "models", "model_richness_r1a_2.Rdata"))
 m_1 <- m1
 m_2 <- m2
 ```
@@ -187,61 +187,73 @@ m_2
 simulation_output_1 <- simulateResiduals(m_1, plot = TRUE)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_all-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_all-1.png)<!-- -->
 
 ``` r
 simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_all-2.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_all-2.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-1.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$treatment)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-2.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-2.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
+```
+
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-3.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
+```
+
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-4.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-3.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-4.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-6.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-5.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-7.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-6.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-8.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-7.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-9.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/dharma_single-8.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-10.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 
@@ -289,31 +301,32 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ``` r
-summary(m_1)
+summary(m_2)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment, data = sites)
+    ## lm(formula = y ~ treatment + mem2, data = sites)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -9.7143 -2.8810 -0.7143  3.1476 12.2333 
+    ## -9.0000 -2.7667 -0.2358  3.1179 12.2333 
     ## 
     ## Coefficients:
     ##                       Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)            16.8810     0.6391  26.413  < 2e-16 ***
-    ## treatmentcontrol_2018  -0.1667     0.9038  -0.184    0.854    
-    ## treatmentcontrol_2021   0.2320     0.8277   0.280    0.780    
-    ## treatmentgrazing       -8.1143     0.9901  -8.195 1.74e-14 ***
-    ## treatmentcut_summer     1.1190     0.9901   1.130    0.260    
-    ## treatmentcut_autumn    -0.4810     0.9901  -0.486    0.628    
+    ## (Intercept)            17.0497     0.6334  26.916  < 2e-16 ***
+    ## treatmentcontrol_2018  -0.1667     0.8915  -0.187  0.85187    
+    ## treatmentcontrol_2021   0.1190     0.8175   0.146  0.88441    
+    ## treatmentgrazing       -8.4790     0.9857  -8.602 1.26e-15 ***
+    ## treatmentcut_summer     0.7543     0.9857   0.765  0.44494    
+    ## treatmentcut_autumn    -0.8457     0.9857  -0.858  0.39183    
+    ## mem2                   -0.7413     0.2724  -2.722  0.00699 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.142 on 230 degrees of freedom
-    ## Multiple R-squared:  0.3162, Adjusted R-squared:  0.3014 
-    ## F-statistic: 21.27 on 5 and 230 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.085 on 229 degrees of freedom
+    ## Multiple R-squared:  0.3377, Adjusted R-squared:  0.3203 
+    ## F-statistic: 19.46 on 6 and 229 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -326,7 +339,7 @@ dotwhisker::dwplot(
   theme_classic()
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/predicted_values-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/predicted_values-1.png)<!-- -->
 
 ### Effect sizes
 
@@ -335,7 +348,7 @@ necessary.
 
 ``` r
 (emm <- emmeans(
-  m_1,
+  m_2,
   revpairwise ~ treatment,
   type = "response"
   ))
@@ -343,32 +356,32 @@ necessary.
 
     ## $emmeans
     ##  treatment    emmean    SE  df lower.CL upper.CL
-    ##  control_2003  16.88 0.639 230    15.62     18.1
-    ##  control_2018  16.71 0.639 230    15.46     18.0
-    ##  control_2021  17.11 0.526 230    16.08     18.1
-    ##  grazing        8.77 0.756 230     7.28     10.3
-    ##  cut_summer    18.00 0.756 230    16.51     19.5
-    ##  cut_autumn    16.40 0.756 230    14.91     17.9
+    ##  control_2003  17.05 0.633 229    15.80     18.3
+    ##  control_2018  16.88 0.633 229    15.63     18.1
+    ##  control_2021  17.17 0.519 229    16.15     18.2
+    ##  grazing        8.57 0.749 229     7.09     10.0
+    ##  cut_summer    17.80 0.749 229    16.33     19.3
+    ##  cut_autumn    16.20 0.749 229    14.73     17.7
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                    estimate    SE  df t.ratio p.value
-    ##  control_2018 - control_2003   -0.167 0.904 230  -0.184  1.0000
-    ##  control_2021 - control_2003    0.232 0.828 230   0.280  0.9998
-    ##  control_2021 - control_2018    0.399 0.828 230   0.482  0.9968
-    ##  grazing - control_2003        -8.114 0.990 230  -8.195  <.0001
-    ##  grazing - control_2018        -7.948 0.990 230  -8.027  <.0001
-    ##  grazing - control_2021        -8.346 0.921 230  -9.061  <.0001
-    ##  cut_summer - control_2003      1.119 0.990 230   1.130  0.8684
-    ##  cut_summer - control_2018      1.286 0.990 230   1.299  0.7856
-    ##  cut_summer - control_2021      0.887 0.921 230   0.963  0.9291
-    ##  cut_summer - grazing           9.233 1.070 230   8.634  <.0001
-    ##  cut_autumn - control_2003     -0.481 0.990 230  -0.486  0.9966
-    ##  cut_autumn - control_2018     -0.314 0.990 230  -0.317  0.9996
-    ##  cut_autumn - control_2021     -0.713 0.921 230  -0.774  0.9717
-    ##  cut_autumn - grazing           7.633 1.070 230   7.138  <.0001
-    ##  cut_autumn - cut_summer       -1.600 1.070 230  -1.496  0.6671
+    ##  control_2018 - control_2003   -0.167 0.892 229  -0.187  1.0000
+    ##  control_2021 - control_2003    0.119 0.818 229   0.146  1.0000
+    ##  control_2021 - control_2018    0.286 0.818 229   0.349  0.9993
+    ##  grazing - control_2003        -8.479 0.986 229  -8.602  <.0001
+    ##  grazing - control_2018        -8.312 0.986 229  -8.433  <.0001
+    ##  grazing - control_2021        -8.598 0.913 229  -9.414  <.0001
+    ##  cut_summer - control_2003      0.754 0.986 229   0.765  0.9730
+    ##  cut_summer - control_2018      0.921 0.986 229   0.934  0.9373
+    ##  cut_summer - control_2021      0.635 0.913 229   0.696  0.9823
+    ##  cut_summer - grazing           9.233 1.050 229   8.753  <.0001
+    ##  cut_autumn - control_2003     -0.846 0.986 229  -0.858  0.9559
+    ##  cut_autumn - control_2018     -0.679 0.986 229  -0.689  0.9831
+    ##  cut_autumn - control_2021     -0.965 0.913 229  -1.056  0.8980
+    ##  cut_autumn - grazing           7.633 1.050 229   7.236  <.0001
+    ##  cut_autumn - cut_summer       -1.600 1.050 229  -1.517  0.6538
     ## 
     ## P value adjustment: tukey method for comparing a family of 6 estimates
 
@@ -376,7 +389,7 @@ necessary.
 plot(emm, comparison = TRUE)
 ```
 
-![](model_check_richness_R1A_files/figure-gfm/effect-sizes-1.png)<!-- -->
+![](model_check_richness_r1a_files/figure-gfm/effect-sizes-1.png)<!-- -->
 
 # Session info
 

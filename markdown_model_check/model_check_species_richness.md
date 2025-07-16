@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
 <b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
-<b>2025-07-15</b>
+<b>2025-07-16</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -153,6 +153,31 @@ m_1 <- m1
 m_2 <- m2
 ```
 
+``` r
+m_1
+## 
+## Call:
+## lm(formula = y ~ treatment, data = sites)
+## 
+## Coefficients:
+##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
+##               30.1667                 0.3095                 3.8978  
+##   treatmentcut_summer    treatmentcut_autumn       treatmentgrazing  
+##               -6.0667                -4.7333               -10.3667
+m_2
+## 
+## Call:
+## lm(formula = y ~ treatment + mem2, data = sites)
+## 
+## Coefficients:
+##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
+##               30.3836                 0.3095                 3.7526  
+##   treatmentcut_summer    treatmentcut_autumn       treatmentgrazing  
+##               -6.5355                -5.2022               -10.8355  
+##                  mem2  
+##               -0.9528
+```
+
 ## Model check
 
 ### DHARMa
@@ -182,34 +207,22 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$treatment)
 ![](model_check_species_richness_files/figure-gfm/dharma_single-2.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$mem1)
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-3.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$mem1)
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-4.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-5.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
-
-``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
 ```
 
-![](model_check_species_richness_files/figure-gfm/dharma_single-7.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
@@ -217,16 +230,36 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
 ## : Anpassung beendet mit Schrittweitenfehler - Ergebnisse sorgfältig prüfen
 ```
 
-![](model_check_species_richness_files/figure-gfm/dharma_single-8.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
 ```
 
-![](model_check_species_richness_files/figure-gfm/dharma_single-9.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/dharma_single-7.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-8.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
+## Warning in ensurePredictor(simulationOutput, form): DHARMa:::ensurePredictor:
+## character string was provided as predictor. DHARMa has converted to factor
+## automatically. To remove this warning, please convert to factor before
+## attempting to plot with DHARMa.
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-9.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
+## Warning in ensurePredictor(simulationOutput, form): DHARMa:::ensurePredictor:
+## character string was provided as predictor. DHARMa has converted to factor
+## automatically. To remove this warning, please convert to factor before
+## attempting to plot with DHARMa.
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-10.png)<!-- -->
@@ -276,31 +309,32 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ``` r
-summary(m_1)
+summary(m_2)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment, data = sites)
+    ## lm(formula = y ~ treatment + mem2, data = sites)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -12.4762  -3.2333  -0.0645   3.5238  12.9355 
+    ## -11.8462  -3.2732   0.1807   3.3234  12.9000 
     ## 
     ## Coefficients:
     ##                       Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)            30.1667     0.7701  39.172  < 2e-16 ***
-    ## treatmentcontrol_2018   0.3095     1.0891   0.284 0.776509    
-    ## treatmentcontrol_2021   3.8978     0.9974   3.908 0.000122 ***
-    ## treatmentcut_summer    -6.0667     1.1930  -5.085 7.62e-07 ***
-    ## treatmentcut_autumn    -4.7333     1.1930  -3.967 9.71e-05 ***
-    ## treatmentgrazing      -10.3667     1.1930  -8.689 6.92e-16 ***
+    ## (Intercept)            30.3836     0.7616  39.897  < 2e-16 ***
+    ## treatmentcontrol_2018   0.3095     1.0718   0.289 0.773010    
+    ## treatmentcontrol_2021   3.7526     0.9829   3.818 0.000173 ***
+    ## treatmentcut_summer    -6.5355     1.1851  -5.515 9.41e-08 ***
+    ## treatmentcut_autumn    -5.2022     1.1851  -4.390 1.73e-05 ***
+    ## treatmentgrazing      -10.8355     1.1851  -9.143  < 2e-16 ***
+    ## mem2                   -0.9528     0.3274  -2.910 0.003972 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.991 on 230 degrees of freedom
-    ## Multiple R-squared:  0.4821, Adjusted R-squared:  0.4709 
-    ## F-statistic: 42.82 on 5 and 230 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.912 on 229 degrees of freedom
+    ## Multiple R-squared:  0.5006, Adjusted R-squared:  0.4875 
+    ## F-statistic: 38.26 on 6 and 229 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -322,7 +356,7 @@ necessary.
 
 ``` r
 (emm <- emmeans(
-  m_1,
+  m_2,
   revpairwise ~ treatment,
   type = "response"
   ))
@@ -330,32 +364,32 @@ necessary.
 
     ## $emmeans
     ##  treatment    emmean    SE  df lower.CL upper.CL
-    ##  control_2003   30.2 0.770 230     28.6     31.7
-    ##  control_2018   30.5 0.770 230     29.0     32.0
-    ##  control_2021   34.1 0.634 230     32.8     35.3
-    ##  cut_summer     24.1 0.911 230     22.3     25.9
-    ##  cut_autumn     25.4 0.911 230     23.6     27.2
-    ##  grazing        19.8 0.911 230     18.0     21.6
+    ##  control_2003   30.4 0.762 229     28.9     31.9
+    ##  control_2018   30.7 0.762 229     29.2     32.2
+    ##  control_2021   34.1 0.624 229     32.9     35.4
+    ##  cut_summer     23.8 0.901 229     22.1     25.6
+    ##  cut_autumn     25.2 0.901 229     23.4     27.0
+    ##  grazing        19.5 0.901 229     17.8     21.3
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                    estimate    SE  df t.ratio p.value
-    ##  control_2018 - control_2003     0.31 1.090 230   0.284  0.9997
-    ##  control_2021 - control_2003     3.90 0.997 230   3.908  0.0017
-    ##  control_2021 - control_2018     3.59 0.997 230   3.598  0.0052
-    ##  cut_summer - control_2003      -6.07 1.190 230  -5.085  <.0001
-    ##  cut_summer - control_2018      -6.38 1.190 230  -5.345  <.0001
-    ##  cut_summer - control_2021      -9.96 1.110 230  -8.977  <.0001
-    ##  cut_autumn - control_2003      -4.73 1.190 230  -3.967  0.0013
-    ##  cut_autumn - control_2018      -5.04 1.190 230  -4.227  0.0005
-    ##  cut_autumn - control_2021      -8.63 1.110 230  -7.776  <.0001
-    ##  cut_autumn - cut_summer         1.33 1.290 230   1.035  0.9058
-    ##  grazing - control_2003        -10.37 1.190 230  -8.689  <.0001
-    ##  grazing - control_2018        -10.68 1.190 230  -8.949  <.0001
-    ##  grazing - control_2021        -14.26 1.110 230 -12.851  <.0001
-    ##  grazing - cut_summer           -4.30 1.290 230  -3.337  0.0125
-    ##  grazing - cut_autumn           -5.63 1.290 230  -4.372  0.0003
+    ##  control_2018 - control_2003     0.31 1.070 229   0.289  0.9997
+    ##  control_2021 - control_2003     3.75 0.983 229   3.818  0.0024
+    ##  control_2021 - control_2018     3.44 0.983 229   3.503  0.0072
+    ##  cut_summer - control_2003      -6.54 1.190 229  -5.515  <.0001
+    ##  cut_summer - control_2018      -6.85 1.190 229  -5.776  <.0001
+    ##  cut_summer - control_2021     -10.29 1.100 229  -9.370  <.0001
+    ##  cut_autumn - control_2003      -5.20 1.190 229  -4.390  0.0002
+    ##  cut_autumn - control_2018      -5.51 1.190 229  -4.651  0.0001
+    ##  cut_autumn - control_2021      -8.95 1.100 229  -8.155  <.0001
+    ##  cut_autumn - cut_summer         1.33 1.270 229   1.051  0.8998
+    ##  grazing - control_2003        -10.84 1.190 229  -9.143  <.0001
+    ##  grazing - control_2018        -11.15 1.190 229  -9.404  <.0001
+    ##  grazing - control_2021        -14.59 1.100 229 -13.286  <.0001
+    ##  grazing - cut_summer           -4.30 1.270 229  -3.391  0.0105
+    ##  grazing - cut_autumn           -5.63 1.270 229  -4.442  0.0002
     ## 
     ## P value adjustment: tukey method for comparing a family of 6 estimates
 

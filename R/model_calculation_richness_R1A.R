@@ -87,5 +87,5 @@ simulateResiduals(m2, plot = TRUE)
 
 ### Save ####
 
-save(m1, file = here("outputs", "models", "model_richness_R1A_1.Rdata"))
-save(m2, file = here("outputs", "models", "model_richness_R1A_2.Rdata"))
+save(m1, file = here("outputs", "models", "model_richness_r1a_1.Rdata"))
+save(m2, file = here("outputs", "models", "model_richness_r1a_2.Rdata"))
