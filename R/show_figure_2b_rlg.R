@@ -115,9 +115,9 @@ data <- sites %>%
     annotate("text", label = "b", x = 1, y = 49) +
     annotate("text", label = "b", x = 2, y = 49) +
     annotate("text", label = "a", x = 3, y = 49) +
-    annotate("text", label = "c", x = 4, y = 49) +
+    annotate("text", label = "d", x = 4, y = 49) +
     annotate("text", label = "d", x = 5, y = 49) +
-    annotate("text", label = "d", x = 6, y = 49) +
+    annotate("text", label = "c", x = 6, y = 49) +
     scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
     scale_color_manual(
       values = c(

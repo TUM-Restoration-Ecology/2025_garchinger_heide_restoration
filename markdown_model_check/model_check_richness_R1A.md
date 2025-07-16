@@ -323,7 +323,6 @@ dotwhisker::dwplot(
   ci = 0.95,
   show_intercept = FALSE,
   vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2)) +
-  xlim(-0.3, 0.35) +
   theme_classic()
 ```
 

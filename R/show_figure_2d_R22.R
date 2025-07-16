@@ -51,6 +51,10 @@ sites <- read_csv(
 ) %>%
   rename(y = richness_R22) %>%
   mutate(
+    treatment = fct_relevel(
+      treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
+      "cut_autumn", "grazing"
+    ),
     treatment = fct_recode(
       treatment, "Ref.\n2003" = "control_2003",
       "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
@@ -108,12 +112,12 @@ data <- sites %>%
       aes(x, predicted),
       size = 2
     ) +
-    annotate("text", label = "b", x = 1, y = 49) +
-    annotate("text", label = "b", x = 2, y = 49) +
-    annotate("text", label = "b", x = 3, y = 49) +
-    annotate("text", label = "b", x = 4, y = 49) +
-    annotate("text", label = "a", x = 5, y = 49) +
-    annotate("text", label = "a", x = 6, y = 49) +
+    annotate("text", label = "bc", x = 1, y = 49) +
+    annotate("text", label = "c", x = 2, y = 49) +
+    annotate("text", label = "cd", x = 3, y = 49) +
+    annotate("text", label = "a", x = 4, y = 49) +
+    annotate("text", label = "ab", x = 5, y = 49) +
+    annotate("text", label = "d", x = 6, y = 49) +
     scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
     scale_color_manual(
       values = c(
