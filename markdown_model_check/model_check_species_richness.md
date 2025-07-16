@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
-<b>Sina Appeltauer</b> <br>
-<b>2025-03-18</b>
+<b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
+<b>2025-07-15</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -70,12 +70,12 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = cols(
     .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
+                   "cut_autumn", "grazing")
       )
     )
   ) %>%
-  rename(y = richness_total) %>%
-  filter(is.na(location) | location != "rollfeld")
+  rename(y = richness_total)
 ```
 
 # Statistics
@@ -89,26 +89,26 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##    upper     mean    lower 
-    ## 28.79882 27.57895 26.35908
+    ## 29.43496 28.55508 27.67521
 
 ``` r
 median(sites$y)
 ```
 
-    ## [1] 27
+    ## [1] 29
 
 ``` r
 sd(sites$y)
 ```
 
-    ## [1] 7.611882
+    ## [1] 6.861017
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ```
 
     ##  5% 95% 
-    ##  16  40
+    ##  17  39
 
 ### Graphs of raw data (Step 2, 6, 7)
 
@@ -116,13 +116,15 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
-    ## # A tibble: 4 × 2
-    ##   treatment      n
-    ##   <fct>      <int>
-    ## 1 control       62
-    ## 2 cut_summer    30
-    ## 3 cut_autumn    30
-    ## 4 grazing       30
+    ## # A tibble: 6 × 2
+    ##   treatment        n
+    ##   <fct>        <int>
+    ## 1 control_2003    42
+    ## 2 control_2018    42
+    ## 3 control_2021    62
+    ## 4 cut_summer      30
+    ## 5 cut_autumn      30
+    ## 6 grazing         30
 
 ![](model_check_species_richness_files/figure-gfm/outliers-1.png)<!-- -->
 
@@ -180,28 +182,54 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$treatment)
 ![](model_check_species_richness_files/figure-gfm/dharma_single-2.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem1)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-3.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem1)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-4.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-7.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
+## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
+## : Anpassung beendet mit Schrittweitenfehler - Ergebnisse sorgfältig prüfen
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-8.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-9.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-10.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 
@@ -213,9 +241,10 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:
 car::vif(m_2)
 ```
 
-    ##                      GVIF Df GVIF^(1/(2*Df))
-    ## treatment        3.567521  3        1.236121
-    ## cover_vegetation 3.567521  1        1.888788
+    ##               GVIF Df GVIF^(1/(2*Df))
+    ## treatment 26.49911  5        1.387788
+    ## mem1      25.26444  1        5.026374
+    ## mem2       2.15199  1        1.466966
 
 ## Model comparison
 
@@ -224,10 +253,10 @@ car::vif(m_2)
 ``` r
 MuMIn::r.squaredGLMM(m_1)
 ##            R2m       R2c
-## [1,] 0.5579109 0.5579109
+## [1,] 0.4767542 0.4767542
 MuMIn::r.squaredGLMM(m_2)
-##           R2m      R2c
-## [1,] 0.568998 0.568998
+##            R2m       R2c
+## [1,] 0.5503053 0.5503053
 ```
 
 ### AICc
@@ -239,8 +268,8 @@ p. 66 ISBN: 978-0-387-95364-9
 MuMIn::AICc(m_1, m_2) %>%
   arrange(AICc)
 ##     df     AICc
-## m_2  6 929.7003
-## m_1  5 932.0186
+## m_2  9 1403.975
+## m_1  7 1436.940
 ```
 
 ## Predicted values
@@ -253,25 +282,28 @@ summary(m_2)
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment + cover_vegetation, data = sites)
+    ## lm(formula = y ~ treatment + mem1 + mem2, data = sites)
     ## 
     ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -12.8421  -3.0397  -0.0913   2.9891  12.9970 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -11.915  -3.241   0.200   3.200  12.900 
     ## 
     ## Coefficients:
-    ##                      Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)          28.19211    2.87025   9.822  < 2e-16 ***
-    ## treatmentcut_summer  -9.17661    1.17917  -7.782 1.16e-12 ***
-    ## treatmentcut_autumn  -8.30047    1.12885  -7.353 1.25e-11 ***
-    ## treatmentgrazing    -10.62264    2.06429  -5.146 8.39e-07 ***
-    ## cover_vegetation      0.08313    0.03961   2.099   0.0376 *  
+    ##                           Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)                23.7583     1.4158  16.781  < 2e-16 ***
+    ## treatmentReference\n2018    0.3095     1.0108   0.306 0.759720    
+    ## treatmentReference\n2021    4.1100     0.9292   4.423 1.51e-05 ***
+    ## treatmentMowing\nsummer    10.5914     3.3463   3.165 0.001762 ** 
+    ## treatmentMowing\nautumn    11.9247     3.3463   3.564 0.000445 ***
+    ## treatmentTopsoil\nremoval   6.2914     3.3463   1.880 0.061367 .  
+    ## mem1                       -8.2296     1.5156  -5.430 1.44e-07 ***
+    ## mem2                        0.7668     0.4423   1.734 0.084353 .  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 5.026 on 147 degrees of freedom
-    ## Multiple R-squared:  0.5756, Adjusted R-squared:  0.564 
-    ## F-statistic: 49.84 on 4 and 147 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.632 on 228 degrees of freedom
+    ## Multiple R-squared:  0.5578, Adjusted R-squared:  0.5442 
+    ## F-statistic: 41.08 on 7 and 228 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -281,7 +313,6 @@ dotwhisker::dwplot(
   ci = 0.95,
   show_intercept = FALSE,
   vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2)) +
-  xlim(-0.3, 0.35) +
   theme_classic()
 ```
 
@@ -301,78 +332,97 @@ necessary.
 ```
 
     ## $emmeans
-    ##  treatment  emmean    SE  df lower.CL upper.CL
-    ##  control      33.1 0.780 147     31.6     34.7
-    ##  cut_summer   23.9 0.920 147     22.1     25.8
-    ##  cut_autumn   24.8 0.962 147     22.9     26.7
-    ##  grazing      22.5 1.580 147     19.4     25.6
+    ##   treatment       emmean   SE  df lower.CL upper.CL
+    ##  Reference\n2003    23.8 1.42 228     21.0     26.5
+    ##  Reference\n2018    24.1 1.42 228     21.3     26.9
+    ##  Reference\n2021    27.9 1.30 228     25.3     30.4
+    ##  Mowing\nsummer     34.3 2.11 228     30.2     38.5
+    ##  Mowing\nautumn     35.7 2.11 228     31.5     39.8
+    ##  Topsoil\nremoval   30.0 2.11 228     25.9     34.2
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##  contrast                estimate   SE  df t.ratio p.value
-    ##  cut_summer - control      -9.177 1.18 147  -7.782  <.0001
-    ##  cut_autumn - control      -8.300 1.13 147  -7.353  <.0001
-    ##  cut_autumn - cut_summer    0.876 1.32 147   0.666  0.9098
-    ##  grazing - control        -10.623 2.06 147  -5.146  <.0001
-    ##  grazing - cut_summer      -1.446 1.88 147  -0.769  0.8682
-    ##  grazing - cut_autumn      -2.322 2.04 147  -1.137  0.6675
+    ##    contrast                         estimate    SE  df t.ratio p.value
+    ##  Reference\n2018 - Reference\n2003      0.31 1.010 228   0.306  0.9996
+    ##  Reference\n2021 - Reference\n2003      4.11 0.929 228   4.423  0.0002
+    ##  Reference\n2021 - Reference\n2018      3.80 0.929 228   4.090  0.0008
+    ##  Mowing\nsummer - Reference\n2003      10.59 3.350 228   3.165  0.0215
+    ##  Mowing\nsummer - Reference\n2018      10.28 3.350 228   3.073  0.0284
+    ##  Mowing\nsummer - Reference\n2021       6.48 3.260 228   1.990  0.3514
+    ##  Mowing\nautumn - Reference\n2003      11.92 3.350 228   3.564  0.0059
+    ##  Mowing\nautumn - Reference\n2018      11.62 3.350 228   3.471  0.0081
+    ##  Mowing\nautumn - Reference\n2021       7.81 3.260 228   2.399  0.1609
+    ##  Mowing\nautumn - Mowing\nsummer        1.33 1.200 228   1.115  0.8749
+    ##  Topsoil\nremoval - Reference\n2003     6.29 3.350 228   1.880  0.4171
+    ##  Topsoil\nremoval - Reference\n2018     5.98 3.350 228   1.788  0.4758
+    ##  Topsoil\nremoval - Reference\n2021     2.18 3.260 228   0.670  0.9851
+    ##  Topsoil\nremoval - Mowing\nsummer     -4.30 1.200 228  -3.595  0.0053
+    ##  Topsoil\nremoval - Mowing\nautumn     -5.63 1.200 228  -4.710  0.0001
     ## 
-    ## P value adjustment: tukey method for comparing a family of 4 estimates
+    ## P value adjustment: tukey method for comparing a family of 6 estimates
 
 ``` r
-plot(emm, comparison = TRUE)
+plot(emm, comparison = FALSE)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/effect-sizes-1.png)<!-- -->
 
 # Session info
 
-    ## R version 4.4.2 (2024-10-31 ucrt)
+    ## R version 4.5.0 (2025-04-11 ucrt)
     ## Platform: x86_64-w64-mingw32/x64
     ## Running under: Windows 11 x64 (build 26100)
     ## 
     ## Matrix products: default
-    ## 
+    ##   LAPACK version 3.12.1
     ## 
     ## locale:
     ## [1] LC_COLLATE=German_Germany.utf8  LC_CTYPE=German_Germany.utf8   
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: Europe/Berlin
+    ## time zone: America/New_York
     ## tzcode source: internal
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] emmeans_1.10.7   DHARMa_0.4.7     patchwork_1.3.0  ggbeeswarm_0.7.2
+    ##  [1] emmeans_1.11.2   DHARMa_0.4.7     patchwork_1.3.1  ggbeeswarm_0.7.2
     ##  [5] lubridate_1.9.4  forcats_1.0.0    stringr_1.5.1    dplyr_1.1.4     
-    ##  [9] purrr_1.0.4      readr_2.1.5      tidyr_1.3.1      tibble_3.2.1    
-    ## [13] ggplot2_3.5.1    tidyverse_2.0.0  here_1.0.1      
+    ##  [9] purrr_1.1.0      readr_2.1.5      tidyr_1.3.1      tibble_3.3.0    
+    ## [13] ggplot2_3.5.2    tidyverse_2.0.0  here_1.0.1      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1   vipor_0.4.7        farver_2.1.2       fastmap_1.2.0     
-    ##  [5] GGally_2.2.1       bayestestR_0.15.2  promises_1.3.2     digest_0.6.37     
-    ##  [9] estimability_1.5.1 timechange_0.3.0   mime_0.12          lifecycle_1.0.4   
-    ## [13] magrittr_2.0.3     compiler_4.4.2     rlang_1.1.5        tools_4.4.2       
-    ## [17] utf8_1.2.4         yaml_2.3.10        knitr_1.49         labeling_0.4.3    
-    ## [21] bit_4.5.0.1        ggstance_0.3.7     plyr_1.8.9         RColorBrewer_1.1-3
-    ## [25] gap.datasets_0.0.6 abind_1.4-8        withr_3.0.2        datawizard_1.0.0  
-    ## [29] stats4_4.4.2       grid_4.4.2         xtable_1.8-4       colorspace_2.1-1  
-    ## [33] scales_1.3.0       iterators_1.0.14   MASS_7.3-61        insight_1.0.2     
-    ## [37] cli_3.6.4          mvtnorm_1.3-3      dotwhisker_0.8.3   rmarkdown_2.29    
-    ## [41] crayon_1.5.3       reformulas_0.4.0   generics_0.1.3     performance_0.13.0
-    ## [45] rstudioapi_0.17.1  tzdb_0.4.0         parameters_0.24.1  minqa_1.2.8       
-    ## [49] splines_4.4.2      parallel_4.4.2     vctrs_0.6.5        boot_1.3-31       
-    ## [53] Matrix_1.7-1       carData_3.0-5      car_3.1-3          hms_1.1.3         
-    ## [57] bit64_4.6.0-1      Formula_1.2-5      qgam_1.3.4         beeswarm_0.4.0    
-    ## [61] Rmisc_1.5.1        foreach_1.5.2      gap_1.6            glue_1.8.0        
-    ## [65] nloptr_2.1.1       ggstats_0.8.0      codetools_0.2-20   stringi_1.8.4     
-    ## [69] gtable_0.3.6       later_1.4.1        lme4_1.1-36        munsell_0.5.1     
-    ## [73] pillar_1.10.1      htmltools_0.5.8.1  R6_2.6.1           Rdpack_2.6.2      
-    ## [77] doParallel_1.0.17  rprojroot_2.0.4    vroom_1.6.5        evaluate_1.0.3    
-    ## [81] shiny_1.10.0       lattice_0.22-6     rbibutils_2.3      httpuv_1.6.15     
-    ## [85] Rcpp_1.0.14        gridExtra_2.3      coda_0.19-4.1      nlme_3.1-166      
-    ## [89] MuMIn_1.48.4       mgcv_1.9-1         xfun_0.50          pkgconfig_2.0.3
+    ##  [1] Rdpack_2.6.4           gridExtra_2.3          rlang_1.1.6           
+    ##  [4] magrittr_2.0.3         compiler_4.5.0         mgcv_1.9-1            
+    ##  [7] vctrs_0.6.5            pkgconfig_2.0.3        crayon_1.5.3          
+    ## [10] fastmap_1.2.0          backports_1.5.0        labeling_0.4.3        
+    ## [13] utf8_1.2.6             ggstance_0.3.7         promises_1.3.3        
+    ## [16] rmarkdown_2.29         tzdb_0.5.0             nloptr_2.2.1          
+    ## [19] bit_4.6.0              xfun_0.52              later_1.4.2           
+    ## [22] parallel_4.5.0         R6_2.6.1               gap.datasets_0.0.6    
+    ## [25] stringi_1.8.7          qgam_2.0.0             RColorBrewer_1.1-3    
+    ## [28] GGally_2.2.1           car_3.1-3              boot_1.3-31           
+    ## [31] estimability_1.5.1     Rcpp_1.1.0             iterators_1.0.14      
+    ## [34] knitr_1.50             parameters_0.27.0      httpuv_1.6.16         
+    ## [37] Matrix_1.7-3           splines_4.5.0          timechange_0.3.0      
+    ## [40] tidyselect_1.2.1       rstudioapi_0.17.1      abind_1.4-8           
+    ## [43] yaml_2.3.10            MuMIn_1.48.11          doParallel_1.0.17     
+    ## [46] codetools_0.2-20       lattice_0.22-6         plyr_1.8.9            
+    ## [49] shiny_1.11.1           withr_3.0.2            bayestestR_0.16.1     
+    ## [52] coda_0.19-4.1          evaluate_1.0.4         marginaleffects_0.28.0
+    ## [55] ggstats_0.10.0         pillar_1.11.0          gap_1.6               
+    ## [58] carData_3.0-5          foreach_1.5.2          stats4_4.5.0          
+    ## [61] reformulas_0.4.1       insight_1.3.1          generics_0.1.4        
+    ## [64] vroom_1.6.5            rprojroot_2.1.0        hms_1.1.3             
+    ## [67] scales_1.4.0           minqa_1.2.8            xtable_1.8-4          
+    ## [70] glue_1.8.0             tools_4.5.0            data.table_1.17.8     
+    ## [73] lme4_1.1-37            mvtnorm_1.3-3          grid_4.5.0            
+    ## [76] rbibutils_2.3          datawizard_1.1.0       nlme_3.1-168          
+    ## [79] Rmisc_1.5.1            performance_0.15.0     beeswarm_0.4.0        
+    ## [82] vipor_0.4.7            Formula_1.2-5          cli_3.6.5             
+    ## [85] gtable_0.3.6           digest_0.6.37          farver_2.1.2          
+    ## [88] htmltools_0.5.8.1      lifecycle_1.0.4        mime_0.13             
+    ## [91] bit64_4.6.0-1          dotwhisker_0.8.4       MASS_7.3-65

@@ -2,19 +2,19 @@ plot,elevation,plot_size,treatment,mowing,survey_date_2024,botanist_2024,cover_v
 res29,469,4,cut_summer,2000,2024-06-10,Maren Teschauer,65,65,80,4,44,Richtung Westen: Ästige Graslilie Salvia pratensis Orobanche Oreoselinum majus Stachys recta
 res04,469,4,cut_summer,1990,2024-06-06,Maren Teschauer / Sina Appeltauer / Malte Knoeppler,70,80,70,1,35,
 res10,469,4,cut_summer,2000,2024-06-06,Maren Teschauer / Sina Appeltauer / Malte Knoeppler,60,80,60,2,30,Dianthus daneben
-res12,469,4,grazing,2000,2024-06-06,Maren Teschauer / Sina Appeltauer / Malte Knoeppler,25,12,2,70,5,Dorycnium pentaphyllum Anthyllis vulneraria
-res18,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,25,85,5,10,9,
-res15,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,25,30,2,65,9,
-res17,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,15,7,1,80,2,Kaninchenspuren
-res16,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,45,65,4,4,17,
-res02,469,4,grazing,1990,2024-06-08,Malte Knoeppler / Sina Appeltauer,30,55,3,20,7,
-res01,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,35,60,3,7,12,
-res03,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,50,55,1,10,6,
-res20,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,20,50,1,35,3,Kaninchenbau daneben
-res21,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,40,15,2,45,12,
-res19,469,4,grazing,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,20,7,2,70,4,
-res13,469,4,grazing,2000,2024-06-08,Sina Appeltauer / Malte Knoeppler,30,70,2,20,11,
-res14,469,4,grazing,2000,2024-06-08,Sina Appeltauer / Malte Knoeppler,35,40,3,40,9,
+res12,469,4,topsoil_removal,2000,2024-06-06,Maren Teschauer / Sina Appeltauer / Malte Knoeppler,25,12,2,70,5,Dorycnium pentaphyllum Anthyllis vulneraria
+res18,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,25,85,5,10,9,
+res15,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,25,30,2,65,9,
+res17,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,15,7,1,80,2,Kaninchenspuren
+res16,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,45,65,4,4,17,
+res02,469,4,topsoil_removal,1990,2024-06-08,Malte Knoeppler / Sina Appeltauer,30,55,3,20,7,
+res01,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,35,60,3,7,12,
+res03,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,50,55,1,10,6,
+res20,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,20,50,1,35,3,Kaninchenbau daneben
+res21,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,40,15,2,45,12,
+res19,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,20,7,2,70,4,
+res13,469,4,topsoil_removal,2000,2024-06-08,Sina Appeltauer / Malte Knoeppler,30,70,2,20,11,
+res14,469,4,topsoil_removal,2000,2024-06-08,Sina Appeltauer / Malte Knoeppler,35,40,3,40,9,
 res30,469,4,cut_summer,2000,2024-06-10,Maren Teschauer,50,75,80,7,49,
 res11,469,4,cut_summer,2000,2024-06-10,Maren Teschauer,55,85,80,3,31,
 res06,469,4,cut_summer,1990,2024-06-10,Maren Teschauer,50,60,90,3,39,
@@ -59,17 +59,17 @@ res80,469,4,cut_autumn,2000,2024-06-14,Sina Appeltauer,70,80,75,1,42,
 res69,469,4,cut_autumn,2000,2024-06-14,Sina Appeltauer,75,80,70,5,41,
 res78,469,4,cut_autumn,2000,2024-06-14,Sina Appeltauer,85,50,70,1,49,
 res72,469,4,cut_autumn,2000,2024-06-14,Sina Appeltauer,80,85,65,3,50,grasdominiert
-res46,469,4,grazing,1990,2024-06-15,Malte Knoeppler,15,5,2,80,4,
+res46,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,15,5,2,80,4,
 res53,469,4,cut_summer,1990,2024-06-15,Malte Knoeppler,60,50,70,10,50,
 res50,469,4,cut_summer,1990,2024-06-15,Malte Knoeppler,50,60,70,10,40,
-res41,469,4,grazing,1990,2024-06-15,Malte Knoeppler,20,3,3,80,4,
-res45,469,4,grazing,1990,2024-06-15,Malte Knoeppler,25,90,2,7,6,
-res44,469,4,grazing,1990,2024-06-15,Malte Knoeppler,20,85,2,10,4,
-res43,469,4,grazing,1990,2024-06-15,Malte Knoeppler,20,30,4,55,10,
-res40,469,4,grazing,1990,2024-06-15,Malte Knoeppler,20,40,4,45,15,
-res42,469,4,grazing,1990,2024-06-15,Sina Appeltauer,40,70,2,10,14,
-res47,469,4,grazing,1990,2024-06-15,Sina Appeltauer,40,30,5,40,16,
-res48,469,4,grazing,1990,2024-06-15,Sina Appeltauer,40,60,5,55,14,
+res41,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,20,3,3,80,4,
+res45,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,25,90,2,7,6,
+res44,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,20,85,2,10,4,
+res43,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,20,30,4,55,10,
+res40,469,4,topsoil_removal,1990,2024-06-15,Malte Knoeppler,20,40,4,45,15,
+res42,469,4,topsoil_removal,1990,2024-06-15,Sina Appeltauer,40,70,2,10,14,
+res47,469,4,topsoil_removal,1990,2024-06-15,Sina Appeltauer,40,30,5,40,16,
+res48,469,4,topsoil_removal,1990,2024-06-15,Sina Appeltauer,40,60,5,55,14,
 res49,469,4,cut_summer,1990,2024-06-15,Sina Appeltauer,85,70,25,2,38,
 res52,469,4,cut_summer,1990,2024-06-15,Sina Appeltauer,85,30,70,5,36,angrenzend Potentilla recta
 res51,469,4,cut_summer,1990,2024-06-15,Sina Appeltauer,90,30,69,0,29,
@@ -78,14 +78,14 @@ res71,469,4,cut_autumn,2000,2024-06-17,Sina Appeltauer,90,30,30,1,100,sehr hohes
 res68,469,4,cut_autumn,2000,2024-06-17,Sina Appeltauer,90,40,50,2,50,
 res74,469,4,cut_autumn,2000,2024-06-17,Sina Appeltauer,80,95,60,0,59,
 res73,469,4,cut_autumn,2000,2024-06-17,Sina Appeltauer,75,90,70,1,0,
-res60,469,4,grazing,2000,2024-06-18,Malte Knoeppler,25,50,2,25,6,
-res54,469,4,grazing,2000,2024-06-18,Malte Knoeppler,20,35,3,45,6,
-res55,469,4,grazing,2000,2024-06-18,Malte Knoeppler,15,80,1,10,5,
-res56,469,4,grazing,2000,2024-06-18,Malte Knoeppler,20,50,3,30,6,
-res58,469,4,grazing,2000,2024-06-18,Malte Knoeppler,15,65,2,25,5,
-res59,469,4,grazing,2000,2024-06-18,Malte Knoeppler,20,70,1,15,13,
-res57,469,4,grazing,2000,2024-06-19,Maren Teschauer,25,55,2,25,5,
+res60,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,25,50,2,25,6,
+res54,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,20,35,3,45,6,
+res55,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,15,80,1,10,5,
+res56,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,20,50,3,30,6,
+res58,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,15,65,2,25,5,
+res59,469,4,topsoil_removal,2000,2024-06-18,Malte Knoeppler,20,70,1,15,13,
+res57,469,4,topsoil_removal,2000,2024-06-19,Maren Teschauer,25,55,2,25,5,
 res63,469,4,cut_summer,2000,2024-06-19,Maren Teschauer,60,35,80,5,40,daneben: 2x Gymnadenia conopsea Scabiosa columbaria Centaurea scabiosa Briza media
-res61,469,4,grazing,2000,2024-06-19,Maren Teschauer,30,80,2,5,10,daneben: Bupthalmum salicifolium Carex humilis Rhinanthus glacialis  zwischen 60&61: Biscutella laevigata
+res61,469,4,topsoil_removal,2000,2024-06-19,Maren Teschauer,30,80,2,5,10,daneben: Bupthalmum salicifolium Carex humilis Rhinanthus glacialis  zwischen 60&61: Biscutella laevigata
 res62,469,4,cut_summer,2000,2024-06-19,Maren Teschauer,75,90,70,2,31,daneben: Peucedanum oreoselinum Dianthus cartusianorum Securigera varia Scabiosa columbaria Galium verum Prunella grandiflora Centaurea scabiosa
 res64,469,4,cut_summer,2000,2024-06-19,Maren Teschauer,75,60,70,5,64,

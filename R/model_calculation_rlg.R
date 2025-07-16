@@ -3,8 +3,8 @@
 # Species richness red list Germany ####
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Sina Appeltauer
-# 2025-03-03
+# Markus Bauer & Sina Appeltauer
+# 2025-07-15
 
 
 
@@ -33,9 +33,7 @@ sites <- read_csv(
       treatment = "f"
     )
 ) %>%
-  rename(y = rlg) %>%
-  filter(
-    is.na(location) | location != "rollfeld") 
+  rename(y = rlg)
 
 
 
@@ -83,7 +81,7 @@ sites %>%
 m1 <- lm(y ~ treatment, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
-m2 <- lm(y ~ treatment * cover_vegetation, data = sites)
+m2 <- lm(y ~ treatment + mem1 + mem2, data = sites)
 simulateResiduals(m2, plot = TRUE)
 
 

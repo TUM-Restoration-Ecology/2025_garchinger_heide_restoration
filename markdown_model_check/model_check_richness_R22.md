@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> R22 indicator richness
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-03-18</b>
+<b>2025-07-15</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -71,12 +71,12 @@ sites <- read_csv(
     cols(
       .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
+                   "cut_autumn", "grazing")
       )
     )
   ) %>%
-  rename(y = richness_R22) %>%
-  filter(is.na(location) | location != "rollfeld")
+  rename(y = richness_R22)
 ```
 
 # Statistics
@@ -90,26 +90,26 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##    upper     mean    lower 
-    ## 4.918329 4.381579 3.844829
+    ## 6.108803 5.644068 5.179332
 
 ``` r
 median(sites$y)
 ```
 
-    ## [1] 3
+    ## [1] 6
 
 ``` r
 sd(sites$y)
 ```
 
-    ## [1] 3.349279
+    ## [1] 3.623858
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ```
 
     ##  5% 95% 
-    ##   0  11
+    ##   1  12
 
 ### Graphs of raw data (Step 2, 6, 7)
 
@@ -117,13 +117,15 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
-    ## # A tibble: 4 × 2
-    ##   treatment      n
-    ##   <fct>      <int>
-    ## 1 control       62
-    ## 2 cut_summer    30
-    ## 3 cut_autumn    30
-    ## 4 grazing       30
+    ## # A tibble: 6 × 2
+    ##   treatment        n
+    ##   <fct>        <int>
+    ## 1 control_2003    42
+    ## 2 control_2018    42
+    ## 3 control_2021    62
+    ## 4 cut_summer      30
+    ## 5 cut_autumn      30
+    ## 6 grazing         30
 
 ![](model_check_richness_R22_files/figure-gfm/outliers-1.png)<!-- -->
 
@@ -159,24 +161,22 @@ m_1
 ## lm(formula = y ~ treatment, data = sites)
 ## 
 ## Coefficients:
-##         (Intercept)  treatmentcut_summer     treatmentgrazing  
-##              2.3871               5.6796              -0.6871  
-## treatmentcut_autumn  
-##              5.1129
+##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
+##                 6.357                 -1.214                 -2.728  
+##      treatmentgrazing    treatmentcut_summer    treatmentcut_autumn  
+##                -3.357                  3.310                  1.776
 m_2
 ## 
 ## Call:
-## lm(formula = y ~ treatment * cover_vegetation, data = sites)
+## lm(formula = y ~ treatment + mem1 + mem2, data = sites)
 ## 
 ## Coefficients:
-##                          (Intercept)                   treatmentcut_summer  
-##                              3.29902                               2.88096  
-##                     treatmentgrazing                   treatmentcut_autumn  
-##                             -2.30330                              -3.13444  
-##                     cover_vegetation  treatmentcut_summer:cover_vegetation  
-##                             -0.01291                               0.04375  
-##    treatmentgrazing:cover_vegetation  treatmentcut_autumn:cover_vegetation  
-##                              0.03916                               0.12294
+##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
+##                5.1206                -1.2143                -2.6750  
+##      treatmentgrazing    treatmentcut_summer    treatmentcut_autumn  
+##               -0.1513                 6.5154                 4.9821  
+##                  mem1                   mem2  
+##               -1.5634                 0.2297
 ```
 
 ## Model check
@@ -253,13 +253,10 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol
 car::vif(m_2)
 ```
 
-    ## there are higher-order terms (interactions) in this model
-    ## consider setting type = 'predictor'; see ?vif
-
-    ##                                   GVIF Df GVIF^(1/(2*Df))
-    ## treatment                  30292.30254  3        5.583271
-    ## cover_vegetation              29.09249  1        5.393746
-    ## treatment:cover_vegetation 16534.49612  3        5.047370
+    ##               GVIF Df GVIF^(1/(2*Df))
+    ## treatment 26.49911  5        1.387788
+    ## mem1      25.26444  1        5.026374
+    ## mem2       2.15199  1        1.466966
 
 ## Model comparison
 
@@ -267,11 +264,11 @@ car::vif(m_2)
 
 ``` r
 MuMIn::r.squaredGLMM(m_1)
-##           R2m      R2c
-## [1,] 0.681363 0.681363
+##            R2m       R2c
+## [1,] 0.3723667 0.3723667
 MuMIn::r.squaredGLMM(m_2)
-##           R2m      R2c
-## [1,] 0.718933 0.718933
+##            R2m       R2c
+## [1,] 0.3783527 0.3783527
 ```
 
 ### AICc
@@ -284,8 +281,8 @@ p. 66 ISBN:
 MuMIn::AICc(m_1, m_2) %>%
   arrange(AICc)
 ##     df     AICc
-## m_2  9 618.9461
-## m_1  5 632.2957
+## m_1  7 1179.115
+## m_2  9 1180.336
 ```
 
 ## Predicted values
@@ -293,29 +290,33 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ``` r
-summary(m_1)
+summary(m_2)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment, data = sites)
+    ## lm(formula = y ~ treatment + mem1 + mem2, data = sites)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -4.5000 -1.3871 -0.0667  0.6129  6.5000 
+    ## -5.6667 -2.0000 -0.6883  2.3377  6.3333 
     ## 
     ## Coefficients:
-    ##                     Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)           2.3871     0.2409   9.910   <2e-16 ***
-    ## treatmentcut_summer   5.6796     0.4218  13.465   <2e-16 ***
-    ## treatmentgrazing     -0.6871     0.4218  -1.629    0.105    
-    ## treatmentcut_autumn   5.1129     0.4218  12.121   <2e-16 ***
+    ##                       Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)             5.1206     0.8815   5.809 2.10e-08 ***
+    ## treatmentcontrol_2018  -1.2143     0.6293  -1.929  0.05492 .  
+    ## treatmentcontrol_2021  -2.6750     0.5786  -4.624 6.32e-06 ***
+    ## treatmentgrazing       -0.1513     2.0835  -0.073  0.94219    
+    ## treatmentcut_summer     6.5154     2.0835   3.127  0.00199 ** 
+    ## treatmentcut_autumn     4.9821     2.0835   2.391  0.01760 *  
+    ## mem1                   -1.5634     0.9436  -1.657  0.09894 .  
+    ## mem2                    0.2297     0.2754   0.834  0.40520    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 1.897 on 148 degrees of freedom
-    ## Multiple R-squared:  0.6857, Adjusted R-squared:  0.6793 
-    ## F-statistic: 107.6 on 3 and 148 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 2.884 on 228 degrees of freedom
+    ## Multiple R-squared:  0.3855, Adjusted R-squared:  0.3666 
+    ## F-statistic: 20.43 on 7 and 228 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -338,85 +339,104 @@ necessary.
 
 ``` r
 (emm <- emmeans(
-  m_1,
+  m_2,
   revpairwise ~ treatment,
   type = "response"
   ))
 ```
 
     ## $emmeans
-    ##  treatment  emmean    SE  df lower.CL upper.CL
-    ##  control      2.39 0.241 148     1.91     2.86
-    ##  cut_summer   8.07 0.346 148     7.38     8.75
-    ##  grazing      1.70 0.346 148     1.02     2.38
-    ##  cut_autumn   7.50 0.346 148     6.82     8.18
+    ##  treatment    emmean    SE  df lower.CL upper.CL
+    ##  control_2003   5.12 0.882 228    3.384     6.86
+    ##  control_2018   3.91 0.882 228    2.169     5.64
+    ##  control_2021   2.45 0.807 228    0.856     4.04
+    ##  grazing        4.97 1.320 228    2.378     7.56
+    ##  cut_summer    11.64 1.320 228    9.044    14.23
+    ##  cut_autumn    10.10 1.320 228    7.511    12.69
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##  contrast                estimate    SE  df t.ratio p.value
-    ##  cut_summer - control       5.680 0.422 148  13.465  <.0001
-    ##  grazing - control         -0.687 0.422 148  -1.629  0.3656
-    ##  grazing - cut_summer      -6.367 0.490 148 -13.001  <.0001
-    ##  cut_autumn - control       5.113 0.422 148  12.121  <.0001
-    ##  cut_autumn - cut_summer   -0.567 0.490 148  -1.157  0.6547
-    ##  cut_autumn - grazing       5.800 0.490 148  11.844  <.0001
+    ##  contrast                    estimate    SE  df t.ratio p.value
+    ##  control_2018 - control_2003   -1.214 0.629 228  -1.929  0.3869
+    ##  control_2021 - control_2003   -2.675 0.579 228  -4.624  0.0001
+    ##  control_2021 - control_2018   -1.461 0.579 228  -2.525  0.1213
+    ##  grazing - control_2003        -0.151 2.080 228  -0.073  1.0000
+    ##  grazing - control_2018         1.063 2.080 228   0.510  0.9957
+    ##  grazing - control_2021         2.524 2.030 228   1.244  0.8144
+    ##  cut_summer - control_2003      6.515 2.080 228   3.127  0.0241
+    ##  cut_summer - control_2018      7.730 2.080 228   3.710  0.0035
+    ##  cut_summer - control_2021      9.190 2.030 228   4.532  0.0001
+    ##  cut_summer - grazing           6.667 0.745 228   8.953  <.0001
+    ##  cut_autumn - control_2003      4.982 2.080 228   2.391  0.1637
+    ##  cut_autumn - control_2018      6.196 2.080 228   2.974  0.0378
+    ##  cut_autumn - control_2021      7.657 2.030 228   3.776  0.0028
+    ##  cut_autumn - grazing           5.133 0.745 228   6.894  <.0001
+    ##  cut_autumn - cut_summer       -1.533 0.745 228  -2.059  0.3127
     ## 
-    ## P value adjustment: tukey method for comparing a family of 4 estimates
+    ## P value adjustment: tukey method for comparing a family of 6 estimates
 
 ``` r
-plot(emm, comparison = TRUE)
+plot(emm, comparison = FALSE)
 ```
 
 ![](model_check_richness_R22_files/figure-gfm/effect-sizes-1.png)<!-- -->
 
 # Session info
 
-    ## R version 4.4.2 (2024-10-31 ucrt)
+    ## R version 4.5.0 (2025-04-11 ucrt)
     ## Platform: x86_64-w64-mingw32/x64
     ## Running under: Windows 11 x64 (build 26100)
     ## 
     ## Matrix products: default
-    ## 
+    ##   LAPACK version 3.12.1
     ## 
     ## locale:
     ## [1] LC_COLLATE=German_Germany.utf8  LC_CTYPE=German_Germany.utf8   
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: Europe/Berlin
+    ## time zone: America/New_York
     ## tzcode source: internal
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] emmeans_1.10.7   DHARMa_0.4.7     patchwork_1.3.0  ggbeeswarm_0.7.2
+    ##  [1] emmeans_1.11.2   DHARMa_0.4.7     patchwork_1.3.1  ggbeeswarm_0.7.2
     ##  [5] lubridate_1.9.4  forcats_1.0.0    stringr_1.5.1    dplyr_1.1.4     
-    ##  [9] purrr_1.0.4      readr_2.1.5      tidyr_1.3.1      tibble_3.2.1    
-    ## [13] ggplot2_3.5.1    tidyverse_2.0.0  here_1.0.1      
+    ##  [9] purrr_1.1.0      readr_2.1.5      tidyr_1.3.1      tibble_3.3.0    
+    ## [13] ggplot2_3.5.2    tidyverse_2.0.0  here_1.0.1      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1   vipor_0.4.7        farver_2.1.2       fastmap_1.2.0     
-    ##  [5] GGally_2.2.1       bayestestR_0.15.2  promises_1.3.2     digest_0.6.37     
-    ##  [9] estimability_1.5.1 timechange_0.3.0   mime_0.12          lifecycle_1.0.4   
-    ## [13] magrittr_2.0.3     compiler_4.4.2     rlang_1.1.5        tools_4.4.2       
-    ## [17] utf8_1.2.4         yaml_2.3.10        knitr_1.49         labeling_0.4.3    
-    ## [21] bit_4.5.0.1        ggstance_0.3.7     plyr_1.8.9         RColorBrewer_1.1-3
-    ## [25] gap.datasets_0.0.6 abind_1.4-8        withr_3.0.2        datawizard_1.0.0  
-    ## [29] stats4_4.4.2       grid_4.4.2         xtable_1.8-4       colorspace_2.1-1  
-    ## [33] scales_1.3.0       iterators_1.0.14   MASS_7.3-61        insight_1.0.2     
-    ## [37] cli_3.6.4          mvtnorm_1.3-3      dotwhisker_0.8.3   rmarkdown_2.29    
-    ## [41] crayon_1.5.3       reformulas_0.4.0   generics_0.1.3     performance_0.13.0
-    ## [45] rstudioapi_0.17.1  tzdb_0.4.0         parameters_0.24.1  minqa_1.2.8       
-    ## [49] splines_4.4.2      parallel_4.4.2     vctrs_0.6.5        boot_1.3-31       
-    ## [53] Matrix_1.7-1       carData_3.0-5      car_3.1-3          hms_1.1.3         
-    ## [57] bit64_4.6.0-1      Formula_1.2-5      qgam_1.3.4         beeswarm_0.4.0    
-    ## [61] Rmisc_1.5.1        foreach_1.5.2      gap_1.6            glue_1.8.0        
-    ## [65] nloptr_2.1.1       ggstats_0.8.0      codetools_0.2-20   stringi_1.8.4     
-    ## [69] gtable_0.3.6       later_1.4.1        lme4_1.1-36        munsell_0.5.1     
-    ## [73] pillar_1.10.1      htmltools_0.5.8.1  R6_2.6.1           Rdpack_2.6.2      
-    ## [77] doParallel_1.0.17  rprojroot_2.0.4    vroom_1.6.5        evaluate_1.0.3    
-    ## [81] shiny_1.10.0       lattice_0.22-6     rbibutils_2.3      httpuv_1.6.15     
-    ## [85] Rcpp_1.0.14        gridExtra_2.3      coda_0.19-4.1      nlme_3.1-166      
-    ## [89] MuMIn_1.48.4       mgcv_1.9-1         xfun_0.50          pkgconfig_2.0.3
+    ##  [1] Rdpack_2.6.4           gridExtra_2.3          rlang_1.1.6           
+    ##  [4] magrittr_2.0.3         compiler_4.5.0         mgcv_1.9-1            
+    ##  [7] vctrs_0.6.5            pkgconfig_2.0.3        crayon_1.5.3          
+    ## [10] fastmap_1.2.0          backports_1.5.0        labeling_0.4.3        
+    ## [13] utf8_1.2.6             ggstance_0.3.7         promises_1.3.3        
+    ## [16] rmarkdown_2.29         tzdb_0.5.0             nloptr_2.2.1          
+    ## [19] bit_4.6.0              xfun_0.52              later_1.4.2           
+    ## [22] parallel_4.5.0         R6_2.6.1               gap.datasets_0.0.6    
+    ## [25] stringi_1.8.7          qgam_2.0.0             RColorBrewer_1.1-3    
+    ## [28] GGally_2.2.1           car_3.1-3              boot_1.3-31           
+    ## [31] estimability_1.5.1     Rcpp_1.1.0             iterators_1.0.14      
+    ## [34] knitr_1.50             parameters_0.27.0      httpuv_1.6.16         
+    ## [37] Matrix_1.7-3           splines_4.5.0          timechange_0.3.0      
+    ## [40] tidyselect_1.2.1       rstudioapi_0.17.1      abind_1.4-8           
+    ## [43] yaml_2.3.10            MuMIn_1.48.11          doParallel_1.0.17     
+    ## [46] codetools_0.2-20       lattice_0.22-6         plyr_1.8.9            
+    ## [49] shiny_1.11.1           withr_3.0.2            bayestestR_0.16.1     
+    ## [52] coda_0.19-4.1          evaluate_1.0.4         marginaleffects_0.28.0
+    ## [55] ggstats_0.10.0         pillar_1.11.0          gap_1.6               
+    ## [58] carData_3.0-5          foreach_1.5.2          stats4_4.5.0          
+    ## [61] reformulas_0.4.1       insight_1.3.1          generics_0.1.4        
+    ## [64] vroom_1.6.5            rprojroot_2.1.0        hms_1.1.3             
+    ## [67] scales_1.4.0           minqa_1.2.8            xtable_1.8-4          
+    ## [70] glue_1.8.0             tools_4.5.0            data.table_1.17.8     
+    ## [73] lme4_1.1-37            mvtnorm_1.3-3          grid_4.5.0            
+    ## [76] rbibutils_2.3          datawizard_1.1.0       nlme_3.1-168          
+    ## [79] Rmisc_1.5.1            performance_0.15.0     beeswarm_0.4.0        
+    ## [82] vipor_0.4.7            Formula_1.2-5          cli_3.6.5             
+    ## [85] gtable_0.3.6           digest_0.6.37          farver_2.1.2          
+    ## [88] htmltools_0.5.8.1      lifecycle_1.0.4        mime_0.13             
+    ## [91] bit64_4.6.0-1          dotwhisker_0.8.4       MASS_7.3-65

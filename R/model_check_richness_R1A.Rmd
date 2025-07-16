@@ -67,12 +67,12 @@ sites <- read_csv(
     cols(
       .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
+                   "cut_autumn", "grazing")
       )
     )
   ) %>%
-  rename(y = richness_R1A) %>%
-  filter(is.na(location) | location != "rollfeld")
+  rename(y = richness_R1A)
 ```
 
 # Statistics
@@ -197,7 +197,7 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ```{r summary}
-summary(m_1)
+summary(m_2)
 ```
 
 ### Forest plot
@@ -219,7 +219,7 @@ necessary.
 
 ```{r effect-sizes, message = FALSE}
 (emm <- emmeans(
-  m_1,
+  m_2,
   revpairwise ~ treatment,
   type = "response"
   ))

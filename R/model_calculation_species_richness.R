@@ -3,8 +3,8 @@
 # Species richness ####
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Sina Appeltauer, Markus Bauer
-# 2024-10-09
+# Sina Appeltauer & Markus Bauer
+# 2025-07-15
 
 
 
@@ -31,12 +31,12 @@ sites <- read_csv(
     cols(
       .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
+                   "cut_autumn", "grazing")
       )
     )
   ) %>%
-  rename(y = richness_total) %>%
-  filter(is.na(location) | location != "rollfeld")
+  rename(y = richness_total)
 
 
 
@@ -86,7 +86,7 @@ sites %>%
 m1 <- lm(y ~ treatment, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
-m2 <- lm(y ~ treatment + cover_vegetation, data = sites)
+m2 <- lm(y ~ treatment + mem1 + mem2, data = sites)
 simulateResiduals(m2, plot = TRUE)
 
 

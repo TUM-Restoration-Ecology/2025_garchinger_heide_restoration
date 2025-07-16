@@ -1,6 +1,6 @@
 ---
 title: "Garchinger Heide and restoration sites: <br> Species richness"
-author: "<b>Sina Appeltauer</b> <br>"
+author: "<b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>"
 date: "<b>`r format(Sys.time(), '%Y-%m-%d')`</b>"
 output:
   github_document:
@@ -67,12 +67,12 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = cols(
     .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
+                   "cut_autumn", "grazing")
       )
     )
   ) %>%
-  rename(y = richness_total) %>%
-  filter(is.na(location) | location != "rollfeld")
+  rename(y = richness_total)
 ```
 
 # Statistics
@@ -156,6 +156,10 @@ simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ```{r dharma_single, collapse = TRUE, fig.height = 3, fig.width = 4.5}
 plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
 plotResiduals(simulation_output_2$scaledResiduals, sites$treatment)
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem1)
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem1)
+plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
+plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
 plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
 plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
@@ -210,7 +214,6 @@ dotwhisker::dwplot(
   ci = 0.95,
   show_intercept = FALSE,
   vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2)) +
-  xlim(-0.3, 0.35) +
   theme_classic()
 ```
 
@@ -225,7 +228,7 @@ necessary.
   revpairwise ~ treatment,
   type = "response"
   ))
-plot(emm, comparison = TRUE)
+plot(emm, comparison = FALSE)
 ```
 
 # Session info

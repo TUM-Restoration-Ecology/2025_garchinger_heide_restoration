@@ -56,14 +56,20 @@ sites_reference <- read_csv2(
   rename(
     location = verortung,
     botanist = botaniker_2021,
-    survey_year = aufnahmedatum_2021,
+    survey_date = aufnahmedatum_2021,
     cover_vegetation = vegetationsdeckung_2021,
     height_vegetation = vegetationshoehe_2021
   ) %>%
   filter(!str_detect(location, "rollfeld")) %>%
   select(
-    plot, location, botanist, survey_year, cover_vegetation, height_vegetation
-    )
+    plot, location, botanist, survey_date, cover_vegetation, height_vegetation
+    ) %>%
+  mutate(
+    location = str_replace(location, "nord", "north"),
+    location = str_replace(location, "mitte", "middle"),
+    location = str_replace(location, "sued", "south"),
+    year = year(survey_date)
+  )
 
 sites_restoration <- read_csv(
   here("data", "raw", "data_raw_sites_restoration.csv"),
@@ -79,9 +85,10 @@ sites_restoration <- read_csv(
     height_vegetation = height_vegetation_2024
     ) %>%
   select(
-    plot, elevation, plot_size, treatment, mowing,
+    plot, elevation, plot_size, treatment, mowing, survey_date,
     botanist, cover_vegetation, height_vegetation
-    )
+    ) %>%
+  mutate(year = year(survey_date))
 
 sites_bauer_etal_2020 <- read_csv(
   here("data", "raw", "data_raw_sites_bauer_etal-2020.csv"),
@@ -92,15 +99,38 @@ sites_bauer_etal_2020 <- read_csv(
 ) %>%
   rename(
     id = ID, plot_size = plotSize, cover_vegetation = herbCover,
-    height_vegetation = herbHeight
+    height_vegetation = herbHeight, location = block
     ) %>%
   filter(dataset == "blocks") %>%
   select(
-    id, plot, block, plot_size, dataset, botanist, year,
+    id, plot, location, plot_size, botanist, year,
     cover_vegetation, height_vegetation
     )
 
-### Coordinates ####
+## 2 Species ##################################################################
+
+
+species_reference <- read_csv2(
+  here("data", "raw", "data_raw_species_reference.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+  ) %>%
+  mutate(name = str_replace_all(name, "_", " "))
+
+species_restoration <- read_csv(
+  here("data", "raw", "data_raw_species_restoration.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+  )
+
+species_bauer_etal_2020 <- read_csv(
+  here("data", "raw", "data_raw_species_bauer_etal-2020.csv"),
+  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
+) %>%
+  mutate(name = str_replace_all(name, "_", " ")) %>%
+  select(name, starts_with("X03"), starts_with("X18"))
+
+
+
+## 3 Coordinates ###############################################################
 
 # The following coordinates have an embargo due to occurences of extremely rare species
 
@@ -146,30 +176,7 @@ coordinates <- coordinates_reference %>%
 
 
 
-## 2 Species ##################################################################
-
-
-species_reference <- read_csv2(
-  here("data", "raw", "data_raw_species_reference.csv"),
-  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
-  ) %>%
-  mutate(name = str_replace_all(name, "_", " "))
-
-species_restoration <- read_csv(
-  here("data", "raw", "data_raw_species_restoration.csv"),
-  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
-  )
-
-species_bauer_etal_2020 <- read_csv(
-  here("data", "raw", "data_raw_species_bauer_etal-2020.csv"),
-  col_names = TRUE, na = c("", "NA", "na"), col_types = cols(.default = "?")
-) %>%
-  mutate(name = str_replace_all(name, "_", " ")) %>%
-  select(name, starts_with("X03"), starts_with("X18"))
-
-
-
-## 3 FloraVeg.EU species #######################################################
+## 4 FloraVeg.EU species #######################################################
 
 # Chytrý et al. (2020) Appl Veg Sci https://doi.org/10.1111/avsc.12519
 # Version 2021-06-01: https://doi.org/10.5281/zenodo.4812736
@@ -204,10 +211,14 @@ sites <- sites_reference %>%
     id = if_else(str_detect(plot, "^res"), paste0("X2024", plot), id),
     elevation = if_else(is.na(elevation), 469, elevation),
     plot_size = if_else(is.na(plot_size), 4, plot_size),
-    treatment = if_else(is.na(treatment), "control", treatment)
+    treatment = if_else(is.na(treatment), str_c("control_", year), treatment)
   ) %>%
   arrange(id) %>%
-  relocate(id, .before = "plot")
+  relocate(id, .before = "plot") %>%
+  relocate(
+    elevation, plot_size, treatment, mowing, survey_date, year,
+    .after = "location"
+    )
 
 species <- species_reference %>%
   full_join(species_restoration, by = "name") %>%
@@ -1063,8 +1074,7 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 sites <- sites %>%
   relocate(botanist, .after = last_col()) %>%
-  relocate(block, .after = "location") %>%
-  select(-rlg_LC, -rlg_NA, -rlg_NE, -dataset)
+  select(-rlg_LC, -rlg_NA, -rlg_NE)
 
 
 
