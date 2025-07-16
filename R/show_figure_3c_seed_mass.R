@@ -50,26 +50,24 @@ sites <- read_csv(
   )
 ) %>%
   rename(y = CWM_Seed) %>%
-  filter(
-    is.na(location) | location != "rollfeld" &
-      !(id %in% c(
-        "X2021tum03", "X2021tum27", "X2021tum43", "X2021tum48", "X2021tum51"
-      )) # Plots with >=10% of Polygonatum odoratum (seed mass = 0.08 g)
-    ) %>%
   mutate(
     treatment = fct_relevel(
-      treatment, "control", "cut_summer", "cut_autumn", "grazing"
-      ),
+      treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
+      "cut_autumn", "grazing"
+    ),
     treatment = fct_recode(
-      treatment, "Reference" = "control", "Mowing\nsummer" = "cut_summer",
-      "Mowing\nautumn" = "cut_autumn", "Topsoil\nremoval" = "grazing"
-      )
+      treatment, "Ref.\n2003" = "control_2003",
+      "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
+      "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
+      "Topsoil\nremoval" = "grazing"
     )
-
-### * Model ####
-load(file = here("outputs", "models", "model_seed_mass_1.Rdata"))
-m <- m1
-m
+  ) %>%
+  filter(
+    !(id %in% c(
+      "X2021tum03", "X2021tum27", "X2021tum43", "X2021tum48", "X2021tum51",
+      "XroederS11"
+    )) # Plots with >=10% of Polygonatum odoratum (seed mass = 0.08 g)
+  )
 
 
 
@@ -79,56 +77,27 @@ m
 
 
 
-data_model <- ggeffect(
-  m, terms = c("treatment"), back.transform = TRUE, ci_level = .95
-  ) %>%
-  mutate(
-    x = fct_recode(
-      x, "Reference" = "control", "Mowing\nsummer" = "cut_summer",
-      "Mowing\nautumn" = "cut_autumn", "Topsoil\nremoval" = "grazing"
-    )
-  ) %>%
-  mutate(
-    predicted = exp(predicted) * 1000,
-    conf.low = exp(conf.low) * 1000,
-    conf.high = exp(conf.high) * 1000
-  ) %>%
-  slice(1:4)
-
 data <- sites %>%
-  mutate(y = exp(y) * 1000) %>%
+  mutate(y = y * 1000) %>%
   rename(predicted = y, x = treatment)
 
-(graph_c <- ggplot() +
-    geom_quasirandom(
-      data = data,
-      aes(x = x, predicted, color = x),
-      dodge.width = .6, size = 1, shape = 16
+(graph_c <- ggplot(
+  data = data,
+  aes(x = x, predicted, color = x, fill = x)
+) +
+    geom_quasirandom(color = "grey20", dodge.width = .6, size = 1, shape = 16) +
+    geom_boxplot(alpha = .5, color = "black") +
+    annotate(
+      "text", x = 1.5, y = 0, size = 2.5,
+      label = expression(4^th~corner*": n.s.")
     ) +
-    geom_hline(
-      yintercept = c(1.81, 1.7, 1.92),
-      linetype = c(1, 2, 2),
-      color = "grey70"
-    ) +
-    geom_errorbar(
-      data = data_model,
-      aes(x, predicted, ymin = conf.low, ymax = conf.high),
-      width = 0.0, linewidth = 0.4
-    ) +
-    geom_point(
-      data = data_model,
-      aes(x, predicted),
-      size = 2
-    ) +
-    annotate("text", label = "a", x = 1, y = 4) +
-    annotate("text", label = "b", x = 2, y = 4) +
-    annotate("text", label = "b", x = 3, y = 4) +
-    annotate("text", label = "c", x = 4, y = 4) +
-    scale_y_continuous(limits = c(0, 4), breaks = seq(-100, 400, .5)) +
-    scale_color_manual(
+    scale_y_continuous(limits = c(0, 5.6), breaks = seq(-100, 400, .5)) +
+    scale_fill_manual(
       values = c(
-        "Reference" = "#f947d1", 
-        "Mowing\nsummer" = "#61a161",
+        "Ref.\n2003" = "#f947d1", 
+        "Ref.\n2018" = "#f947d1", 
+        "Ref.\n2021" = "#f947d1", 
+        "Mowing\nsummer" = "#61a161", 
         "Mowing\nautumn" = "#87ceeb", 
         "Topsoil\nremoval" = "#b06e13"
       )
@@ -137,7 +106,7 @@ data <- sites %>%
     theme_mb())
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_3c_seed_mass_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-#   )
+ggsave(
+  here("outputs", "figures", "figure_3c_seed_mass_800dpi_8x8cm.tiff"),
+  dpi = 800, width = 8, height = 8, units = "cm"
+  )

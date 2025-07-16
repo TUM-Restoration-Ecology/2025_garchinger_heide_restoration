@@ -18,8 +18,7 @@
 library(here)
 library(tidyverse)
 library(ggbeeswarm)
-library(patchwork)
-library(DHARMa)
+library(ade4)
 
 ### Start ###
 rm(list = ls())
@@ -33,9 +32,41 @@ sites <- read_csv(
       treatment = "f"
     )
 ) %>%
-  rename(y = CWM_SLA) %>%
-  filter(
-    is.na(location) | location != "rollfeld")
+  rename(y = CWM_SLA)
+
+sites_fc <- sites %>%
+  select(
+    id, treatment, grass_cover, graminoid_cover
+    ) %>% 
+  column_to_rownames(var = "id")
+
+traits <- read_csv(
+  here("data", "processed", "data_processed_traits.csv"),
+  col_names = TRUE, na = c("na", "NA", ""), col_types =
+    cols(
+      .default = "?"
+    )
+) %>%
+  mutate(log_y = log(sla)) %>%
+  column_to_rownames(var = "accepted_name") %>% 
+  select(log_y) %>%
+  drop_na() %>%
+  rownames_to_column(var = "accepted_name")
+
+species <- read_csv(
+  here("data", "processed", "data_processed_species.csv"),
+  col_names = TRUE, na = c("na", "NA", ""), col_types =
+    cols(
+      .default = "?"
+    )
+) %>%
+  semi_join(traits, by = "accepted_name") %>%
+  pivot_longer(-accepted_name, names_to = "id_plot", values_to = "cover") %>%
+  pivot_wider(names_from = "accepted_name", values_from = "cover") %>%
+  column_to_rownames(var = "id_plot")
+
+traits <- traits %>%
+  column_to_rownames(var = "accepted_name")
 
 
 
@@ -48,46 +79,18 @@ sites <- read_csv(
 ## 1 Data exploration ##########################################################
 
 
-### a Graphs of raw data -------------------------------------------------------
-
 ggplot(sites, aes(y = y, x = treatment)) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
-ggplot(sites, aes(y = y, x = cover_vegetation)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm") +
-  facet_grid(~treatment)
-
-
-### b Outliers, zero-inflation, transformations? ----------------------------
 
 sites %>% group_by(treatment) %>% count(treatment)
-ggplot(sites, aes(x = treatment, y = y)) + geom_quasirandom()
-ggplot(sites, aes(x = y)) + geom_histogram(binwidth = .1)
-ggplot(sites, aes(x = y)) + geom_density()
-
-
-### c Check collinearity ------------------------------------------------------
-
-sites %>%
-  select(height_vegetation, cover_vegetation) %>%
-  GGally::ggpairs(lower = list(continuous = "smooth_loess")) +
-  theme(strip.text = element_text(size = 7))
-#--> exclude r > 0.7
-# Dormann et al. 2013 Ecography
-# https://doi.org/10.1111/j.1600-0587.2012.07348.x
 
 
 
 ## 2 Model building ###########################################################
 
-
-m1 <- lm(y ~ treatment, data = sites)
-simulateResiduals(m1, plot = TRUE)
-
-m2 <- lm(y ~ treatment * cover_vegetation, data = sites)
-simulateResiduals(m2, plot = TRUE)
-
-
-### Save ####
-
-save(m1, file = here("outputs", "models", "model_sla_1.Rdata"))
-save(m2, file = here("outputs", "models", "model_sla_2.Rdata"))
+m <- ade4::fourthcorner(
+  tabR = sites_fc, tabL = species, tabQ = traits, modeltype = 6,
+  nrepet = 999
+)
+m
+summary(m)
