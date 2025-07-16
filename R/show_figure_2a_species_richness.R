@@ -135,10 +135,10 @@ graph <- ggplot() +
   theme_mb(); graph
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_2a_species_richness_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-# )
+ggsave(
+  here("outputs", "figures", "figure_2a_species_richness_800dpi_8x8cm.tiff"),
+  dpi = 800, width = 8, height = 8, units = "cm"
+)
   
 graph_a <- graph +
   theme(

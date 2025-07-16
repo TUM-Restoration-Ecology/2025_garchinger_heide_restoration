@@ -50,14 +50,16 @@ sites <- read_csv(
   )
 ) %>%
   rename(y = richness_R1A) %>%
-  filter(is.na(location) | location != "rollfeld") %>%
   mutate(
     treatment = fct_relevel(
-      treatment, "control", "cut_summer", "cut_autumn", "grazing"
+      treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
+      "cut_autumn", "grazing"
     ),
     treatment = fct_recode(
-      treatment, "Reference" = "control", "Mowing\nsummer" = "cut_summer",
-      "Mowing\nautumn" = "cut_autumn", "Topsoil\nremoval" = "grazing"
+      treatment, "Ref.\n2003" = "control_2003",
+      "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
+      "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
+      "Topsoil\nremoval" = "grazing"
     )
   )
 
@@ -79,11 +81,12 @@ data_model <- ggeffect(
 ) %>%
   mutate(
     x = fct_recode(
-      x, "Reference" = "control", "Mowing\nsummer" = "cut_summer",
-      "Mowing\nautumn" = "cut_autumn", "Topsoil\nremoval" = "grazing"
+      x, "Ref.\n2003" = "control_2003",
+      "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
+      "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
+      "Topsoil\nremoval" = "grazing"
     )
-  ) %>%
-  slice(1:4)
+  )
 
 data <- sites %>%
   rename(predicted = y, x = treatment)
@@ -94,11 +97,11 @@ data <- sites %>%
       aes(x = x, predicted, color = x),
       dodge.width = .6, size = 1, shape = 16
     ) +
-    geom_hline(
-      yintercept = c(12.98, 12.23, 13.73),
-      linetype = c(1, 2, 2),
-      color = "grey70"
-    ) +
+    # geom_hline(
+    #   yintercept = c(12.98, 12.23, 13.73),
+    #   linetype = c(1, 2, 2),
+    #   color = "grey70"
+    # ) +
     geom_errorbar(
       data = data_model,
       aes(x, predicted, ymin = conf.low, ymax = conf.high),
@@ -109,14 +112,18 @@ data <- sites %>%
       aes(x, predicted),
       size = 2
     ) +
-    annotate("text", label = "a", x = 1, y = 21) +
-    annotate("text", label = "a", x = 2, y = 21) +
-    annotate("text", label = "a", x = 3, y = 21) +
-    annotate("text", label = "b", x = 4, y = 21) +
-    scale_y_continuous(limits = c(0, 21), breaks = seq(-100, 400, 5)) +
+    annotate("text", label = "a", x = 1, y = 49) +
+    annotate("text", label = "a", x = 2, y = 49) +
+    annotate("text", label = "a", x = 3, y = 49) +
+    annotate("text", label = "b", x = 4, y = 49) +
+    annotate("text", label = "a", x = 5, y = 49) +
+    annotate("text", label = "a", x = 6, y = 49) +
+    scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
     scale_color_manual(
       values = c(
-        "Reference" = "#f947d1", 
+        "Ref.\n2003" = "#f947d1", 
+        "Ref.\n2018" = "#f947d1", 
+        "Ref.\n2021" = "#f947d1",
         "Mowing\nsummer" = "#61a161", 
         "Mowing\nautumn" = "#87ceeb", 
         "Topsoil\nremoval" = "#b06e13"
@@ -128,7 +135,7 @@ data <- sites %>%
     theme_mb())
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_2c_R1A_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-# )
+ggsave(
+  here("outputs", "figures", "figure_2c_R1A_800dpi_8x8cm.tiff"),
+  dpi = 800, width = 8, height = 8, units = "cm"
+)

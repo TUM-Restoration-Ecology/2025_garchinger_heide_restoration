@@ -241,10 +241,9 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:
 car::vif(m_2)
 ```
 
-    ##               GVIF Df GVIF^(1/(2*Df))
-    ## treatment 26.49911  5        1.387788
-    ## mem1      25.26444  1        5.026374
-    ## mem2       2.15199  1        1.466966
+    ##              GVIF Df GVIF^(1/(2*Df))
+    ## treatment 1.04887  5        1.004783
+    ## mem2      1.04887  1        1.024143
 
 ## Model comparison
 
@@ -256,7 +255,7 @@ MuMIn::r.squaredGLMM(m_1)
 ## [1,] 0.4767542 0.4767542
 MuMIn::r.squaredGLMM(m_2)
 ##            R2m       R2c
-## [1,] 0.5503053 0.5503053
+## [1,] 0.4941225 0.4941225
 ```
 
 ### AICc
@@ -268,7 +267,7 @@ p. 66 ISBN: 978-0-387-95364-9
 MuMIn::AICc(m_1, m_2) %>%
   arrange(AICc)
 ##     df     AICc
-## m_2  9 1403.975
+## m_2  8 1430.515
 ## m_1  7 1436.940
 ```
 
@@ -277,33 +276,31 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ``` r
-summary(m_2)
+summary(m_1)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment + mem1 + mem2, data = sites)
+    ## lm(formula = y ~ treatment, data = sites)
     ## 
     ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -11.915  -3.241   0.200   3.200  12.900 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -12.4762  -3.2333  -0.0645   3.5238  12.9355 
     ## 
     ## Coefficients:
-    ##                           Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)                23.7583     1.4158  16.781  < 2e-16 ***
-    ## treatmentReference\n2018    0.3095     1.0108   0.306 0.759720    
-    ## treatmentReference\n2021    4.1100     0.9292   4.423 1.51e-05 ***
-    ## treatmentMowing\nsummer    10.5914     3.3463   3.165 0.001762 ** 
-    ## treatmentMowing\nautumn    11.9247     3.3463   3.564 0.000445 ***
-    ## treatmentTopsoil\nremoval   6.2914     3.3463   1.880 0.061367 .  
-    ## mem1                       -8.2296     1.5156  -5.430 1.44e-07 ***
-    ## mem2                        0.7668     0.4423   1.734 0.084353 .  
+    ##                       Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)            30.1667     0.7701  39.172  < 2e-16 ***
+    ## treatmentcontrol_2018   0.3095     1.0891   0.284 0.776509    
+    ## treatmentcontrol_2021   3.8978     0.9974   3.908 0.000122 ***
+    ## treatmentcut_summer    -6.0667     1.1930  -5.085 7.62e-07 ***
+    ## treatmentcut_autumn    -4.7333     1.1930  -3.967 9.71e-05 ***
+    ## treatmentgrazing      -10.3667     1.1930  -8.689 6.92e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.632 on 228 degrees of freedom
-    ## Multiple R-squared:  0.5578, Adjusted R-squared:  0.5442 
-    ## F-statistic: 41.08 on 7 and 228 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.991 on 230 degrees of freedom
+    ## Multiple R-squared:  0.4821, Adjusted R-squared:  0.4709 
+    ## F-statistic: 42.82 on 5 and 230 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -325,45 +322,45 @@ necessary.
 
 ``` r
 (emm <- emmeans(
-  m_2,
+  m_1,
   revpairwise ~ treatment,
   type = "response"
   ))
 ```
 
     ## $emmeans
-    ##   treatment       emmean   SE  df lower.CL upper.CL
-    ##  Reference\n2003    23.8 1.42 228     21.0     26.5
-    ##  Reference\n2018    24.1 1.42 228     21.3     26.9
-    ##  Reference\n2021    27.9 1.30 228     25.3     30.4
-    ##  Mowing\nsummer     34.3 2.11 228     30.2     38.5
-    ##  Mowing\nautumn     35.7 2.11 228     31.5     39.8
-    ##  Topsoil\nremoval   30.0 2.11 228     25.9     34.2
+    ##  treatment    emmean    SE  df lower.CL upper.CL
+    ##  control_2003   30.2 0.770 230     28.6     31.7
+    ##  control_2018   30.5 0.770 230     29.0     32.0
+    ##  control_2021   34.1 0.634 230     32.8     35.3
+    ##  cut_summer     24.1 0.911 230     22.3     25.9
+    ##  cut_autumn     25.4 0.911 230     23.6     27.2
+    ##  grazing        19.8 0.911 230     18.0     21.6
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##    contrast                         estimate    SE  df t.ratio p.value
-    ##  Reference\n2018 - Reference\n2003      0.31 1.010 228   0.306  0.9996
-    ##  Reference\n2021 - Reference\n2003      4.11 0.929 228   4.423  0.0002
-    ##  Reference\n2021 - Reference\n2018      3.80 0.929 228   4.090  0.0008
-    ##  Mowing\nsummer - Reference\n2003      10.59 3.350 228   3.165  0.0215
-    ##  Mowing\nsummer - Reference\n2018      10.28 3.350 228   3.073  0.0284
-    ##  Mowing\nsummer - Reference\n2021       6.48 3.260 228   1.990  0.3514
-    ##  Mowing\nautumn - Reference\n2003      11.92 3.350 228   3.564  0.0059
-    ##  Mowing\nautumn - Reference\n2018      11.62 3.350 228   3.471  0.0081
-    ##  Mowing\nautumn - Reference\n2021       7.81 3.260 228   2.399  0.1609
-    ##  Mowing\nautumn - Mowing\nsummer        1.33 1.200 228   1.115  0.8749
-    ##  Topsoil\nremoval - Reference\n2003     6.29 3.350 228   1.880  0.4171
-    ##  Topsoil\nremoval - Reference\n2018     5.98 3.350 228   1.788  0.4758
-    ##  Topsoil\nremoval - Reference\n2021     2.18 3.260 228   0.670  0.9851
-    ##  Topsoil\nremoval - Mowing\nsummer     -4.30 1.200 228  -3.595  0.0053
-    ##  Topsoil\nremoval - Mowing\nautumn     -5.63 1.200 228  -4.710  0.0001
+    ##  contrast                    estimate    SE  df t.ratio p.value
+    ##  control_2018 - control_2003     0.31 1.090 230   0.284  0.9997
+    ##  control_2021 - control_2003     3.90 0.997 230   3.908  0.0017
+    ##  control_2021 - control_2018     3.59 0.997 230   3.598  0.0052
+    ##  cut_summer - control_2003      -6.07 1.190 230  -5.085  <.0001
+    ##  cut_summer - control_2018      -6.38 1.190 230  -5.345  <.0001
+    ##  cut_summer - control_2021      -9.96 1.110 230  -8.977  <.0001
+    ##  cut_autumn - control_2003      -4.73 1.190 230  -3.967  0.0013
+    ##  cut_autumn - control_2018      -5.04 1.190 230  -4.227  0.0005
+    ##  cut_autumn - control_2021      -8.63 1.110 230  -7.776  <.0001
+    ##  cut_autumn - cut_summer         1.33 1.290 230   1.035  0.9058
+    ##  grazing - control_2003        -10.37 1.190 230  -8.689  <.0001
+    ##  grazing - control_2018        -10.68 1.190 230  -8.949  <.0001
+    ##  grazing - control_2021        -14.26 1.110 230 -12.851  <.0001
+    ##  grazing - cut_summer           -4.30 1.290 230  -3.337  0.0125
+    ##  grazing - cut_autumn           -5.63 1.290 230  -4.372  0.0003
     ## 
     ## P value adjustment: tukey method for comparing a family of 6 estimates
 
 ``` r
-plot(emm, comparison = FALSE)
+plot(emm, comparison = TRUE)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/effect-sizes-1.png)<!-- -->

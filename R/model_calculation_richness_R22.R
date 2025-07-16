@@ -81,7 +81,7 @@ sites %>%
 m1 <- lm(y ~ treatment, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
-m2 <- lm(y ~ treatment + mem1 + mem2, data = sites)
+m2 <- lm(y ~ treatment + mem2, data = sites)
 simulateResiduals(m2, plot = TRUE)
 
 

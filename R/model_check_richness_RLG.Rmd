@@ -198,7 +198,7 @@ MuMIn::AICc(m_1, m_2) %>%
 ### Summary table
 
 ```{r summary}
-summary(m_2)
+summary(m_1)
 ```
 
 ### Forest plot
@@ -218,11 +218,11 @@ Effect sizes of chosen model just to get exact values of means etc. if necessary
 
 ```{r effect-sizes, message = FALSE}
 (emm <- emmeans(
-  m_2,
+  m_1,
   revpairwise ~ treatment,
   type = "response"
   ))
-plot(emm, comparison = FALSE)
+plot(emm, comparison = TRUE)
 ```
 
 # Session info
