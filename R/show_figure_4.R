@@ -54,10 +54,19 @@ sites <- read_csv(
   col_names = TRUE, na = c("na", "NA", ""), col_types =
     cols(
       .default = "?"
-      )
-) %>%
-  filter(is.na(location) | location != "rollfeld") %>%
+    )) %>% 
   arrange(id)
+
+species <- read_csv(
+  here("data", "processed", "data_processed_species.csv"),
+  col_names = TRUE, na = c("na", "NA", ""), col_types = cols(.default = "?")
+) %>%
+  pivot_longer(-accepted_name, names_to = "id", values_to = "value") %>%
+  semi_join(sites, by = "id") %>%
+  arrange(id) %>%
+  pivot_wider(names_from = "accepted_name", values_from = "value") %>%
+  column_to_rownames(var = "id")
+
 
 #### * Choosen model ####
 
@@ -94,6 +103,7 @@ data_envfit <- envfit %>%
       "Vegetation\nheight" = "height_vegetation",
       "Vegetation\ncover" = "cover_vegetation",
       "Grass\ncover" = "grass_cover",
+      "Graminoid\ncover" = "graminoid_cover"
     )
   )
 
@@ -116,6 +126,9 @@ data_nmds <-  sites %>%
      data = data_nmds,
      cex = 2, alpha = .8
    ) +
+   annotate(
+     "text", x = 1.2, y = 1.4, cex = 3, label = "2D stress = .18"
+     ) +
    
    #### * Ellipses ####
 
@@ -126,7 +139,7 @@ data_nmds <-  sites %>%
  ) +
    ggrepel::geom_label_repel(
      aes(x = NMDS1, y = NMDS2, label = variable),
-     data = data_envfit %>% filter(NMDS2 < 0 & NMDS1 > 0),
+     data = data_envfit,
      fill = alpha("white", .6),
      size = 3,
      nudge_y = -.17,
@@ -149,13 +162,17 @@ data_nmds <-  sites %>%
 
  scale_color_manual(
    labels = c(
-     "control" = "Reference",
+     "control_2003" = "Reference\n2003",
+     "control_2018" = "Reference\n2018",
+     "control_2021" = "Reference\n2021",
      "cut_summer" = "Mowing\nsummer",
      "cut_autumn" = "Mowing\nautumn",
      "grazing" = "Topsoil\nremoval"
    ),
    values = c(
-     "control" = "#f947d1", 
+     "control_2003" = "#a153a6", 
+     "control_2018" = "#de47f5", 
+     "control_2021" = "#f947d1", 
      "cut_summer" = "#61a161", 
      "cut_autumn" = "#87ceeb", 
      "grazing" = "#b06e13"
@@ -165,7 +182,7 @@ data_nmds <-  sites %>%
      labels = c(
        "R22" = "R22:\nHay meadow",
        "R1A" = "R1A:\nSemi-dry grassland",
-       "R" = "R:\nGeneral grassland"
+       "R" = "R:\nUnspecified grassland"
      ),
      values = c(
        "R22" = 1,
@@ -186,7 +203,7 @@ data_nmds <-  sites %>%
 
 
 
-# ggsave(
-#   here("outputs", "figures", "figure_4_nmds_800dpi_16.5x11cm.tiff"),
-#   dpi = 800, width = 16.5, height = 11, units = "cm"
-# )
+ggsave(
+  here("outputs", "figures", "figure_4_nmds_800dpi_16.5x11cm.tiff"),
+  dpi = 800, width = 16.5, height = 11, units = "cm"
+)
