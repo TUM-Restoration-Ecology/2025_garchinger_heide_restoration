@@ -5,6 +5,7 @@ Garchinger Heide and restoration sites: <br> NMDS and PERMANOVA
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
+  - [Descriptive statistics](#descriptive-statistics)
   - [Models](#models)
   - [Model check](#model-check)
   - [Vectors](#vectors)
@@ -60,6 +61,35 @@ species <- read_csv(
 
 # Statistics
 
+## Descriptive statistics
+
+``` r
+sites %>%
+  group_by(treatment) %>%
+  count(esy) %>%
+  group_by(treatment) %>%
+  mutate(ratio = round(n / sum(n), digits = 2))
+```
+
+    ## # A tibble: 14 × 4
+    ## # Groups:   treatment [6]
+    ##    treatment    esy       n ratio
+    ##    <chr>        <chr> <int> <dbl>
+    ##  1 control_2003 R        10  0.24
+    ##  2 control_2003 R1A      30  0.71
+    ##  3 control_2003 R22       2  0.05
+    ##  4 control_2018 R         1  0.02
+    ##  5 control_2018 R1A      41  0.98
+    ##  6 control_2021 R        20  0.32
+    ##  7 control_2021 R1A      41  0.66
+    ##  8 control_2021 R22       1  0.02
+    ##  9 cut_autumn   R        14  0.47
+    ## 10 cut_autumn   R1A      16  0.53
+    ## 11 cut_summer   R        14  0.47
+    ## 12 cut_summer   R1A      16  0.53
+    ## 13 grazing      R        10  0.33
+    ## 14 grazing      R1A      20  0.67
+
 ## Models
 
 ``` r
@@ -112,7 +142,7 @@ points(ordi, display = "sites", cex = goodness_of_fit * 300)
 
 ``` r
 ef_vector1 <- envfit(
-  ordi ~ height_vegetation + cover_vegetation + grass_cover + graminoid_cover + mem2,
+  ordi ~ height_vegetation + cover_vegetation + grass_cover + graminoid_cover,
   data = sites,
   permu = 999,
   na.rm = TRUE
@@ -126,7 +156,6 @@ ef_vector1
 ## cover_vegetation  -0.15590 -0.98777 0.5428  0.001 ***
 ## grass_cover        0.89266 -0.45073 0.6372  0.001 ***
 ## graminoid_cover    0.19648 -0.98051 0.4756  0.001 ***
-## mem2              -0.43124 -0.90224 0.0508  0.007 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -138,6 +167,10 @@ plot(ef_vector1, add = TRUE, p. = .99)
 ```
 
 ![](model_check_nmds_files/figure-gfm/r2-1.png)<!-- -->
+
+``` r
+# save(ef_vector1, file = here("outputs", "models", "model_nmds_envfit_vector1.Rdata"))
+```
 
 ## Factors
 
@@ -288,15 +321,15 @@ species2 <- data %>%
     ## [13] here_1.0.1     
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] generics_0.1.4     stringi_1.8.7      lattice_0.22-6     hms_1.1.3         
-    ##  [5] digest_0.6.37      magrittr_2.0.3     evaluate_1.0.4     grid_4.5.0        
-    ##  [9] timechange_0.3.0   RColorBrewer_1.1-3 fastmap_1.2.0      rprojroot_2.1.0   
-    ## [13] Matrix_1.7-3       mgcv_1.9-1         scales_1.4.0       cli_3.6.5         
-    ## [17] crayon_1.5.3       rlang_1.1.6        bit64_4.6.0-1      splines_4.5.0     
-    ## [21] withr_3.0.2        yaml_2.3.10        tools_4.5.0        parallel_4.5.0    
-    ## [25] tzdb_0.5.0         vctrs_0.6.5        R6_2.6.1           lifecycle_1.0.4   
-    ## [29] bit_4.6.0          vroom_1.6.5        MASS_7.3-65        cluster_2.1.8.1   
-    ## [33] pkgconfig_2.0.3    pillar_1.11.0      gtable_0.3.6       glue_1.8.0        
-    ## [37] xfun_0.52          tidyselect_1.2.1   rstudioapi_0.17.1  knitr_1.50        
-    ## [41] farver_2.1.2       htmltools_0.5.8.1  nlme_3.1-168       rmarkdown_2.29    
-    ## [45] compiler_4.5.0
+    ##  [1] utf8_1.2.6         generics_0.1.4     stringi_1.8.7      lattice_0.22-6    
+    ##  [5] hms_1.1.3          digest_0.6.37      magrittr_2.0.3     evaluate_1.0.4    
+    ##  [9] grid_4.5.0         timechange_0.3.0   RColorBrewer_1.1-3 fastmap_1.2.0     
+    ## [13] rprojroot_2.1.0    Matrix_1.7-3       mgcv_1.9-1         scales_1.4.0      
+    ## [17] cli_3.6.5          crayon_1.5.3       rlang_1.1.6        bit64_4.6.0-1     
+    ## [21] splines_4.5.0      withr_3.0.2        yaml_2.3.10        tools_4.5.0       
+    ## [25] parallel_4.5.0     tzdb_0.5.0         vctrs_0.6.5        R6_2.6.1          
+    ## [29] lifecycle_1.0.4    bit_4.6.0          vroom_1.6.5        MASS_7.3-65       
+    ## [33] cluster_2.1.8.1    pkgconfig_2.0.3    pillar_1.11.0      gtable_0.3.6      
+    ## [37] glue_1.8.0         xfun_0.52          tidyselect_1.2.1   rstudioapi_0.17.1 
+    ## [41] knitr_1.50         farver_2.1.2       htmltools_0.5.8.1  nlme_3.1-168      
+    ## [45] rmarkdown_2.29     compiler_4.5.0

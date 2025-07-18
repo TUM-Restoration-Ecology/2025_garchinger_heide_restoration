@@ -71,6 +71,17 @@ species <- read_csv(
 
 # Statistics
 
+## Descriptive statistics
+
+```{r}
+sites %>%
+  group_by(treatment) %>%
+  count(esy) %>%
+  group_by(treatment) %>%
+  mutate(ratio = round(n / sum(n), digits = 2))
+```
+
+
 ## Models
 
 ```{r load-models, collapse = TRUE}
@@ -101,7 +112,7 @@ points(ordi, display = "sites", cex = goodness_of_fit * 300)
 
 ```{r r2, collapse = TRUE}
 ef_vector1 <- envfit(
-  ordi ~ height_vegetation + cover_vegetation + grass_cover + graminoid_cover + mem2,
+  ordi ~ height_vegetation + cover_vegetation + grass_cover + graminoid_cover,
   data = sites,
   permu = 999,
   na.rm = TRUE
@@ -109,6 +120,7 @@ ef_vector1 <- envfit(
 ef_vector1
 plot(ordi, type = "n")
 plot(ef_vector1, add = TRUE, p. = .99)
+# save(ef_vector1, file = here("outputs", "models", "model_nmds_envfit_vector1.Rdata"))
 ```
 
 ## Factors
