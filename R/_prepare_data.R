@@ -74,7 +74,8 @@ sites_restoration <- read_csv(
   here("data", "raw", "data_raw_sites_restoration.csv"),
   col_names = TRUE, na = c("", "NA", "na"), col_types =
     cols(
-    .default = "?"
+    .default = "?",
+    survey_date_2024 = col_date()
   )
 ) %>%
   rename(
@@ -84,8 +85,7 @@ sites_restoration <- read_csv(
     height_vegetation = height_vegetation_2024
     ) %>%
   select(
-    plot, elevation, plot_size, treatment, mowing, survey_date,
-    botanist, cover_vegetation, height_vegetation
+    -cover_moss_2024, -cover_litter_2024, -comments
     ) %>%
   mutate(year = year(survey_date))
 
