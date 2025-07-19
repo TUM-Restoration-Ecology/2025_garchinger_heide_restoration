@@ -108,7 +108,7 @@ data_envfit <- envfit %>%
   )
 
 data_nmds <-  sites %>%
-  select(id, treatment, esy) %>% # modify group
+  select(id, treatment, esy, mowing_date_start, hay_transfer) %>% # modify group
   mutate(
     group = as_factor(treatment), # modify group
     NMDS1 = ordi$points[, 1],
@@ -126,6 +126,13 @@ data_nmds <-  sites %>%
      data = data_nmds,
      cex = 2, alpha = .8
    ) +
+   # geom_point(
+   #   aes(y = NMDS2, x = NMDS1),
+   #   data = data_nmds %>% filter(hay_transfer == 1993),
+   #   # data = data_nmds %>% filter(mowing_date_start > 2020),
+   #   color = "red",
+   #   shape = 4
+   #   ) +
    annotate(
      "text", x = 1.2, y = 1.4, cex = 3, label = "2D stress = .18"
      ) +
@@ -204,6 +211,6 @@ data_nmds <-  sites %>%
 
 
 ggsave(
-  here("outputs", "figures", "figure_4_nmds_800dpi_16.5x11cm.tiff"),
+  here("outputs", "figures", "figure_4_nmds_800dpi_16.5x11cm_transfer_1993.tiff"),
   dpi = 800, width = 16.5, height = 11, units = "cm"
 )
