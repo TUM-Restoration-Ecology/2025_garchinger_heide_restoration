@@ -54,14 +54,28 @@ sites <- read_csv(
 ggplot(sites, aes(y = y, x = treatment)) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
 ggplot(sites, aes(y = y, x = height_vegetation)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm") +
-  facet_grid(~treatment)
+  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
 ggplot(sites, aes(y = y, x = cover_vegetation)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm") +
-  facet_grid(~treatment)
+  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
+ggplot(sites, aes(y = y, x = grass_cover)) +
+  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
+ggplot(sites, aes(y = y, x = graminoid_cover)) +
+  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
+sites %>%
+  filter(!(is.na(block))) %>%
+  ggplot(aes(y = y, x = block)) +
+  geom_quasirandom(color = "grey") + geom_boxplot()
+sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(y = y, x = as.numeric(hay_transfer), color = mowing_date)) +
+  geom_point()
+sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(y = y, x = mowing_date_start, color = mowing_date)) +
+  geom_point()
 
 
-### b Outliers, zero-inflation, transformations? ----------------------------
+### b Outliers, zero-inflation, transformations? -------------------------------
 
 sites %>% group_by(treatment) %>% count(treatment)
 ggplot(sites, aes(x = treatment, y = y)) + geom_quasirandom()
@@ -72,7 +86,10 @@ ggplot(sites, aes(x = y)) + geom_density()
 ### c Check collinearity ------------------------------------------------------
 
 sites %>%
-  select(height_vegetation, cover_vegetation) %>%
+  select(
+    cover_vegetation, height_vegetation, grass_cover, graminoid_cover, mem1,
+    mem2
+    ) %>%
   GGally::ggpairs(lower = list(continuous = "smooth_loess")) +
   theme(strip.text = element_text(size = 7))
 #--> exclude r > 0.7

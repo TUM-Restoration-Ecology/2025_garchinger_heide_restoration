@@ -75,6 +75,14 @@ species <- read_csv(
 
 ```{r}
 sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(x = as.numeric(hay_transfer), fill = mowing_date)) +
+  geom_histogram()
+sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(x = mowing_date_start, fill = mowing_date)) +
+  geom_histogram()
+sites %>%
   group_by(treatment) %>%
   count(esy) %>%
   group_by(treatment) %>%

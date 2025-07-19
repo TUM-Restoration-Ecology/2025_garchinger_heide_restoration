@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
 <b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
-<b>2025-07-18</b>
+<b>2025-07-19</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -112,7 +112,7 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Graphs of raw data (Step 2, 6, 7)
 
-![](model_check_species_richness_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-2.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-3.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-2.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-3.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-4.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-5.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-6.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-7.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-8.png)<!-- -->
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
@@ -135,7 +135,10 @@ Exclude r \> 0.7 <br> Dormann et al. 2013 Ecography [DOI:
 
 ``` r
 sites %>%
-  select(height_vegetation, cover_vegetation) %>%
+    select(
+    cover_vegetation, height_vegetation, grass_cover, graminoid_cover, mem1,
+    mem2
+    ) %>%
   GGally::ggpairs(lower = list(continuous = "smooth_loess")) +
   theme(strip.text = element_text(size = 7))
 ```
@@ -160,22 +163,22 @@ m_1
 ## lm(formula = y ~ treatment, data = sites)
 ## 
 ## Coefficients:
-##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
-##               30.1667                 0.3095                 3.8978  
-##   treatmentcut_summer    treatmentcut_autumn       treatmentgrazing  
-##               -6.0667                -4.7333               -10.3667
+##              (Intercept)     treatmentcontrol_2018     treatmentcontrol_2021  
+##                  30.1667                    0.3095                    3.8978  
+##      treatmentcut_summer       treatmentcut_autumn  treatmenttopsoil_removal  
+##                  -6.0667                   -4.7333                  -10.3667
 m_2
 ## 
 ## Call:
 ## lm(formula = y ~ treatment + mem2, data = sites)
 ## 
 ## Coefficients:
-##           (Intercept)  treatmentcontrol_2018  treatmentcontrol_2021  
-##               30.3836                 0.3095                 3.7526  
-##   treatmentcut_summer    treatmentcut_autumn       treatmentgrazing  
-##               -6.5355                -5.2022               -10.8355  
-##                  mem2  
-##               -0.9528
+##              (Intercept)     treatmentcontrol_2018     treatmentcontrol_2021  
+##                  30.3836                    0.3095                    3.7526  
+##      treatmentcut_summer       treatmentcut_autumn  treatmenttopsoil_removal  
+##                  -6.5355                   -5.2022                  -10.8355  
+##                     mem2  
+##                  -0.9528
 ```
 
 ## Model check
@@ -219,32 +222,6 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 ![](model_check_species_richness_files/figure-gfm/dharma_single-4.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-5.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
-## Warning in newton(lsp = lsp, X = G$X, y = G$y, Eb = G$Eb, UrS = G$UrS, L = G$L,
-## : Anpassung beendet mit Schrittweitenfehler - Ergebnisse sorgfältig prüfen
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-7.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-8.png)<!-- -->
-
-``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 ## Warning in ensurePredictor(simulationOutput, form): DHARMa:::ensurePredictor:
 ## character string was provided as predictor. DHARMa has converted to factor
@@ -252,7 +229,7 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 ## attempting to plot with DHARMa.
 ```
 
-![](model_check_species_richness_files/figure-gfm/dharma_single-9.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
@@ -262,31 +239,7 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
 ## attempting to plot with DHARMa.
 ```
 
-![](model_check_species_richness_files/figure-gfm/dharma_single-10.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$grass_cover)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-11.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$grass_cover)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-12.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$graminoid_cover)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-13.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$graminoid_cover)
-```
-
-![](model_check_species_richness_files/figure-gfm/dharma_single-14.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 
@@ -294,7 +247,7 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:
 10.1111/j.2041-210X.2009.00001.x](https://doi.org/10.1111/j.2041-210X.2009.00001.x)
 
 ``` r
-#car::vif(m_1)
+# car::vif(m_1)
 car::vif(m_2)
 ```
 
@@ -345,14 +298,14 @@ summary(m_2)
     ## -11.8462  -3.2732   0.1807   3.3234  12.9000 
     ## 
     ## Coefficients:
-    ##                       Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)            30.3836     0.7616  39.897  < 2e-16 ***
-    ## treatmentcontrol_2018   0.3095     1.0718   0.289 0.773010    
-    ## treatmentcontrol_2021   3.7526     0.9829   3.818 0.000173 ***
-    ## treatmentcut_summer    -6.5355     1.1851  -5.515 9.41e-08 ***
-    ## treatmentcut_autumn    -5.2022     1.1851  -4.390 1.73e-05 ***
-    ## treatmentgrazing      -10.8355     1.1851  -9.143  < 2e-16 ***
-    ## mem2                   -0.9528     0.3274  -2.910 0.003972 ** 
+    ##                          Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)               30.3836     0.7616  39.897  < 2e-16 ***
+    ## treatmentcontrol_2018      0.3095     1.0718   0.289 0.773010    
+    ## treatmentcontrol_2021      3.7526     0.9829   3.818 0.000173 ***
+    ## treatmentcut_summer       -6.5355     1.1851  -5.515 9.41e-08 ***
+    ## treatmentcut_autumn       -5.2022     1.1851  -4.390 1.73e-05 ***
+    ## treatmenttopsoil_removal -10.8355     1.1851  -9.143  < 2e-16 ***
+    ## mem2                      -0.9528     0.3274  -2.910 0.003972 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -387,33 +340,33 @@ necessary.
 ```
 
     ## $emmeans
-    ##  treatment    emmean    SE  df lower.CL upper.CL
-    ##  control_2003   30.4 0.762 229     28.9     31.9
-    ##  control_2018   30.7 0.762 229     29.2     32.2
-    ##  control_2021   34.1 0.624 229     32.9     35.4
-    ##  cut_summer     23.8 0.901 229     22.1     25.6
-    ##  cut_autumn     25.2 0.901 229     23.4     27.0
-    ##  grazing        19.5 0.901 229     17.8     21.3
+    ##  treatment       emmean    SE  df lower.CL upper.CL
+    ##  control_2003      30.4 0.762 229     28.9     31.9
+    ##  control_2018      30.7 0.762 229     29.2     32.2
+    ##  control_2021      34.1 0.624 229     32.9     35.4
+    ##  cut_summer        23.8 0.901 229     22.1     25.6
+    ##  cut_autumn        25.2 0.901 229     23.4     27.0
+    ##  topsoil_removal   19.5 0.901 229     17.8     21.3
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##  contrast                    estimate    SE  df t.ratio p.value
-    ##  control_2018 - control_2003     0.31 1.070 229   0.289  0.9997
-    ##  control_2021 - control_2003     3.75 0.983 229   3.818  0.0024
-    ##  control_2021 - control_2018     3.44 0.983 229   3.503  0.0072
-    ##  cut_summer - control_2003      -6.54 1.190 229  -5.515  <.0001
-    ##  cut_summer - control_2018      -6.85 1.190 229  -5.776  <.0001
-    ##  cut_summer - control_2021     -10.29 1.100 229  -9.370  <.0001
-    ##  cut_autumn - control_2003      -5.20 1.190 229  -4.390  0.0002
-    ##  cut_autumn - control_2018      -5.51 1.190 229  -4.651  0.0001
-    ##  cut_autumn - control_2021      -8.95 1.100 229  -8.155  <.0001
-    ##  cut_autumn - cut_summer         1.33 1.270 229   1.051  0.8998
-    ##  grazing - control_2003        -10.84 1.190 229  -9.143  <.0001
-    ##  grazing - control_2018        -11.15 1.190 229  -9.404  <.0001
-    ##  grazing - control_2021        -14.59 1.100 229 -13.286  <.0001
-    ##  grazing - cut_summer           -4.30 1.270 229  -3.391  0.0105
-    ##  grazing - cut_autumn           -5.63 1.270 229  -4.442  0.0002
+    ##  contrast                       estimate    SE  df t.ratio p.value
+    ##  control_2018 - control_2003        0.31 1.070 229   0.289  0.9997
+    ##  control_2021 - control_2003        3.75 0.983 229   3.818  0.0024
+    ##  control_2021 - control_2018        3.44 0.983 229   3.503  0.0072
+    ##  cut_summer - control_2003         -6.54 1.190 229  -5.515  <.0001
+    ##  cut_summer - control_2018         -6.85 1.190 229  -5.776  <.0001
+    ##  cut_summer - control_2021        -10.29 1.100 229  -9.370  <.0001
+    ##  cut_autumn - control_2003         -5.20 1.190 229  -4.390  0.0002
+    ##  cut_autumn - control_2018         -5.51 1.190 229  -4.651  0.0001
+    ##  cut_autumn - control_2021         -8.95 1.100 229  -8.155  <.0001
+    ##  cut_autumn - cut_summer            1.33 1.270 229   1.051  0.8998
+    ##  topsoil_removal - control_2003   -10.84 1.190 229  -9.143  <.0001
+    ##  topsoil_removal - control_2018   -11.15 1.190 229  -9.404  <.0001
+    ##  topsoil_removal - control_2021   -14.59 1.100 229 -13.286  <.0001
+    ##  topsoil_removal - cut_summer      -4.30 1.270 229  -3.391  0.0105
+    ##  topsoil_removal - cut_autumn      -5.63 1.270 229  -4.442  0.0002
     ## 
     ## P value adjustment: tukey method for comparing a family of 6 estimates
 

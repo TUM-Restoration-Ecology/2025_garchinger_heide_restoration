@@ -1,4 +1,4 @@
-plot,parcel,block,hay_transer,mowing_date,mowing_date_start,mowing_date_former,mowing_date_former_start,elevation,plot_size,treatment,mowing,survey_date_2024,botanist_2024,cover_vegetation_2024,cover_moss_2024,cover_litter_2024,cover_soil_2024,height_vegetation_2024,comments
+plot,parcel,block,hay_transfer,mowing_date,mowing_date_start,mowing_date_former,mowing_date_former_start,elevation,plot_size,treatment,mowing,survey_date_2024,botanist_2024,cover_vegetation_2024,cover_moss_2024,cover_litter_2024,cover_soil_2024,height_vegetation_2024,comments
 res01,520E,520E,no,no,NA,NA,NA,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,35,60,3,7,12,
 res02,520E,520E,no,no,NA,NA,NA,469,4,topsoil_removal,1990,2024-06-08,Malte Knoeppler / Sina Appeltauer,30,55,3,20,7,
 res03,520E,520E,no,no,NA,NA,NA,469,4,topsoil_removal,2000,2024-06-08,Malte Knoeppler / Sina Appeltauer,50,55,1,10,6,

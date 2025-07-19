@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Red List Germany
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-07-18</b>
+<b>2025-07-19</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -113,7 +113,7 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Graphs of raw data (Step 2, 6, 7)
 
-![](model_check_richness_rlg_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-2.png)<!-- -->
+![](model_check_richness_rlg_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-2.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-3.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-4.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-5.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-6.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-7.png)<!-- -->![](model_check_richness_rlg_files/figure-gfm/data-exploration-8.png)<!-- -->
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
@@ -136,7 +136,10 @@ Exclude r \> 0.7 <br> Dormann et al. 2013 Ecography
 
 ``` r
 sites %>%
-  select(height_vegetation, cover_vegetation) %>%
+    select(
+    cover_vegetation, height_vegetation, grass_cover, graminoid_cover, mem1,
+    mem2
+    ) %>%
   GGally::ggpairs(lower = list(continuous = "smooth_loess")) +
   theme(strip.text = element_text(size = 7))
 ```
@@ -220,64 +223,16 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$mem2)
 ![](model_check_richness_rlg_files/figure-gfm/dharma_single-4.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$cover_vegetation)
+plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 ```
 
 ![](model_check_richness_rlg_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$cover_vegetation)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-6.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-7.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-8.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-9.png)<!-- -->
-
-``` r
 plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
 ```
 
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-10.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$grass_cover)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-11.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$grass_cover)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-12.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$graminoid_cover)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-13.png)<!-- -->
-
-``` r
-plotResiduals(simulation_output_2$scaledResiduals, sites$graminoid_cover)
-```
-
-![](model_check_richness_rlg_files/figure-gfm/dharma_single-14.png)<!-- -->
+![](model_check_richness_rlg_files/figure-gfm/dharma_single-6.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 

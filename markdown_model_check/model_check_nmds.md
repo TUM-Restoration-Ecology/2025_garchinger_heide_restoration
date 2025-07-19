@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> NMDS and PERMANOVA
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-07-17</b>
+<b>2025-07-19</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -65,6 +65,28 @@ species <- read_csv(
 
 ``` r
 sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(x = as.numeric(hay_transfer), fill = mowing_date)) +
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](model_check_nmds_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+``` r
+sites %>%
+  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  ggplot(aes(x = mowing_date_start, fill = mowing_date)) +
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](model_check_nmds_files/figure-gfm/unnamed-chunk-2-2.png)<!-- -->
+
+``` r
+sites %>%
   group_by(treatment) %>%
   count(esy) %>%
   group_by(treatment) %>%
@@ -73,22 +95,22 @@ sites %>%
 
     ## # A tibble: 14 × 4
     ## # Groups:   treatment [6]
-    ##    treatment    esy       n ratio
-    ##    <chr>        <chr> <int> <dbl>
-    ##  1 control_2003 R        10  0.24
-    ##  2 control_2003 R1A      30  0.71
-    ##  3 control_2003 R22       2  0.05
-    ##  4 control_2018 R         1  0.02
-    ##  5 control_2018 R1A      41  0.98
-    ##  6 control_2021 R        20  0.32
-    ##  7 control_2021 R1A      41  0.66
-    ##  8 control_2021 R22       1  0.02
-    ##  9 cut_autumn   R        14  0.47
-    ## 10 cut_autumn   R1A      16  0.53
-    ## 11 cut_summer   R        14  0.47
-    ## 12 cut_summer   R1A      16  0.53
-    ## 13 grazing      R        10  0.33
-    ## 14 grazing      R1A      20  0.67
+    ##    treatment       esy       n ratio
+    ##    <chr>           <chr> <int> <dbl>
+    ##  1 control_2003    R        10  0.24
+    ##  2 control_2003    R1A      30  0.71
+    ##  3 control_2003    R22       2  0.05
+    ##  4 control_2018    R         1  0.02
+    ##  5 control_2018    R1A      41  0.98
+    ##  6 control_2021    R        20  0.32
+    ##  7 control_2021    R1A      41  0.66
+    ##  8 control_2021    R22       1  0.02
+    ##  9 cut_autumn      R        14  0.47
+    ## 10 cut_autumn      R1A      16  0.53
+    ## 11 cut_summer      R        14  0.47
+    ## 12 cut_summer      R1A      16  0.53
+    ## 13 topsoil_removal R        10  0.33
+    ## 14 topsoil_removal R1A      20  0.67
 
 ## Models
 
@@ -184,13 +206,13 @@ ef_factor1
 ## ***FACTORS:
 ## 
 ## Centroids:
-##                         NMDS1   NMDS2
-## treatmentcontrol_2003 -0.4309 -0.0186
-## treatmentcontrol_2018 -0.3044 -0.1420
-## treatmentcontrol_2021 -0.2782 -0.3403
-## treatmentcut_autumn    0.8989 -0.0425
-## treatmentcut_summer    0.8786 -0.0022
-## treatmentgrazing      -0.1733  0.9729
+##                            NMDS1   NMDS2
+## treatmentcontrol_2003    -0.4309 -0.0186
+## treatmentcontrol_2018    -0.3044 -0.1420
+## treatmentcontrol_2021    -0.2782 -0.3403
+## treatmentcut_autumn       0.8989 -0.0425
+## treatmentcut_summer       0.8786 -0.0022
+## treatmenttopsoil_removal -0.1733  0.9729
 ## 
 ## Goodness of fit:
 ##               r2 Pr(>r)    
@@ -238,22 +260,22 @@ TukeyHSD(dispersion)
     ## Fit: aov(formula = distances ~ group, data = df)
     ## 
     ## $group
-    ##                                  diff        lwr        upr     p adj
-    ## control_2018-control_2003 -14.4923446 -21.088344  -7.896345 0.0000000
-    ## control_2021-control_2003 -17.6144387 -23.655127 -11.573750 0.0000000
-    ## cut_autumn-control_2003   -18.0459378 -25.271493 -10.820383 0.0000000
-    ## cut_summer-control_2003   -19.9532284 -27.178783 -12.727673 0.0000000
-    ## grazing-control_2003      -30.8646096 -38.090165 -23.639055 0.0000000
-    ## control_2021-control_2018  -3.1220941  -9.162782   2.918594 0.6739873
-    ## cut_autumn-control_2018    -3.5535932 -10.779148   3.671962 0.7188953
-    ## cut_summer-control_2018    -5.4608838 -12.686439   1.764671 0.2549523
-    ## grazing-control_2018      -16.3722650 -23.597820  -9.146710 0.0000000
-    ## cut_autumn-control_2021    -0.4314991  -7.153951   6.290953 0.9999702
-    ## cut_summer-control_2021    -2.3387897  -9.061241   4.383662 0.9176272
-    ## grazing-control_2021      -13.2501709 -19.972623  -6.527719 0.0000007
-    ## cut_summer-cut_autumn      -1.9072906  -9.711782   5.897201 0.9815226
-    ## grazing-cut_autumn        -12.8186718 -20.623163  -5.014180 0.0000597
-    ## grazing-cut_summer        -10.9113812 -18.715873  -3.106890 0.0011099
+    ##                                     diff        lwr        upr     p adj
+    ## control_2018-control_2003    -14.4923446 -21.088344  -7.896345 0.0000000
+    ## control_2021-control_2003    -17.6144387 -23.655127 -11.573750 0.0000000
+    ## cut_autumn-control_2003      -18.0459378 -25.271493 -10.820383 0.0000000
+    ## cut_summer-control_2003      -19.9532284 -27.178783 -12.727673 0.0000000
+    ## topsoil_removal-control_2003 -30.8646096 -38.090165 -23.639055 0.0000000
+    ## control_2021-control_2018     -3.1220941  -9.162782   2.918594 0.6739873
+    ## cut_autumn-control_2018       -3.5535932 -10.779148   3.671962 0.7188953
+    ## cut_summer-control_2018       -5.4608838 -12.686439   1.764671 0.2549523
+    ## topsoil_removal-control_2018 -16.3722650 -23.597820  -9.146710 0.0000000
+    ## cut_autumn-control_2021       -0.4314991  -7.153951   6.290953 0.9999702
+    ## cut_summer-control_2021       -2.3387897  -9.061241   4.383662 0.9176272
+    ## topsoil_removal-control_2021 -13.2501709 -19.972623  -6.527719 0.0000007
+    ## cut_summer-cut_autumn         -1.9072906  -9.711782   5.897201 0.9815226
+    ## topsoil_removal-cut_autumn   -12.8186718 -20.623163  -5.014180 0.0000597
+    ## topsoil_removal-cut_summer   -10.9113812 -18.715873  -3.106890 0.0011099
 
 ``` r
 plot(dispersion, hull = FALSE, ellipse = TRUE, label = TRUE)
@@ -332,4 +354,4 @@ species2 <- data %>%
     ## [33] cluster_2.1.8.1    pkgconfig_2.0.3    pillar_1.11.0      gtable_0.3.6      
     ## [37] glue_1.8.0         xfun_0.52          tidyselect_1.2.1   rstudioapi_0.17.1 
     ## [41] knitr_1.50         farver_2.1.2       htmltools_0.5.8.1  nlme_3.1-168      
-    ## [45] rmarkdown_2.29     compiler_4.5.0
+    ## [45] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.0
