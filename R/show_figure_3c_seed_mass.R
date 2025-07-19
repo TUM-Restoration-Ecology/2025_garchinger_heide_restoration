@@ -53,13 +53,13 @@ sites <- read_csv(
   mutate(
     treatment = fct_relevel(
       treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
-      "cut_autumn", "grazing"
+      "cut_autumn", "topsoil_removal"
     ),
     treatment = fct_recode(
       treatment, "Ref.\n2003" = "control_2003",
       "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
       "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
-      "Topsoil\nremoval" = "grazing"
+      "Topsoil\nremoval" = "topsoil_removal"
     )
   ) %>%
   filter(
@@ -88,7 +88,7 @@ data <- sites %>%
     geom_quasirandom(color = "grey20", dodge.width = .6, size = 1, shape = 16) +
     geom_boxplot(alpha = .5, color = "black") +
     annotate(
-      "text", x = 1.5, y = 0, size = 3,
+      "text", x = 1.5, y = 5.6, size = 3,
       label = expression(4^th~corner*": n.s.")
     ) +
     scale_y_continuous(limits = c(0, 5.6), breaks = seq(-100, 400, .5)) +
@@ -106,7 +106,7 @@ data <- sites %>%
     theme_mb())
 
 ### Save ###
-ggsave(
-  here("outputs", "figures", "figure_3c_seed_mass_800dpi_8x8cm.tiff"),
-  dpi = 800, width = 8, height = 8, units = "cm"
-  )
+# ggsave(
+#   here("outputs", "figures", "figure_3c_seed_mass_800dpi_8x8cm.tiff"),
+#   dpi = 800, width = 8, height = 8, units = "cm"
+#   )

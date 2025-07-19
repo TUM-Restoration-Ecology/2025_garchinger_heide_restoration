@@ -19,7 +19,6 @@ library(FD)
 library(vegan)
 library(adespatial)
 library(vegdata)
-library(profvis)
 
 ### Start ###
 rm(list = ls())

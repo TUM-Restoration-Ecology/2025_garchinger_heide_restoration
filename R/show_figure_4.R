@@ -167,7 +167,7 @@ data_nmds <-  sites %>%
      "control_2021" = "Reference\n2021",
      "cut_summer" = "Mowing\nsummer",
      "cut_autumn" = "Mowing\nautumn",
-     "grazing" = "Topsoil\nremoval"
+     "topsoil_removal" = "Topsoil\nremoval"
    ),
    values = c(
      "control_2003" = "#a153a6", 
@@ -175,7 +175,7 @@ data_nmds <-  sites %>%
      "control_2021" = "#f947d1", 
      "cut_summer" = "#61a161", 
      "cut_autumn" = "#87ceeb", 
-     "grazing" = "#b06e13"
+     "topsoil_removal" = "#b06e13"
    )
  ) +
    scale_shape_manual(

@@ -29,7 +29,7 @@ data <- read_csv(
     cols(
       .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "grazing")
+        levels = c("control", "cut_summer", "cut_autumn", "topsoil_removal")
       )
     )
 ) %>%
@@ -48,7 +48,7 @@ data <- read_csv(
       "Control" = "control",
       "Summer cut" = "cut_summer",
       "Autumn cut" = "cut_autumn",
-      "Grazing" = "grazing"
+      "Topsoil removal" = "topsoil_removal"
     )
   )
 

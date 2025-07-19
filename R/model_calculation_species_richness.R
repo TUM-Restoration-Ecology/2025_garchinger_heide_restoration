@@ -32,7 +32,7 @@ sites <- read_csv(
       .default = "?",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
-                   "cut_autumn", "grazing")
+                   "cut_autumn", "topsoil_removal")
       )
     )
   ) %>%

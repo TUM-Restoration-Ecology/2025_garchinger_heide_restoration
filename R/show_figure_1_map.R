@@ -113,7 +113,6 @@ graph_sites <- ggplot() +
     plot.background = element_blank(),
     legend.position = "none"
   )
-graph_sites
 
 
 ## Save ####

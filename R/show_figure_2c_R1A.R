@@ -53,13 +53,13 @@ sites <- read_csv(
   mutate(
     treatment = fct_relevel(
       treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
-      "cut_autumn", "grazing"
+      "cut_autumn", "topsoil_removal"
     ),
     treatment = fct_recode(
       treatment, "Ref.\n2003" = "control_2003",
       "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
       "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
-      "Topsoil\nremoval" = "grazing"
+      "Topsoil\nremoval" = "topsoil_removal"
     )
   )
 
@@ -84,7 +84,7 @@ data_model <- ggeffect(
       x, "Ref.\n2003" = "control_2003",
       "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
       "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
-      "Topsoil\nremoval" = "grazing"
+      "Topsoil\nremoval" = "topsoil_removal"
     )
   )
 

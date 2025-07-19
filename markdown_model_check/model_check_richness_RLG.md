@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Red List Germany
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-07-16</b>
+<b>2025-07-18</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -72,7 +72,7 @@ sites <- read_csv(
       .default = "?",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
-                   "cut_autumn", "grazing")
+                   "cut_autumn", "topsoil_removal")
       )
     )
   ) %>%
@@ -118,14 +118,14 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
     ## # A tibble: 6 × 2
-    ##   treatment        n
-    ##   <fct>        <int>
-    ## 1 control_2003    42
-    ## 2 control_2018    42
-    ## 3 control_2021    62
-    ## 4 cut_summer      30
-    ## 5 cut_autumn      30
-    ## 6 grazing         30
+    ##   treatment           n
+    ##   <fct>           <int>
+    ## 1 control_2003       42
+    ## 2 control_2018       42
+    ## 3 control_2021       62
+    ## 4 cut_summer         30
+    ## 5 cut_autumn         30
+    ## 6 topsoil_removal    30
 
 ![](model_check_richness_rlg_files/figure-gfm/outliers-1.png)<!-- -->
 
@@ -254,6 +254,30 @@ plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
 ```
 
 ![](model_check_richness_rlg_files/figure-gfm/dharma_single-10.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$grass_cover)
+```
+
+![](model_check_richness_rlg_files/figure-gfm/dharma_single-11.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$grass_cover)
+```
+
+![](model_check_richness_rlg_files/figure-gfm/dharma_single-12.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$graminoid_cover)
+```
+
+![](model_check_richness_rlg_files/figure-gfm/dharma_single-13.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, sites$graminoid_cover)
+```
+
+![](model_check_richness_rlg_files/figure-gfm/dharma_single-14.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 

@@ -68,7 +68,7 @@ sites <- read_csv(
       .default = "?",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
-                   "cut_autumn", "grazing")
+                   "cut_autumn", "topsoil_removal")
       )
     )
   ) %>%
@@ -163,6 +163,10 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$height_vegetation)
 plotResiduals(simulation_output_2$scaledResiduals, sites$height_vegetation)
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 plotResiduals(simulation_output_2$scaledResiduals, sites$botanist)
+plotResiduals(simulation_output_1$scaledResiduals, sites$grass_cover)
+plotResiduals(simulation_output_2$scaledResiduals, sites$grass_cover)
+plotResiduals(simulation_output_1$scaledResiduals, sites$graminoid_cover)
+plotResiduals(simulation_output_2$scaledResiduals, sites$graminoid_cover)
 ```
 
 ### Check collinearity part 2 (Step 5)
