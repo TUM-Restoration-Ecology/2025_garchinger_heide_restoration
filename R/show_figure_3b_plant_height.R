@@ -96,7 +96,7 @@ data <- sites %>%
         "Topsoil\nremoval" = "#b06e13"
       )
     ) +
-    labs(x = "", y = expression(CWM ~ canopy ~ height ~ "[" * m * "]")) +
+    labs(x = "", y = expression(CWM ~ plant ~ height ~ "[" * m * "]")) +
     theme_mb()); graph
 
 ### Save ###
