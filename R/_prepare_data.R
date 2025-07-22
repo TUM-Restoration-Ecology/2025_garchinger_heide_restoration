@@ -87,7 +87,11 @@ sites_restoration <- read_csv(
   select(
     -cover_moss_2024, -cover_litter_2024, -comments
     ) %>%
-  mutate(year = year(survey_date))
+  mutate(year = year(survey_date)) %>%
+  filter(!(plot %in% c(
+    "res49",  # Site did not receive hay transfer
+    "res29", "res30", "res31", "res32" # Mowing regime changed after 2020
+  )))
 
 sites_bauer_etal_2020 <- read_csv(
   here("data", "raw", "data_raw_sites_bauer_etal-2020.csv"),
@@ -105,6 +109,8 @@ sites_bauer_etal_2020 <- read_csv(
     id, plot, location, plot_size, botanist, year,
     cover_vegetation, height_vegetation
     )
+
+
 
 ## 2 Species ##################################################################
 
@@ -1040,10 +1046,10 @@ m <- quickMEM(
 )
 
 # OUTPUT (2025-07-14)
-# -------------------------------------------------------
+# --
 #   A significant linear trend has been found in the response data.
 # The response data have been detrended prior to dbMEM analysis.
-# -------------------------------------------------------
+# --
 #   20 dbMEM eigenvectors have been produced 
 # R2 of global model =  0.1382 
 # Adjusted R2 of global model =  0.058 
@@ -1051,7 +1057,7 @@ m <- quickMEM(
 # R2 of minimum (final) model =  0.0753                      
 # Adjusted R2 of minimum (final) model =  0.0552          
 # The final model has 2 significant canonical axes 
-# ---------------------------------------------------------
+# --
 
 m$RDA_test # p: 0.001
 m$RDA_axes_test #  RDA1 and RDA2: sig. axis
