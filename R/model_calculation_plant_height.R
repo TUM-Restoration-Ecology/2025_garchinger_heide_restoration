@@ -88,9 +88,46 @@ sites %>% group_by(treatment) %>% count(treatment)
 
 ## 2 Model building ###########################################################
 
+
+### a Full dataset ------------------------------------------------------------
+
 m <- ade4::fourthcorner(
   tabR = sites_fc, tabL = species, tabQ = traits, modeltype = 6,
   nrepet = 999
 )
 m
 summary(m)
+
+
+### b Subset of data -----------------------------------------------------------
+
+subset_sites <- sites %>%
+  mutate(
+    hay_and_mowing_date = str_c(
+      year_hay_transfer, mowing_date, sep = "_"
+    )
+  ) %>%
+  filter(
+    is.na(hay_and_mowing_date) | !(hay_and_mowing_date %in% c("1993_summer")),
+    is.na(year_topsoil_removal) | year_topsoil_removal != "1996/2003"
+  )
+
+subset_sites_fc <- subset_sites %>%
+  select(
+    id, treatment, grass_cover, graminoid_cover
+  ) %>% 
+  column_to_rownames(var = "id")
+
+subset_species <- species %>%
+  rownames_to_column(var = "id") %>%
+  pivot_longer(-id, names_to = "accepted_name", values_to = "cover") %>%
+  semi_join(subset_sites, by = "id") %>% 
+  pivot_wider(names_from = "accepted_name", values_from = "cover") %>%
+  column_to_rownames(var = "id")
+
+m_sub <- ade4::fourthcorner(
+  tabR = subset_sites_fc, tabL = subset_species, tabQ = traits, modeltype = 6,
+  nrepet = 999
+)
+m_sub
+summary(m_sub)

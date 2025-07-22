@@ -53,26 +53,10 @@ sites <- read_csv(
 
 ggplot(sites, aes(y = y, x = treatment)) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
-ggplot(sites, aes(y = y, x = height_vegetation)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
-ggplot(sites, aes(y = y, x = cover_vegetation)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
-ggplot(sites, aes(y = y, x = grass_cover)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
-ggplot(sites, aes(y = y, x = graminoid_cover)) +
-  geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
-sites %>%
-  filter(!(is.na(block))) %>%
-  ggplot(aes(y = y, x = block)) +
-  geom_quasirandom(color = "grey") + geom_boxplot()
-sites %>%
-  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
-  ggplot(aes(y = y, x = as.numeric(hay_transfer), color = mowing_date)) +
-  geom_point()
-sites %>%
-  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
-  ggplot(aes(y = y, x = mowing_date_start, color = mowing_date)) +
-  geom_point()
+ggplot(sites, aes(y = y, x = as_factor(year_hay_transfer))) +
+  geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
+ggplot(sites, aes(y = y, x = as.factor(mowing_date_start))) +
+  geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
 
 
 ### b Outliers, zero-inflation, transformations? -------------------------------
@@ -100,6 +84,8 @@ sites %>%
 ## 2 Model building ###########################################################
 
 
+### a Full dataset ------------------------------------------------------------
+
 m1 <- lm(y ~ treatment, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
@@ -109,6 +95,31 @@ simulateResiduals(m2, plot = TRUE)
 
 ### Save ####
 
-
 save(m1, file = here("outputs", "models", "model_species_richness_1.Rdata"))
 save(m2, file = here("outputs", "models", "model_species_richness_2.Rdata"))
+
+
+### b Subset of data -----------------------------------------------------------
+
+subset <- sites %>%
+  mutate(
+    hay_and_mowing_date = str_c(
+      year_hay_transfer, mowing_date, sep = "_"
+    )
+  ) %>%
+  filter(
+    is.na(hay_and_mowing_date) | !(hay_and_mowing_date %in% c("1993_summer")),
+    is.na(year_topsoil_removal) | year_topsoil_removal != "1996/2003"
+  )
+
+m1sub <- lm(y ~ treatment, data = subset)
+simulateResiduals(m1, plot = TRUE)
+
+m2sub <- lm(y ~ treatment + mem2, data = subset)
+simulateResiduals(m2, plot = TRUE)
+
+
+### Save ####
+
+save(m1sub, file = here("outputs", "models", "model_species_richness_1sub.Rdata"))
+save(m2sub, file = here("outputs", "models", "model_species_richness_2sub.Rdata"))
