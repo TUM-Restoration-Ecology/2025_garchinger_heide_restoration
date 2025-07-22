@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> NMDS and PERMANOVA
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-07-19</b>
+<b>2025-07-22</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -65,8 +65,7 @@ species <- read_csv(
 
 ``` r
 sites %>%
-  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
-  ggplot(aes(x = as.numeric(hay_transfer), fill = mowing_date)) +
+  ggplot(aes(x = as.numeric(year_hay_transfer), fill = mowing_date)) +
   geom_histogram()
 ```
 
@@ -76,7 +75,7 @@ sites %>%
 
 ``` r
 sites %>%
-  filter(!(is.na(hay_transfer) | hay_transfer == "no")) %>%
+  filter(!(is.na(year_hay_transfer) | year_hay_transfer == "no")) %>%
   ggplot(aes(x = mowing_date_start, fill = mowing_date)) +
   geom_histogram()
 ```
@@ -93,7 +92,7 @@ sites %>%
   mutate(ratio = round(n / sum(n), digits = 2))
 ```
 
-    ## # A tibble: 14 × 4
+    ## # A tibble: 17 × 4
     ## # Groups:   treatment [6]
     ##    treatment       esy       n ratio
     ##    <chr>           <chr> <int> <dbl>
@@ -102,15 +101,18 @@ sites %>%
     ##  3 control_2003    R22       2  0.05
     ##  4 control_2018    R         1  0.02
     ##  5 control_2018    R1A      41  0.98
-    ##  6 control_2021    R        20  0.32
-    ##  7 control_2021    R1A      41  0.66
+    ##  6 control_2021    R        18  0.29
+    ##  7 control_2021    R1A      39  0.63
     ##  8 control_2021    R22       1  0.02
-    ##  9 cut_autumn      R        14  0.47
-    ## 10 cut_autumn      R1A      16  0.53
-    ## 11 cut_summer      R        14  0.47
-    ## 12 cut_summer      R1A      16  0.53
-    ## 13 topsoil_removal R        10  0.33
-    ## 14 topsoil_removal R1A      20  0.67
+    ##  9 control_2021    S22       4  0.06
+    ## 10 cut_autumn      R        14  0.47
+    ## 11 cut_autumn      R1A      16  0.53
+    ## 12 cut_summer      R        13  0.52
+    ## 13 cut_summer      R1A      12  0.48
+    ## 14 topsoil_removal H26a      4  0.13
+    ## 15 topsoil_removal R         7  0.23
+    ## 16 topsoil_removal R1A      18  0.6 
+    ## 17 topsoil_removal S22       1  0.03
 
 ## Models
 
@@ -136,10 +138,10 @@ ordi
 ## Distance: bray 
 ## 
 ## Dimensions: 2 
-## Stress:     0.1754609 
+## Stress:     0.1803642 
 ## Stress type 1, weak ties
 ## Best solution was not repeated after 20 tries
-## The best solution was from try 7 (random start)
+## The best solution was from try 12 (random start)
 ## Scaling: centring, PC rotation, halfchange scaling 
 ## Species: expanded scores based on 'wisconsin(sqrt(species))'
 ```
@@ -174,10 +176,10 @@ ef_vector1
 ## ***VECTORS
 ## 
 ##                      NMDS1    NMDS2     r2 Pr(>r)    
-## height_vegetation  0.91584 -0.40155 0.7017  0.001 ***
-## cover_vegetation  -0.15590 -0.98777 0.5428  0.001 ***
-## grass_cover        0.89266 -0.45073 0.6372  0.001 ***
-## graminoid_cover    0.19648 -0.98051 0.4756  0.001 ***
+## height_vegetation  0.96483 -0.26286 0.6537  0.001 ***
+## cover_vegetation  -0.11301 -0.99359 0.5233  0.001 ***
+## grass_cover        0.89626 -0.44352 0.6601  0.001 ***
+## graminoid_cover    0.22117 -0.97524 0.5526  0.001 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -207,16 +209,16 @@ ef_factor1
 ## 
 ## Centroids:
 ##                            NMDS1   NMDS2
-## treatmentcontrol_2003    -0.4309 -0.0186
-## treatmentcontrol_2018    -0.3044 -0.1420
-## treatmentcontrol_2021    -0.2782 -0.3403
-## treatmentcut_autumn       0.8989 -0.0425
-## treatmentcut_summer       0.8786 -0.0022
-## treatmenttopsoil_removal -0.1733  0.9729
+## treatmentcontrol_2003    -0.3982 -0.0375
+## treatmentcontrol_2018    -0.2760 -0.1674
+## treatmentcontrol_2021    -0.2250 -0.3355
+## treatmentcut_autumn       0.9103  0.1095
+## treatmentcut_summer       0.8347 -0.0932
+## treatmenttopsoil_removal -0.1971  0.9484
 ## 
 ## Goodness of fit:
 ##               r2 Pr(>r)    
-## treatment 0.8536  0.001 ***
+## treatment 0.8518  0.001 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -239,8 +241,8 @@ permutest(dispersion)
     ## 
     ## Response: Distances
     ##            Df Sum Sq Mean Sq      F N.Perm Pr(>F)    
-    ## Groups      5  18232  3646.4 32.963    999  0.001 ***
-    ## Residuals 230  25443   110.6                         
+    ## Groups      5  18109  3621.7 32.802    999  0.001 ***
+    ## Residuals 225  24843   110.4                         
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -261,21 +263,21 @@ TukeyHSD(dispersion)
     ## 
     ## $group
     ##                                     diff        lwr        upr     p adj
-    ## control_2018-control_2003    -14.4923446 -21.088344  -7.896345 0.0000000
-    ## control_2021-control_2003    -17.6144387 -23.655127 -11.573750 0.0000000
-    ## cut_autumn-control_2003      -18.0459378 -25.271493 -10.820383 0.0000000
-    ## cut_summer-control_2003      -19.9532284 -27.178783 -12.727673 0.0000000
-    ## topsoil_removal-control_2003 -30.8646096 -38.090165 -23.639055 0.0000000
-    ## control_2021-control_2018     -3.1220941  -9.162782   2.918594 0.6739873
-    ## cut_autumn-control_2018       -3.5535932 -10.779148   3.671962 0.7188953
-    ## cut_summer-control_2018       -5.4608838 -12.686439   1.764671 0.2549523
-    ## topsoil_removal-control_2018 -16.3722650 -23.597820  -9.146710 0.0000000
-    ## cut_autumn-control_2021       -0.4314991  -7.153951   6.290953 0.9999702
-    ## cut_summer-control_2021       -2.3387897  -9.061241   4.383662 0.9176272
-    ## topsoil_removal-control_2021 -13.2501709 -19.972623  -6.527719 0.0000007
-    ## cut_summer-cut_autumn         -1.9072906  -9.711782   5.897201 0.9815226
-    ## topsoil_removal-cut_autumn   -12.8186718 -20.623163  -5.014180 0.0000597
-    ## topsoil_removal-cut_summer   -10.9113812 -18.715873  -3.106890 0.0011099
+    ## control_2018-control_2003    -14.4923446 -21.083359  -7.901330 0.0000000
+    ## control_2021-control_2003    -17.6144385 -23.650562 -11.578315 0.0000000
+    ## cut_autumn-control_2003      -18.0459377 -25.266033 -10.825843 0.0000000
+    ## cut_summer-control_2003      -19.7428650 -27.372516 -12.113214 0.0000000
+    ## topsoil_removal-control_2003 -30.8646093 -38.084704 -23.644514 0.0000000
+    ## control_2021-control_2018     -3.1220940  -9.158217   2.914029 0.6730996
+    ## cut_autumn-control_2018       -3.5535932 -10.773688   3.666502 0.7180801
+    ## cut_summer-control_2018       -5.2505204 -12.880171   2.379131 0.3581702
+    ## topsoil_removal-control_2018 -16.3722647 -23.592360  -9.152170 0.0000000
+    ## cut_autumn-control_2021       -0.4314992  -7.148871   6.285872 0.9999700
+    ## cut_summer-control_2021       -2.1284264  -9.284185   5.027333 0.9565594
+    ## topsoil_removal-control_2021 -13.2501708 -19.967542  -6.532799 0.0000006
+    ## cut_summer-cut_autumn         -1.6969272  -9.876161   6.482307 0.9912018
+    ## topsoil_removal-cut_autumn   -12.8186716 -20.617265  -5.020078 0.0000592
+    ## topsoil_removal-cut_summer   -11.1217444 -19.300979  -2.942510 0.0016955
 
 ``` r
 plot(dispersion, hull = FALSE, ellipse = TRUE, label = TRUE)
@@ -285,8 +287,8 @@ plot(dispersion, hull = FALSE, ellipse = TRUE, label = TRUE)
 
 ## PERMANOVA
 
-Exclude reference sites from 2003 because of high dispersion within this
-group
+Exclude reference sites (control) from 2003 because of high dispersion
+within this group
 
 ``` r
 data <- species %>%
@@ -310,9 +312,9 @@ species2 <- data %>%
     ## 
     ## adonis2(formula = species2 ~ treatment, data = sites2, permutations = 999, method = "bray")
     ##           Df SumOfSqs      R2      F Pr(>F)    
-    ## Model      4   28.204 0.51164 49.502  0.001 ***
-    ## Residual 189   26.921 0.48836                  
-    ## Total    193   55.125 1.00000                  
+    ## Model      4   27.248 0.51026 47.927  0.001 ***
+    ## Residual 184   26.152 0.48974                  
+    ## Total    188   53.400 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
