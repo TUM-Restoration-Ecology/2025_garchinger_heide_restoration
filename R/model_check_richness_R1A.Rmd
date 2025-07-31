@@ -180,6 +180,8 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_2$scaledResiduals, subset$mem2) # dataframe subset
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe subset
+plotResiduals(simulation_output_1$scaledResiduals, sites$year_hay_transfer)
+plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # dataframe subset
 ```
 
 ### Check collinearity part 2 (Step 5)

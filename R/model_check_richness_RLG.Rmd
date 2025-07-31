@@ -67,12 +67,18 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = 
     cols(
       .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
       )
     )
   ) %>%
+    mutate(
+    year_hay_transfer = if_else(
+      is.na(year_hay_transfer), "no", year_hay_transfer
+      )
+    ) %>%
   rename(y = rlg)
 
 subset <- sites %>%
@@ -127,7 +133,7 @@ sites %>%
 plot1 <- ggplot(sites, aes(x = treatment, y = y)) +
   geom_quasirandom()
 plot2 <- ggplot(sites, aes(x = y)) +
-  geom_histogram(binwidth = 0.01)
+  geom_histogram()
 plot3 <- ggplot(sites, aes(x = y)) +
   geom_density()
 plot4 <- ggplot(sites, aes(x = log(y))) +
@@ -181,6 +187,8 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_2$scaledResiduals, subset$mem2) # dataframe subset
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe subset
+plotResiduals(simulation_output_1$scaledResiduals, sites$year_hay_transfer)
+plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # dataframe subset
 ```
 
 ### Check collinearity part 2 (Step 5)
@@ -189,7 +197,7 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:10.1111/j.
 
 ```{r vif}
 #car::vif(m_1)
-car::vif(m_2)
+#car::vif(m_2)
 ```
 
 ## Model comparison

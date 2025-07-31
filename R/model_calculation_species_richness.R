@@ -112,10 +112,10 @@ subset <- sites %>%
     is.na(year_topsoil_removal) | year_topsoil_removal != "1996/2003"
   )
 
-m1sub <- lm(y ~ treatment, data = subset)
+m1sub <- lm(y ~ treatment + year_hay_transfer, data = subset)
 simulateResiduals(m1, plot = TRUE)
 
-m2sub <- lm(y ~ treatment + mem2, data = subset)
+m2sub <- lm(y ~ treatment + year_hay_transfer + mem2, data = subset)
 simulateResiduals(m2, plot = TRUE)
 
 

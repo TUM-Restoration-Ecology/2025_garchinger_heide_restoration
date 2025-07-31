@@ -30,9 +30,15 @@ sites <- read_csv(
   col_names = TRUE, na = c("na", "NA", ""), col_types =
     cols(
       .default = "?",
-      treatment = "f"
+      treatment = "f",
+      year_hay_transfer = "f"
     )
 ) %>%
+  mutate(
+    year_hay_transfer = if_else(
+      is.na(year_hay_transfer), "no", year_hay_transfer
+      )
+    ) %>%
   rename(y = rlg)
 
 
@@ -81,10 +87,10 @@ sites %>%
 
 ### a Full dataset ------------------------------------------------------------
 
-m1 <- lm(y ~ treatment, data = sites)
+m1 <- lm(y ~ treatment + year_hay_transfer, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
-m2 <- lm(y ~ treatment + mem2, data = sites)
+m2 <- lm(y ~ treatment + year_hay_transfer + mem2, data = sites)
 simulateResiduals(m2, plot = TRUE)
 
 
@@ -107,10 +113,10 @@ subset <- sites %>%
     is.na(year_topsoil_removal) | year_topsoil_removal != "1996/2003"
   )
 
-m1sub <- lm(y ~ treatment, data = subset)
+m1sub <- lm(y ~ treatment + year_hay_transfer, data = subset)
 simulateResiduals(m1, plot = TRUE)
 
-m2sub <- lm(y ~ treatment + mem2, data = subset)
+m2sub <- lm(y ~ treatment + year_hay_transfer + mem2, data = subset)
 simulateResiduals(m2, plot = TRUE)
 
 
