@@ -1,29 +1,59 @@
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Management Garchinger Heide restoration sites
-# Specific leaf area (SLA) ####
-# Model building
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Markus Bauer
-# 2025-03-03
+---
+title: "Garchinger Heide and restoration sites: <br> Specific leaf area (SLA)"
+author: "<b>Markus Bauer</b> <br>"
+date: "<b>`r format(Sys.time(), '%Y-%m-%d')`</b>"
+output:
+  github_document:
+    toc: true
+    toc_depth: 3
+    dev: png
+    fig_width: 7
+    fig_height: 5
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE
+  )
+```
 
+<br/> <br/> <b>Markus Bauer</b>\*, <b>Sina Appeltauer</b>, <b>Malte Knöppler</b>, <b>Maren Teschauer</b> & <b>Johannes Kollmann</b>
 
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# A Preparation ###############################################################
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Technichal University of Munich, TUM School of Life Sciences, Chair of
+Restoration Ecology, Emil-Ramann-Straße 6, 85354 Freising, Germany
 
+\*[markus1.bauer\@tum.de](mailto:markus1.bauer@tum.de)
 
+ORCiD ID: [0000-0001-5372-4174](https://orcid.org/0000-0001-5372-4174)
+<br>
+[Google Scholar](https://scholar.google.de/citations?user=oHhmOkkAAAAJ&hl=de&oi=ao)
+<br>
+GitHub: [markus1bauer](https://github.com/markus1bauer)
+<br>
+GitHub: [TUM-Restoration-Ecology](https://github.com/TUM-Restoration-Ecology)
 
-### Packages ###
+# Preparation
+
+#### Packages
+
+```{r libraries, message = FALSE}
 library(here)
 library(tidyverse)
 library(ggbeeswarm)
+library(patchwork)
 library(ade4)
+```
 
-### Start ###
+```{r echo = FALSE}
 rm(list = ls())
+```
 
-### Load data ###
+#### Load data
+
+```{r load-data}
 sites <- read_csv(
   here("data", "processed", "data_processed_sites.csv"),
   col_names = TRUE, na = c("na", "NA", ""), col_types =
@@ -67,40 +97,64 @@ species <- read_csv(
 
 traits <- traits %>%
   column_to_rownames(var = "accepted_name")
+```
 
+# Statistics
 
+## Data exploration
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# B Statistics #################################################################
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+### Means and deviations
 
+```{r means}
+Rmisc::CI(sites$y, ci = .95)
+median(sites$y)
+sd(sites$y)
+quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
+```
 
+### Graphs of raw data
 
-## 1 Data exploration ##########################################################
-
-
+```{r data-exploration, echo = FALSE, warning = FALSE, message = FALSE}
 ggplot(sites, aes(y = y, x = treatment)) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
+```
 
-sites %>% group_by(treatment) %>% count(treatment)
+### Outliers, zero-inflation, transformations?
 
+```{r outliers, echo = FALSE, warning = FALSE}
+sites %>%
+  group_by(treatment) %>%
+  count(treatment)
+plot1 <- ggplot(sites, aes(x = treatment, y = y)) +
+  geom_quasirandom()
+plot2 <- ggplot(sites, aes(x = y)) +
+  geom_histogram(binwidth = 0.01)
+plot3 <- ggplot(sites, aes(x = y)) +
+  geom_density()
+plot4 <- ggplot(sites, aes(x = log(y))) +
+  geom_density()
+(plot1 + plot2) / (plot3 + plot4)
+```
 
+## Model
 
-## 2 Model building ###########################################################
-
-
-### a Full dataset ------------------------------------------------------------
-
+```{r model-full-dataset, collapse = TRUE}
 m <- ade4::fourthcorner(
   tabR = sites_fc, tabL = species, tabQ = traits, modeltype = 6,
   nrepet = 999
 )
-m
+```
+
+```{r output-model-full-dataset, collapse = TRUE}
 summary(m)
+m
+```
 
+# Subset of dataset
 
-### b Subset of data -----------------------------------------------------------
+## Set up data
 
+```{r}
 subset_sites <- sites %>%
   mutate(
     hay_and_mowing_date = str_c(
@@ -124,10 +178,24 @@ subset_species <- species %>%
   semi_join(subset_sites, by = "id") %>% 
   pivot_wider(names_from = "accepted_name", values_from = "cover") %>%
   column_to_rownames(var = "id")
+```
 
+## Model of subset
+
+```{r model-subset, collapse = TRUE}
 m_sub <- ade4::fourthcorner(
   tabR = subset_sites_fc, tabL = subset_species, tabQ = traits, modeltype = 6,
   nrepet = 999
 )
-m_sub
+```
+
+```{r model-subset-output, collapse = TRUE}
 summary(m_sub)
+m_sub
+```
+
+# Session info
+
+```{r session-info, echo = FALSE}
+sessionInfo()
+```
