@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> NMDS and PERMANOVA
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-07-22</b>
+<b>2025-08-04</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -92,27 +92,23 @@ sites %>%
   mutate(ratio = round(n / sum(n), digits = 2))
 ```
 
-    ## # A tibble: 17 × 4
+    ## # A tibble: 13 × 4
     ## # Groups:   treatment [6]
     ##    treatment       esy       n ratio
     ##    <chr>           <chr> <int> <dbl>
-    ##  1 control_2003    R        10  0.24
-    ##  2 control_2003    R1A      30  0.71
+    ##  1 control_2003    R         9  0.21
+    ##  2 control_2003    R1A      31  0.74
     ##  3 control_2003    R22       2  0.05
     ##  4 control_2018    R         1  0.02
     ##  5 control_2018    R1A      41  0.98
-    ##  6 control_2021    R        18  0.29
-    ##  7 control_2021    R1A      39  0.63
-    ##  8 control_2021    R22       1  0.02
-    ##  9 control_2021    S22       4  0.06
-    ## 10 cut_autumn      R        14  0.47
-    ## 11 cut_autumn      R1A      16  0.53
-    ## 12 cut_summer      R        13  0.52
-    ## 13 cut_summer      R1A      12  0.48
-    ## 14 topsoil_removal H26a      4  0.13
-    ## 15 topsoil_removal R         7  0.23
-    ## 16 topsoil_removal R1A      18  0.6 
-    ## 17 topsoil_removal S22       1  0.03
+    ##  6 control_2021    R        21  0.34
+    ##  7 control_2021    R1A      41  0.66
+    ##  8 cut_autumn      R        14  0.47
+    ##  9 cut_autumn      R1A      16  0.53
+    ## 10 cut_summer      R        14  0.56
+    ## 11 cut_summer      R1A      11  0.44
+    ## 12 topsoil_removal R         9  0.3 
+    ## 13 topsoil_removal R1A      21  0.7
 
 ## Models
 
@@ -138,10 +134,10 @@ ordi
 ## Distance: bray 
 ## 
 ## Dimensions: 2 
-## Stress:     0.1803642 
+## Stress:     0.1810618 
 ## Stress type 1, weak ties
-## Best solution was not repeated after 20 tries
-## The best solution was from try 12 (random start)
+## Best solution was repeated 1 time in 20 tries
+## The best solution was from try 2 (random start)
 ## Scaling: centring, PC rotation, halfchange scaling 
 ## Species: expanded scores based on 'wisconsin(sqrt(species))'
 ```
@@ -176,10 +172,10 @@ ef_vector1
 ## ***VECTORS
 ## 
 ##                      NMDS1    NMDS2     r2 Pr(>r)    
-## height_vegetation  0.96483 -0.26286 0.6537  0.001 ***
-## cover_vegetation  -0.11301 -0.99359 0.5233  0.001 ***
-## grass_cover        0.89626 -0.44352 0.6601  0.001 ***
-## graminoid_cover    0.22117 -0.97524 0.5526  0.001 ***
+## height_vegetation  0.97311 -0.23032 0.6537  0.001 ***
+## cover_vegetation  -0.09072 -0.99588 0.5218  0.001 ***
+## grass_cover        0.90984 -0.41495 0.6597  0.001 ***
+## graminoid_cover    0.24585 -0.96931 0.5497  0.001 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -209,16 +205,16 @@ ef_factor1
 ## 
 ## Centroids:
 ##                            NMDS1   NMDS2
-## treatmentcontrol_2003    -0.3982 -0.0375
-## treatmentcontrol_2018    -0.2760 -0.1674
-## treatmentcontrol_2021    -0.2250 -0.3355
-## treatmentcut_autumn       0.9103  0.1095
-## treatmentcut_summer       0.8347 -0.0932
-## treatmenttopsoil_removal -0.1971  0.9484
+## treatmentcontrol_2003    -0.3939 -0.0415
+## treatmentcontrol_2018    -0.2731 -0.1743
+## treatmentcontrol_2021    -0.2118 -0.3416
+## treatmentcut_autumn       0.9053  0.1321
+## treatmentcut_summer       0.8320 -0.0763
+## treatmenttopsoil_removal -0.2273  0.9397
 ## 
 ## Goodness of fit:
 ##               r2 Pr(>r)    
-## treatment 0.8518  0.001 ***
+## treatment 0.8493  0.001 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## Permutation: free
@@ -263,21 +259,21 @@ TukeyHSD(dispersion)
     ## 
     ## $group
     ##                                     diff        lwr        upr     p adj
-    ## control_2018-control_2003    -14.4923446 -21.083359  -7.901330 0.0000000
-    ## control_2021-control_2003    -17.6144385 -23.650562 -11.578315 0.0000000
-    ## cut_autumn-control_2003      -18.0459377 -25.266033 -10.825843 0.0000000
-    ## cut_summer-control_2003      -19.7428650 -27.372516 -12.113214 0.0000000
-    ## topsoil_removal-control_2003 -30.8646093 -38.084704 -23.644514 0.0000000
-    ## control_2021-control_2018     -3.1220940  -9.158217   2.914029 0.6730996
-    ## cut_autumn-control_2018       -3.5535932 -10.773688   3.666502 0.7180801
-    ## cut_summer-control_2018       -5.2505204 -12.880171   2.379131 0.3581702
-    ## topsoil_removal-control_2018 -16.3722647 -23.592360  -9.152170 0.0000000
-    ## cut_autumn-control_2021       -0.4314992  -7.148871   6.285872 0.9999700
-    ## cut_summer-control_2021       -2.1284264  -9.284185   5.027333 0.9565594
-    ## topsoil_removal-control_2021 -13.2501708 -19.967542  -6.532799 0.0000006
-    ## cut_summer-cut_autumn         -1.6969272  -9.876161   6.482307 0.9912018
-    ## topsoil_removal-cut_autumn   -12.8186716 -20.617265  -5.020078 0.0000592
-    ## topsoil_removal-cut_summer   -11.1217444 -19.300979  -2.942510 0.0016955
+    ## control_2018-control_2003    -14.4923445 -21.083362  -7.901327 0.0000000
+    ## control_2021-control_2003    -17.6144383 -23.650564 -11.578312 0.0000000
+    ## cut_autumn-control_2003      -18.0459376 -25.266036 -10.825840 0.0000000
+    ## cut_summer-control_2003      -19.7428645 -27.372519 -12.113210 0.0000000
+    ## topsoil_removal-control_2003 -30.8647078 -38.084806 -23.644610 0.0000000
+    ## control_2021-control_2018     -3.1220938  -9.158220   2.914032 0.6731000
+    ## cut_autumn-control_2018       -3.5535931 -10.773691   3.666505 0.7180805
+    ## cut_summer-control_2018       -5.2505199 -12.880174   2.379134 0.3581708
+    ## topsoil_removal-control_2018 -16.3723632 -23.592461  -9.152265 0.0000000
+    ## cut_autumn-control_2021       -0.4314993  -7.148874   6.285875 0.9999700
+    ## cut_summer-control_2021       -2.1284262  -9.284188   5.027336 0.9565595
+    ## topsoil_removal-control_2021 -13.2502695 -19.967644  -6.532895 0.0000006
+    ## cut_summer-cut_autumn         -1.6969269  -9.876165   6.482311 0.9912018
+    ## topsoil_removal-cut_autumn   -12.8187701 -20.617367  -5.020173 0.0000592
+    ## topsoil_removal-cut_summer   -11.1218433 -19.301081  -2.942606 0.0016953
 
 ``` r
 plot(dispersion, hull = FALSE, ellipse = TRUE, label = TRUE)
@@ -312,9 +308,9 @@ species2 <- data %>%
     ## 
     ## adonis2(formula = species2 ~ treatment, data = sites2, permutations = 999, method = "bray")
     ##           Df SumOfSqs      R2      F Pr(>F)    
-    ## Model      4   27.248 0.51026 47.927  0.001 ***
-    ## Residual 184   26.152 0.48974                  
-    ## Total    188   53.400 1.00000                  
+    ## Model      4   27.238 0.51019 47.914  0.001 ***
+    ## Residual 184   26.150 0.48981                  
+    ## Total    188   53.389 1.00000                  
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -332,7 +328,7 @@ species2 <- data %>%
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/New_York
+    ## time zone: America/Denver
     ## tzcode source: internal
     ## 
     ## attached base packages:

@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> R22 indicator richness
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-07-22</b>
+<b>2025-08-04</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -70,6 +70,7 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = 
     cols(
       .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
@@ -247,13 +248,32 @@ plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe 
 
 ![](model_check_richness_r22_files/figure-gfm/dharma_single-6.png)<!-- -->
 
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$year_hay_transfer)
+```
+
+![](model_check_richness_r22_files/figure-gfm/dharma_single-7.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # dataframe subset
+```
+
+![](model_check_richness_r22_files/figure-gfm/dharma_single-8.png)<!-- -->
+
 ### Check collinearity part 2 (Step 5)
 
 Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol
 [DOI:10.1111/j.2041-210X.2009.00001.x](https://doi.org/10.1111/j.2041-210X.2009.00001.x)
 
 ``` r
-#car::vif(m_1)
+car::vif(m_1)
+```
+
+    ##              GVIF Df GVIF^(1/(2*Df))
+    ## treatment 1.05719  5        1.005577
+    ## mem2      1.05719  1        1.028197
+
+``` r
 car::vif(m_2)
 ```
 
@@ -397,7 +417,7 @@ plot(emm, comparison = TRUE)
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/New_York
+    ## time zone: America/Denver
     ## tzcode source: internal
     ## 
     ## attached base packages:

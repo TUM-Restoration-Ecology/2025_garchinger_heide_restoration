@@ -492,9 +492,9 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 trait_ids <- c("1.2.2", "1.6.3", "3.2.3", "4.1.3")
 
-GIFT::GIFT_traits_meta() %>%
-  filter(Lvl3 %in% trait_ids) %>%
-  tibble()
+# GIFT::GIFT_traits_meta() %>%
+#   filter(Lvl3 %in% trait_ids) %>%
+#   tibble()
 
 # Download of traits data ran once and were than saved --> load below processed file
 
@@ -981,7 +981,7 @@ source(
 ### c Summary and integration --------------------------------------------------
 
 table(result.classification)
-eval.EUNIS(which(result.classification == "R18")[1])
+eval.EUNIS(which(result.classification == "H26a")[6])
 # H26a (= U27) = Temperate, lowland to montane base-rich scree
 # R = Grassland
 # R18 = Perennial rocky calcareous grassland of subatlantic-submediterranean Europe
@@ -992,18 +992,17 @@ eval.EUNIS(which(result.classification == "R18")[1])
 data <- sites %>%
   mutate(
     esy = result.classification,
-    esy = if_else(id == "X2003roederM13", "R", esy), # ?
-    esy = if_else(id == "X2021tum11", "R1A", esy), # S22
-    esy = if_else(id == "X2021tum40", "R", esy), # S22
-    esy = if_else(id == "X2021tum52", "R1A", esy), # S22
-    esy = if_else(id == "X2021tum58", "R1A", esy), # S22
-    esy = if_else(id == "X2021tum63", "R1A", esy), # S22
-    esy = if_else(id == "X2024res07", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum07", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum36", "R", esy), # S22
+    esy = if_else(id == "X2021tum48", "R1A", esy), # S22
+    esy = if_else(id == "X2021tum59", "R1A", esy), # S22
+    esy = if_else(id == "X2024res03", "R1A", esy), # S22
+    esy = if_else(id == "X2024res18", "R", esy), # H26a
     esy = if_else(id == "X2024res41", "R1A", esy), # H26a
     esy = if_else(id == "X2024res44", "R1A", esy), # H26a
-    esy = if_else(id == "X2024res57", "R", esy), # H26a
-    esy = if_else(id == "X2024res59", "R", esy), # H26a
-    esy = if_else(id == "X2024res61", "R", esy), # H26a
+    esy = if_else(id == "X2024res54", "R", esy), # H26a
+    esy = if_else(id == "X2024res58", "R", esy), # H26a
+    esy = if_else(id == "X2024res60", "R", esy), # H26a
     esy = if_else(id == "X2024res88", "R", esy) # R18
   )
 table(data$esy)
@@ -1045,17 +1044,17 @@ m <- quickMEM(
   perm.max = 9999
 )
 
-# OUTPUT (2025-07-14)
+# OUTPUT (2025-08-04)
 # --
-#   A significant linear trend has been found in the response data.
+# A significant linear trend has been found in the response data.
 # The response data have been detrended prior to dbMEM analysis.
 # --
-#   20 dbMEM eigenvectors have been produced 
-# R2 of global model =  0.1382 
-# Adjusted R2 of global model =  0.058 
+# 20 dbMEM eigenvectors have been produced 
+# R2 of global model =  0.1408 
+# Adjusted R2 of global model =  0.059 
 # 5  dbMEM eigenvectors have been selected 
-# R2 of minimum (final) model =  0.0753                      
-# Adjusted R2 of minimum (final) model =  0.0552          
+# R2 of minimum (final) model =  0.0764                      
+# Adjusted R2 of minimum (final) model =  0.0559          
 # The final model has 2 significant canonical axes 
 # --
 
@@ -1078,6 +1077,11 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 
 sites <- sites %>%
+  mutate(
+    year_hay_transfer = if_else(
+      is.na(year_hay_transfer), "no", year_hay_transfer
+    )
+  ) %>%
   relocate(botanist, .after = last_col()) %>%
   select(-rlg_LC, -rlg_NA, -rlg_NE)
 

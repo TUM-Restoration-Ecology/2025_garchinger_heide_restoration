@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> R1A indicator richness
 ================
 <b>Sina Appeltauer, Markus Bauer</b> <br>
-<b>2025-07-22</b>
+<b>2025-08-04</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -70,6 +70,7 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = 
     cols(
       .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
@@ -218,7 +219,7 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-1.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, subset$treatment)
+plotResiduals(simulation_output_2$scaledResiduals, subset$treatment) # dataframe subset
 ```
 
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-2.png)<!-- -->
@@ -230,7 +231,7 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-3.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, subset$mem2)
+plotResiduals(simulation_output_2$scaledResiduals, subset$mem2) # dataframe subset
 ```
 
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-4.png)<!-- -->
@@ -242,10 +243,22 @@ plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_2$scaledResiduals, subset$botanist)
+plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe subset
 ```
 
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-6.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$year_hay_transfer)
+```
+
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-7.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # dataframe subset
+```
+
+![](model_check_richness_r1a_files/figure-gfm/dharma_single-8.png)<!-- -->
 
 ### Check collinearity part 2 (Step 5)
 
@@ -404,7 +417,7 @@ plot(emm, comparison = TRUE)
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/New_York
+    ## time zone: America/Denver
     ## tzcode source: internal
     ## 
     ## attached base packages:

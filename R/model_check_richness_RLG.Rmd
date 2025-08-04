@@ -74,11 +74,6 @@ sites <- read_csv(
       )
     )
   ) %>%
-    mutate(
-    year_hay_transfer = if_else(
-      is.na(year_hay_transfer), "no", year_hay_transfer
-      )
-    ) %>%
   rename(y = rlg)
 
 subset <- sites %>%
@@ -196,8 +191,8 @@ plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # d
 Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:10.1111/j.2041-210X.2009.00001.x](https://doi.org/10.1111/j.2041-210X.2009.00001.x)
 
 ```{r vif}
-#car::vif(m_1)
-#car::vif(m_2)
+car::vif(m_1)
+car::vif(m_2)
 ```
 
 ## Model comparison

@@ -66,6 +66,7 @@ sites <- read_csv(
   col_names = TRUE, na = c("", "na", "NA"), col_types = 
     cols(
       .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")

@@ -4,7 +4,7 @@
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Sina Appeltauer, Markus Bauer
-# 2025-07-15
+# 2025-08-04
 
 
 
@@ -30,6 +30,7 @@ sites <- read_csv(
   col_names = TRUE, na = c("na", "NA", ""), col_types =
     cols(
       .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
@@ -112,10 +113,10 @@ subset <- sites %>%
     is.na(year_topsoil_removal) | year_topsoil_removal != "1996/2003"
   )
 
-m1sub <- lm(y ~ treatment + year_hay_transfer, data = subset)
+m1sub <- lm(y ~ treatment, data = subset)
 simulateResiduals(m1, plot = TRUE)
 
-m2sub <- lm(y ~ treatment + year_hay_transfer + mem2, data = subset)
+m2sub <- lm(y ~ treatment + mem2, data = subset)
 simulateResiduals(m2, plot = TRUE)
 
 

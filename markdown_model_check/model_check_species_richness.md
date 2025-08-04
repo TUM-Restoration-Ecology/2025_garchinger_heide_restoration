@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
 <b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
-<b>2025-07-22</b>
+<b>2025-08-04</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -69,6 +69,7 @@ sites <- read_csv(
   here("data", "processed", "data_processed_sites.csv"),
   col_names = TRUE, na = c("", "na", "NA"), col_types = cols(
     .default = "?",
+      year_hay_transfer = "f",
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
@@ -100,7 +101,7 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##    upper     mean    lower 
-    ## 29.61439 28.73593 27.85748
+    ## 29.61024 28.73160 27.85296
 
 ``` r
 median(sites$y)
@@ -112,7 +113,7 @@ median(sites$y)
 sd(sites$y)
 ```
 
-    ## [1] 6.776203
+    ## [1] 6.777636
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
@@ -177,7 +178,7 @@ m_1
 ##              (Intercept)     treatmentcontrol_2018     treatmentcontrol_2021  
 ##                  30.3924                    0.3095                    3.7530  
 ##      treatmentcut_summer       treatmentcut_autumn  treatmenttopsoil_removal  
-##                  -5.7946                   -5.2412                  -10.8746  
+##                  -5.7946                   -5.2412                  -10.9079  
 ##                     mem2  
 ##                  -0.9574
 m_2
@@ -189,7 +190,7 @@ m_2
 ##              (Intercept)     treatmentcontrol_2018     treatmentcontrol_2021  
 ##                  30.3924                    0.3095                    3.7530  
 ##      treatmentcut_summer       treatmentcut_autumn  treatmenttopsoil_removal  
-##                  -6.7371                   -5.2412                  -11.5007  
+##                  -6.7371                   -5.2412                  -11.5441  
 ##                     mem2  
 ##                  -0.9574
 ```
@@ -254,13 +255,32 @@ plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe 
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-6.png)<!-- -->
 
+``` r
+plotResiduals(simulation_output_1$scaledResiduals, sites$year_hay_transfer)
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-7.png)<!-- -->
+
+``` r
+plotResiduals(simulation_output_2$scaledResiduals, subset$year_hay_transfer) # dataframe subset
+```
+
+![](model_check_species_richness_files/figure-gfm/dharma_single-8.png)<!-- -->
+
 ### Check collinearity part 2 (Step 5)
 
 Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:
 10.1111/j.2041-210X.2009.00001.x](https://doi.org/10.1111/j.2041-210X.2009.00001.x)
 
 ``` r
-# car::vif(m_1)
+car::vif(m_1)
+```
+
+    ##              GVIF Df GVIF^(1/(2*Df))
+    ## treatment 1.05719  5        1.005577
+    ## mem2      1.05719  1        1.028197
+
+``` r
 car::vif(m_2)
 ```
 
@@ -275,10 +295,10 @@ car::vif(m_2)
 ``` r
 MuMIn::r.squaredGLMM(m_1)
 ##            R2m       R2c
-## [1,] 0.4922435 0.4922435
+## [1,] 0.4937266 0.4937266
 MuMIn::r.squaredGLMM(m_2)
 ##            R2m       R2c
-## [1,] 0.5016085 0.5016085
+## [1,] 0.5033755 0.5033755
 ```
 
 ### AICc
@@ -290,8 +310,8 @@ p. 66 ISBN: 978-0-387-95364-9
 MuMIn::AICc(m_1, m_2) %>%
   arrange(AICc)
 ##     df     AICc
-## m_2  8 1293.740
-## m_1  8 1395.608
+## m_2  8 1293.078
+## m_1  8 1395.021
 ```
 
 ## Predicted values
@@ -308,23 +328,23 @@ summary(m_1)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -11.8598  -3.1827   0.1238   3.2350  12.2000 
+    ## -11.8598  -3.1827   0.1238   3.2517  12.2333 
     ## 
     ## Coefficients:
     ##                          Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)               30.3924     0.7540  40.306  < 2e-16 ***
-    ## treatmentcontrol_2018      0.3095     1.0607   0.292 0.770705    
-    ## treatmentcontrol_2021      3.7530     0.9727   3.858 0.000149 ***
-    ## treatmentcut_summer       -5.7946     1.2402  -4.672 5.14e-06 ***
-    ## treatmentcut_autumn       -5.2412     1.1750  -4.461 1.29e-05 ***
-    ## treatmenttopsoil_removal -10.8746     1.1750  -9.255  < 2e-16 ***
-    ## mem2                      -0.9574     0.3288  -2.911 0.003961 ** 
+    ## (Intercept)               30.3924     0.7531  40.357  < 2e-16 ***
+    ## treatmentcontrol_2018      0.3095     1.0594   0.292 0.770422    
+    ## treatmentcontrol_2021      3.7530     0.9715   3.863 0.000146 ***
+    ## treatmentcut_summer       -5.7946     1.2386  -4.678 5.01e-06 ***
+    ## treatmentcut_autumn       -5.2412     1.1735  -4.466 1.26e-05 ***
+    ## treatmenttopsoil_removal -10.9079     1.1735  -9.295  < 2e-16 ***
+    ## mem2                      -0.9574     0.3284  -2.915 0.003916 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.861 on 224 degrees of freedom
-    ## Multiple R-squared:  0.4989, Adjusted R-squared:  0.4854 
-    ## F-statistic: 37.16 on 6 and 224 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.855 on 224 degrees of freedom
+    ## Multiple R-squared:  0.5003, Adjusted R-squared:  0.487 
+    ## F-statistic: 37.38 on 6 and 224 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -354,32 +374,32 @@ necessary.
 
     ## $emmeans
     ##  treatment       emmean    SE  df lower.CL upper.CL
-    ##  control_2003      30.4 0.754 224     28.9     31.9
-    ##  control_2018      30.7 0.754 224     29.2     32.2
-    ##  control_2021      34.1 0.618 224     32.9     35.4
-    ##  cut_summer        24.6 0.977 224     22.7     26.5
-    ##  cut_autumn        25.2 0.893 224     23.4     26.9
-    ##  topsoil_removal   19.5 0.893 224     17.8     21.3
+    ##  control_2003      30.4 0.753 224     28.9     31.9
+    ##  control_2018      30.7 0.753 224     29.2     32.2
+    ##  control_2021      34.1 0.617 224     32.9     35.4
+    ##  cut_summer        24.6 0.976 224     22.7     26.5
+    ##  cut_autumn        25.2 0.892 224     23.4     26.9
+    ##  topsoil_removal   19.5 0.892 224     17.7     21.2
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                       estimate    SE  df t.ratio p.value
     ##  control_2018 - control_2003       0.310 1.060 224   0.292  0.9997
-    ##  control_2021 - control_2003       3.753 0.973 224   3.858  0.0020
-    ##  control_2021 - control_2018       3.443 0.973 224   3.540  0.0064
-    ##  cut_summer - control_2003        -5.795 1.240 224  -4.672  0.0001
-    ##  cut_summer - control_2018        -6.104 1.240 224  -4.922  <.0001
-    ##  cut_summer - control_2021        -9.548 1.160 224  -8.242  <.0001
-    ##  cut_autumn - control_2003        -5.241 1.170 224  -4.461  0.0002
-    ##  cut_autumn - control_2018        -5.551 1.170 224  -4.724  0.0001
-    ##  cut_autumn - control_2021        -8.994 1.090 224  -8.265  <.0001
-    ##  cut_autumn - cut_summer           0.553 1.320 224   0.420  0.9983
-    ##  topsoil_removal - control_2003  -10.875 1.170 224  -9.255  <.0001
-    ##  topsoil_removal - control_2018  -11.184 1.170 224  -9.519  <.0001
-    ##  topsoil_removal - control_2021  -14.628 1.090 224 -13.442  <.0001
-    ##  topsoil_removal - cut_summer     -5.080 1.320 224  -3.859  0.0020
-    ##  topsoil_removal - cut_autumn     -5.633 1.260 224  -4.489  0.0002
+    ##  control_2021 - control_2003       3.753 0.971 224   3.863  0.0020
+    ##  control_2021 - control_2018       3.443 0.971 224   3.545  0.0063
+    ##  cut_summer - control_2003        -5.795 1.240 224  -4.678  0.0001
+    ##  cut_summer - control_2018        -6.104 1.240 224  -4.928  <.0001
+    ##  cut_summer - control_2021        -9.548 1.160 224  -8.253  <.0001
+    ##  cut_autumn - control_2003        -5.241 1.170 224  -4.466  0.0002
+    ##  cut_autumn - control_2018        -5.551 1.170 224  -4.730  0.0001
+    ##  cut_autumn - control_2021        -8.994 1.090 224  -8.276  <.0001
+    ##  cut_autumn - cut_summer           0.553 1.310 224   0.421  0.9983
+    ##  topsoil_removal - control_2003  -10.908 1.170 224  -9.295  <.0001
+    ##  topsoil_removal - control_2018  -11.217 1.170 224  -9.559  <.0001
+    ##  topsoil_removal - control_2021  -14.661 1.090 224 -13.489  <.0001
+    ##  topsoil_removal - cut_summer     -5.113 1.310 224  -3.890  0.0018
+    ##  topsoil_removal - cut_autumn     -5.667 1.250 224  -4.521  0.0001
     ## 
     ## P value adjustment: tukey method for comparing a family of 6 estimates
 
@@ -403,7 +423,7 @@ plot(emm, comparison = TRUE)
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/New_York
+    ## time zone: America/Denver
     ## tzcode source: internal
     ## 
     ## attached base packages:
