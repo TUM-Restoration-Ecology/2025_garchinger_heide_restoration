@@ -174,7 +174,7 @@ simulation_output_1 <- simulateResiduals(m_1, plot = TRUE)
 simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ```
 
-```{r dharma_single, fig.height = 3, fig.width = 4.5, warning = FALSE}
+```{r dharma_single, collapse = TRUE, fig.height = 3, fig.width = 4.5, warning = TRUE}
 plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
 plotResiduals(simulation_output_2$scaledResiduals, subset$treatment) # dataframe subset
 plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)

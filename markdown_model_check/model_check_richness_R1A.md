@@ -238,12 +238,20 @@ plotResiduals(simulation_output_2$scaledResiduals, subset$mem2) # dataframe subs
 
 ``` r
 plotResiduals(simulation_output_1$scaledResiduals, sites$botanist)
+## Warning in ensurePredictor(simulationOutput, form): DHARMa:::ensurePredictor:
+## character string was provided as predictor. DHARMa has converted to factor
+## automatically. To remove this warning, please convert to factor before
+## attempting to plot with DHARMa.
 ```
 
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-5.png)<!-- -->
 
 ``` r
 plotResiduals(simulation_output_2$scaledResiduals, subset$botanist) # dataframe subset
+## Warning in ensurePredictor(simulationOutput, form): DHARMa:::ensurePredictor:
+## character string was provided as predictor. DHARMa has converted to factor
+## automatically. To remove this warning, please convert to factor before
+## attempting to plot with DHARMa.
 ```
 
 ![](model_check_richness_r1a_files/figure-gfm/dharma_single-6.png)<!-- -->
