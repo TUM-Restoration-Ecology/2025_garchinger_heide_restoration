@@ -114,7 +114,7 @@ data <- sites %>%
     annotate("text", label = "a", x = 5, y = 49) +
     annotate("text", label = "b", x = 6, y = 49) +
     annotate(
-      "text", label = expression(italic(R)^2~"="~0.33),
+      "text", label = expression(italic(R)^2~"="~0.35),
       x = 6, y = 40, size = 2.5
     ) +
     scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +

@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
 <b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
-<b>2025-08-04</b>
+<b>2025-08-05</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -124,7 +124,7 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Graphs of raw data (Step 2, 6, 7)
 
-![](model_check_species_richness_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-2.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-3.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-4.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-5.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-6.png)<!-- -->
+![](model_check_species_richness_files/figure-gfm/data-exploration-1.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-2.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-3.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-4.png)<!-- -->![](model_check_species_richness_files/figure-gfm/data-exploration-5.png)<!-- -->
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
@@ -423,7 +423,7 @@ plot(emm, comparison = TRUE)
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/Denver
+    ## time zone: America/Chicago
     ## tzcode source: internal
     ## 
     ## attached base packages:
