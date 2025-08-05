@@ -101,10 +101,10 @@ data <- sites %>%
 
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_3a_sla_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-# )
+ggsave(
+  here("outputs", "figures", "figure_3a_sla_800dpi_9x8cm.tiff"),
+  dpi = 800, width = 9, height = 8, units = "cm"
+)
 
 graph_a <- graph +
   theme(

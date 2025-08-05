@@ -83,7 +83,7 @@ data <- sites %>%
     geom_boxplot(alpha = .5, color = "black") +
     annotate(
       "text", x = 1.9, y = .66, size = 3,
-      label = expression(4^th~corner*":"~italic(p)[adj]*" = .012")
+      label = expression(4^th~corner*":"~italic(p)[adj]*" = .01")
     ) +
     scale_y_continuous(limits = c(0, .66), breaks = seq(-100, 400, .1)) +
     scale_fill_manual(
@@ -100,10 +100,10 @@ data <- sites %>%
     theme_mb()); graph
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_3b_plant_height_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-#   )
+ggsave(
+  here("outputs", "figures", "figure_3b_plant_height_800dpi_9x8cm.tiff"),
+  dpi = 800, width = 9, height = 8, units = "cm"
+  )
 
 graph_b <- graph +
   theme(

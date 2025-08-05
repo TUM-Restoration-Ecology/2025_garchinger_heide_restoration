@@ -131,7 +131,7 @@ sites %>%
 plot1 <- ggplot(sites, aes(x = treatment, y = y)) +
   geom_quasirandom()
 plot2 <- ggplot(sites, aes(x = y)) +
-  geom_histogram(binwidth = 0.01)
+  geom_histogram()
 plot3 <- ggplot(sites, aes(x = y)) +
   geom_density()
 plot4 <- ggplot(sites, aes(x = log(y))) +

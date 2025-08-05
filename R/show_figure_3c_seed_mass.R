@@ -61,13 +61,13 @@ sites <- read_csv(
       "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
       "Topsoil\nremoval" = "topsoil_removal"
     )
-  ) %>%
-  filter(
-    !(id %in% c(
-      "X2021tum03", "X2021tum27", "X2021tum43", "X2021tum48", "X2021tum51",
-      "XroederS11"
-    )) # Plots with >=10% of Polygonatum odoratum (seed mass = 0.08 g)
-  )
+  ) #%>%
+  # filter(
+  #   !(id %in% c(
+  #     "X2021tum03", "X2021tum27", "X2021tum43", "X2021tum48", "X2021tum51",
+  #     "X2003roederS11", "X2018roederS12"
+  #   )) # Plots with >=10% of Polygonatum odoratum (seed mass = 0.08 g)
+  # )
 
 
 
@@ -88,10 +88,10 @@ data <- sites %>%
     geom_quasirandom(color = "grey20", dodge.width = .6, size = 1, shape = 16) +
     geom_boxplot(alpha = .5, color = "black") +
     annotate(
-      "text", x = 1.5, y = 5.6, size = 3,
+      "text", x = 1.5, y = 25, size = 3,
       label = expression(4^th~corner*": n.s.")
     ) +
-    scale_y_continuous(limits = c(0, 5.6), breaks = seq(-100, 400, .5)) +
+    scale_y_continuous(breaks = seq(0, 100, 5)) +
     scale_fill_manual(
       values = c(
         "Ref.\n2003" = "#f947d1", 
@@ -106,7 +106,7 @@ data <- sites %>%
     theme_mb())
 
 ### Save ###
-# ggsave(
-#   here("outputs", "figures", "figure_3c_seed_mass_800dpi_8x8cm.tiff"),
-#   dpi = 800, width = 8, height = 8, units = "cm"
-#   )
+ggsave(
+  here("outputs", "figures", "figure_3c_seed_mass_800dpi_9x8cm.tiff"),
+  dpi = 800, width = 9, height = 8, units = "cm"
+  )
