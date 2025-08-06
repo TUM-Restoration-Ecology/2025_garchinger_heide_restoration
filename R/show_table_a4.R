@@ -29,7 +29,10 @@ data <- read_csv(
     cols(
       .default = "?",
       treatment = col_factor(
-        levels = c("control", "cut_summer", "cut_autumn", "topsoil_removal")
+        levels = c(
+          "control_2003", "control_2018", "control_2021", "cut_summer",
+          "cut_autumn", "topsoil_removal"
+          )
       )
     )
 ) %>%
@@ -45,7 +48,9 @@ data <- read_csv(
   mutate(
     treatment = fct_recode(
       treatment,
-      "Control" = "control",
+      "Reference 2003" = "control_2003",
+      "Reference 2018" = "control_2018",
+      "Reference 2021" = "control_2021",
       "Summer cut" = "cut_summer",
       "Autumn cut" = "cut_autumn",
       "Topsoil removal" = "topsoil_removal"
@@ -115,6 +120,6 @@ data <- read_csv(
 
 
 ### Save ###
-write_excel(data, here("outputs", "tables", "table_a2_habitat_types.xlsx"))
+writexl::write_xlsx(data, here("outputs", "tables", "table_a2_habitat_types.xlsx"))
 gtsave(table, here("outputs", "tables", "table_a2_habitat_types.html"))
 gtsave(table, here("outputs", "tables", "table_a2_habitat_types.png"))
