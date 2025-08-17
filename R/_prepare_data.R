@@ -1179,7 +1179,7 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 ## 11 Final selection of variables ############################################
 
 
-sites2 <- sites %>%
+sites <- sites %>%
   mutate(
     year_hay_transfer = if_else(
       is.na(year_hay_transfer), "no", year_hay_transfer
@@ -1189,7 +1189,7 @@ sites2 <- sites %>%
       ~ round(., digits = 5)
       )
   ) %>%
-  relocate(botanist, .after = last_col()) #%>%
+  relocate(botanist, .after = last_col()) %>%
   select(-rlg_LC, -rlg_NA, -rlg_NE)
 
 
