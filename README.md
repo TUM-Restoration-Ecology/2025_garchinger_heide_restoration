@@ -1,15 +1,16 @@
-# Data and code for Appeltauer, Knöppler et al. (submitted)
+# Data and code for Bauer et al. (submitted)
 
+Markus Bauer <a href="https://orcid.org/0000-0001-5372-4174"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
 Sina Appeltauer <a href="https://orcid.org/0009-0002-3244-6720"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
 Malte Knöppler <a href="https://orcid.org/0009-0007-4844-3272"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
-Maren Teschauer <a href="https://orcid.org/0009-0004-0762-6353"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
-Johannes Kollmann <a href="https://orcid.org/0000-0002-4990-3636"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a> &
-Markus Bauer <a href="https://orcid.org/0000-0001-5372-4174"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>
+Maren Teschauer <a href="https://orcid.org/0009-0004-0762-6353"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a> &
+Johannes Kollmann <a href="https://orcid.org/0000-0002-4990-3636"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>
+
 
 
 Data and code for:
 
-Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (submitted) __Title__ &ndash; *XXX* XX, XXX&ndash;XXX.
+Bauer M, Appeltauer S, Knöppler M, Teschauer M & Kollmann J (submitted) __Title__ &ndash; *XXX* XX, XXX&ndash;XXX.
 
 [![DOI:10.XXX](http://img.shields.io/badge/DOI-10.XXX-informational.svg)](https://doi.org/10.XXX)
 
@@ -19,7 +20,6 @@ Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (submitted) __Title
     -   `Raw` and `processed` data of the sites variables (.csv)
     -   `Raw` and `processed` data of the species' abundances (.csv)
     -   `Raw` and `processed` data of the species' traits (.csv)
-    -   Raw and processed `raw/spatial` data (.shp)
 2.  **Outputs**: the folder `outputs` contains
     -   The figures generated (.tiff)
     -   The tables generated (.html/.png)
@@ -48,13 +48,13 @@ When using the **data available** in this repository, please cite the original p
 
 **Publication**
 
-> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (submitted) Title. &ndash; *XXX* XX, XXX&ndash;XXX. <https://doi.org/10.XXX>
+> Bauer M, Appeltauer S, Knöppler M, Teschauer M & Kollmann J (submitted) Title. &ndash; *XXX* XX, XXX&ndash;XXX. <https://doi.org/10.XXX>
 
 **Dataset**
 
 > Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2025) Data and code for Appeltauer, Knöppler et al. (prepared) (v0.0.1) [Data set]. &ndash; *Zenodo*. [<https://doi.org/10.5281/zenodo.15065628>](https://doi.org/10.5281/zenodo.15065628)
 
 This dataset is also linked to PANGAEA
-> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (XXX) XXX. &ndash; *PANGAEA*. https://doi.org/10.XXX
+> Bauer M, Appeltauer S, Knöppler M, Teschauer M & Kollmann J (XXX) XXX. &ndash; *PANGAEA*. https://doi.org/10.XXX
 
 Contact [markus1.bauer\@tum.de](mailto:markus1.bauer@tum.de) for any further information.
