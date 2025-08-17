@@ -15,6 +15,7 @@ library(here)
 library(tidyverse)
 library(TNRS)
 library(GIFT)
+library(rtry)
 library(FD)
 library(vegan)
 library(adespatial)
@@ -190,7 +191,7 @@ coordinates <- coordinates_reference %>%
 traits <- readxl::read_excel(
   here(
     "data", "raw",
-    "Characteristic-species-combinations-EUNIS-habitats-2021-06-01.xlsx"
+    "database_floraveg_eu_characteristic-species-combinations-EUNIS-habitats-20210601.xlsx"
     ),
   col_names = TRUE, na = c("", "NA", "na")
 )
@@ -485,7 +486,7 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
 
 
-## 5 Traits from GIFT database ################################################
+## 5 Traits from databases #####################################################
 
 
 ### a Load traits from GIFT ---------------------------------------------------
@@ -539,7 +540,8 @@ gift <- data.table::fread(
     )
   )
 
-### b Combine gift and traits -------------------------------------------------
+
+### b Combine GIFT and traits -------------------------------------------------
 
 data_traits <- traits %>%
   left_join(
@@ -548,25 +550,147 @@ data_traits <- traits %>%
     by = "accepted_name"
   )
 
+
 ### c Check completeness -------------------------------------------------------
 
-data <- data_traits %>%
+data_missing <- data_traits %>%
   filter(accepted_name_rank %in% c("subspecies", "species")) %>%
   ungroup() %>% 
   select(accepted_name, sla, seedmass, height)
 
-data %>%
+data_missing %>%
   naniar::miss_var_summary(order = TRUE)
-data %>%
+data_missing %>%
   naniar::vis_miss(cluster = FALSE, sort_miss = TRUE)
-data %>%
+data_missing %>%
   filter(is.na(sla) & is.na(height) & is.na(seedmass)) %>%
   filter(str_detect(accepted_name, " "))
 
 
-### d Add values manually ------------------------------------------------------
+### d TRY database -------------------------------------------------------------
+
+try_seedmass <- rtry_import(
+  here("data", "raw", "database_try_43476", "43476.txt")
+) %>%
+  filter(!(is.na(TraitID))) %>%
+  select(
+    SpeciesName, AccSpeciesID, TraitID, TraitName, DataName, DataID, StdValue,
+    UnitName, LastName, Reference
+  ) %>%
+  group_by(AccSpeciesID, TraitName, TraitID, UnitName) %>%
+  summarize(name = first(SpeciesName), seedmass = mean(StdValue, na.rm = TRUE)) %>%
+  mutate(
+    seedmass = seedmass/1000, # from miliGram to gram
+    name = str_replace(name, "Danthonia alpina VEST", "Danthonia alpina"),
+    name = str_replace(name, "OPHRYS APIFERA Huds.", "Ophrys apifera"),
+    name = str_replace(name, "Orobanche gracilis Sm.", "Orobanche gracilis"),
+    name = str_replace(name, "Taraxacum vulgare", "Taraxacum campylodes")
+    ) %>%
+  rename(accepted_name = name) %>%
+  ungroup() %>%
+  select(accepted_name, seedmass)
+
+try_height <- rtry_import(
+  here("data", "raw", "database_try_43477", "43477.txt")
+) %>%
+  filter(!(is.na(TraitID))) %>%
+  select(
+    SpeciesName, AccSpeciesID, TraitID, TraitName, DataName, DataID, StdValue,
+    UnitName, LastName, Reference
+  ) %>%
+  rename(name = SpeciesName) %>%
+  mutate(
+    name = str_replace(
+      name, "Lolium arundinaceum (Schreb.) S.J. Darbyshire",
+      "Lolium arundinaceum"
+      ),
+    name = str_replace(name, "Euphrasia picta Wimm.", "Euphrasia picta"),
+    name = str_replace(name, "Inula hirta", "Pentanema hirtum"),
+    name = str_replace(name, "Taraxacum officinale", "Taraxacum campylodes"),
+    name = str_replace(name, "INULA SALICINA L.", "Pentanema salicinum")
+  ) %>%
+  filter(name != "Erica erigena") %>%
+  group_by(AccSpeciesID, UnitName) %>%
+  summarize(accepted_name = first(name), height = mean(StdValue, na.rm = TRUE)) %>%
+  ungroup() %>%
+  select(accepted_name, height)
+
+try_sla <- rtry_import(
+  here("data", "raw", "database_try_43480", "43480.txt")
+) %>%
+  filter(!(is.na(TraitID))) %>%
+  select(
+    SpeciesName, AccSpeciesID, TraitID, TraitName, DataName, DataID, StdValue,
+    UnitName, LastName, Reference
+  ) %>%
+  rename(name = SpeciesName) %>%
+  mutate(
+    StdValue = StdValue * 10, # transform mm^2/mg -> cm^2/g
+    name = str_replace(
+      name, "Centaurea triumfetti All.", "Centaurea triumfettii"
+      ),
+    name = str_replace(
+      name, "Chamaecytisus ratisbonensis \\(Schaeff\\.\\) Rothm\\.",
+      "Chamaecytisus ratisbonensis"
+      ),
+    name = str_replace(name, "Dorycnium germanicum", "Lotus germanicus"),
+    name = str_replace(name, "Erica carnea L.", "Erica carnea"),
+    name = str_replace(name, "Euphrasia picta Wimm.", "Euphrasia picta"),
+    name = str_replace(name, "Festuca elatior", "Lolium arundinaceum"),
+    name = str_replace(
+      name, "Globularia cordifolia L.", "Globularia cordifolia"
+      ),
+    name = str_replace(name, "Inula hirta", "Pentanema hirtum"),
+    name = str_replace(name, "Pulsatilla flavescens", "Pulsatilla patens"),
+    name = str_replace(name, "Seseli annuum L.", "Seseli annuum"),
+    name = str_replace(
+      name, "Schedonorous arundinaceus", "Lolium arundinaceum"
+      ),
+    name = str_replace(name, "Senecio jacobaea", "Jacobaea vulgaris"),
+    name = str_replace(name, "Taraxacum officinale", "Taraxacum campylodes"),
+    name = str_replace(name, "Festuca elatior", "Lolium arundinaceum")
+  ) %>%
+  group_by(AccSpeciesID, UnitName) %>%
+  summarize(
+    accepted_name = first(name), sla = mean(StdValue, na.rm = TRUE)
+    ) %>%
+  ungroup() %>%
+  select(accepted_name, sla)
+
+
+### e Combine TRY and traits --------------------------------------------------
 
 data_traits2 <- data_traits %>%
+  left_join(try_sla, by = "accepted_name", suffix = c("", "_new")) %>%
+  left_join(try_height, by = "accepted_name", suffix = c("", "_new")) %>%
+  left_join(try_seedmass, by = "accepted_name", suffix = c("", "_new")) %>%
+  mutate(
+    sla = coalesce(sla, sla_new),
+    height = coalesce(height, height_new),
+    seedmass = coalesce(seedmass, seedmass_new)
+    ) %>%
+  select(-ends_with("_new"))
+
+
+### f Check completeness II ----------------------------------------------------
+
+data_missing <- data_traits2 %>%
+  filter(accepted_name_rank %in% c("subspecies", "species")) %>%
+  ungroup() %>% 
+  select(accepted_name, sla, seedmass, height)
+
+data_missing %>%
+  naniar::miss_var_summary(order = TRUE)
+data_missing %>%
+  naniar::vis_miss(cluster = FALSE, sort_miss = TRUE)
+data_missing %>%
+  filter(is.na(sla) | is.na(height) | is.na(seedmass)) %>%
+  filter(str_detect(accepted_name, " "))
+
+
+### g Add values manually ------------------------------------------------------
+
+data_traits3 <- data_traits2 %>%
   mutate(
     sla = if_else(
       accepted_name == "Festuca rupicola",
@@ -595,61 +719,40 @@ data_traits2 <- data_traits %>%
         filter(accepted_name == "Medicago sativa") %>%
         pull(height),
       height
-      ),
-    height = if_else(accepted_name == "Allium suaveolens", 0.35, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Erica carnea", 0.225, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Euphrasia picta", 0.15, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Lolium arundinaceum", 1.20, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Orobanche gracilis", 0.25, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Pentanema hirta", 0.30, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Pentanema salicinum", 0.525, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Seseli annuum", 0.50, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    height = if_else(accepted_name == "Taraxacum campylodes", 0.275, height), # Rothmaler DOI 10.1007/978-3-662-49710-4
-    seedmass = if_else(accepted_name == "Ophrys apifera", 0.000005, seedmass),
-    seedmass = if_else(accepted_name == "Platanthera bifolia", 0.000005, seedmass)
+      )
   )
 
 
-### e Check completeness II ----------------------------------------------------
+### h Check completeness III ----------------------------------------------------
 
-data <- data_traits2 %>%
+data_missing <- data_traits3 %>%
   filter(
     accepted_name_rank %in% c("subspecies", "species"),
-    !(growth_form %in% c("shrub", "tree"))
+    accepted_name != "Salix eleagnos",
+    accepted_name != "Crataegus monogyna",
+    accepted_name != "Fraxinus excelsior",
+    accepted_name != "Populus tremula",
+    accepted_name != "Rhamnus cathartica",
+    accepted_name != "Rhamnus saxtilis",
     ) %>%
   ungroup() %>% 
   select(accepted_name, sla, seedmass, height)
 
-data %>%
+data_missing %>%
   naniar::miss_var_summary(order = TRUE)
-data %>%
+data_missing %>%
   naniar::vis_miss(cluster = FALSE, sort_miss = TRUE)
-data %>%
+data_missing %>%
   filter(is.na(sla) | is.na(height) | is.na(seedmass)) %>%
-  arrange(sla, seedmass, height) %>%
-  print(n = 34)
+  filter(str_detect(accepted_name, " "))
 
-data %>%
-  select(accepted_name, sla) %>%
-  full_join(species, by = "accepted_name") %>%
-  pivot_longer(-c(accepted_name, sla), names_to = "id", values_to = "cover") %>%
-  mutate(group = if_else(is.na(sla), "missing_value", "value")) %>%
-  group_by(group) %>%
-  summarize(sum = sum(cover, na.rm = TRUE)) %>%
-  mutate(ratio = sum / (3143 + 34461))
+# data_missing %>%
+#   filter(is.na(sla) | is.na(height) | is.na(seedmass)) %>%
+#   write_csv(
+#     here("data", "processed", "data_processed_missing_20250817.csv")
+# )
 
-data <- data_traits %>%
-  filter(
-    accepted_name_rank %in% c("subspecies", "species") &
-      !(growth_form %in% c("tree", "shrub")) &
-      !(accepted_name %in% c(
-        "Acer platanoides"
-      ))
-  ) %>%
-  ungroup() %>% 
-  select(accepted_name, sla, seedmass, height)
-
-traits <- data_traits %>% ungroup()
+traits <- data_traits3 %>% ungroup()
 
 rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 
@@ -1076,13 +1179,17 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 ## 11 Final selection of variables ############################################
 
 
-sites <- sites %>%
+sites2 <- sites %>%
   mutate(
     year_hay_transfer = if_else(
       is.na(year_hay_transfer), "no", year_hay_transfer
-    )
+    ),
+    across(
+      c(shannon, evenness, CWM_SLA, CWM_Height, CWM_Seed),
+      ~ round(., digits = 5)
+      )
   ) %>%
-  relocate(botanist, .after = last_col()) %>%
+  relocate(botanist, .after = last_col()) #%>%
   select(-rlg_LC, -rlg_NA, -rlg_NE)
 
 

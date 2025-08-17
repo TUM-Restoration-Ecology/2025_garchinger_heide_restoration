@@ -18,7 +18,7 @@ Asperula tinctoria,species,Rubiaceae,0,0,0,I,3,https://powo.science.kew.org/taxo
 Aster amellus,species,Asteraceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:331070-2,herb,149.42,0.275,6.70333333333333e-4
 Betonica officinalis,species,Lamiaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:445133-1,forb,197.16,0.308,0.0063774
 Betula pendula,species,Betulaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:295174-1,tree,178.97,21.41675,3.23488111111111e-4
-Biscutella laevigata,species,Brassicaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:279040-1,herb,NA,0.15,0.00403633333333333
+Biscutella laevigata,species,Brassicaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:279040-1,herb,121.15294847701874,0.15,0.00403633333333333
 Brachypodium pinnatum,species,Poaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:393166-1,graminoid,240.05,0.533333333333333,0.0028816
 Briza media,species,Poaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:393294-1,NA,215.67,0.2575,3.82e-4
 Bromus erectus,species,Poaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30195095-2,NA,170.12,0.5,0.003635381
@@ -29,7 +29,7 @@ Campanula rotundifolia,species,Campanulaceae,1,0,0,I,*,https://powo.science.kew.
 Carduus defloratus,species,Asteraceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:188581-1,herb,151.9,0.325,0.002518
 Carex,genus,Cyperaceae,0,0,0,NA,NA,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:330029-2,NA,NA,NA,NA
 Carex caryophyllea,species,Cyperaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:324492-2,graminoid,205.18,0.09,0.0011699
-Carex ericetorum,species,Cyperaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:299646-1,NA,NA,0.135,8.2e-4
+Carex ericetorum,species,Cyperaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:299646-1,NA,94.338959534,0.135,8.2e-4
 Carex humilis,species,Cyperaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:300229-1,graminoid,184.3,0.09,0.0014666665
 Carex montana,species,Cyperaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:301056-1,graminoid,196.35,0.165,8.2e-4
 Carex muricata,species,Cyperaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30028489-2,graminoid,170.67,0.283333333333333,0.00180491666666667
@@ -37,10 +37,10 @@ Carlina acaulis,species,Asteraceae,1,0,0,I,V,https://powo.science.kew.org/taxon/
 Centaurea jacea,species,Asteraceae,2,2,2,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:190753-1,NA,164.05,0.85,0.00159725
 Centaurea montana,species,Asteraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:191037-1,forb,365,0.375,0.015582500000000001
 Centaurea scabiosa,species,Asteraceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:191521-1,forb,192.03,0.675,0.007324238
-Centaurea triumfettii,species,Asteraceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:191816-1,herb,NA,0.3,0.0097333335
+Centaurea triumfettii,species,Asteraceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:191816-1,herb,263.7529350928463,0.3,0.0097333335
 Cerastium arvense,species,Caryophyllaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:329786-2,NA,214.38,0.169,0.00449716666666667
 Cerastium fontanum,species,Caryophyllaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:152255-1,forb,322.535,0.215,1.314875e-4
-Chamaecytisus ratisbonensis,species,Fabaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:485981-1,subshrub,NA,0.35,0.005875
+Chamaecytisus ratisbonensis,species,Fabaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:485981-1,subshrub,149.67000000000002,0.35,0.005875
 Clinopodium vulgare,species,Lamiaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:61206-2,NA,236,0.375,3.7672225e-4
 Convolvulus arvensis,species,Convolvulaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:265849-1,forb,287.35,0.2815,0.0135612856666667
 Coronilla vaginalis,species,Fabaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:487277-1,herb,176.2,0.065,0.0027628335
@@ -48,22 +48,22 @@ Coronilla varia,species,Fabaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/ur
 Crataegus monogyna,species,Rosaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:723820-1,tree,113.36,5.66166666666667,0.0901174608333333
 Cynanchica pyrenaica subsp. cynanchica,subspecies,Rubiaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77215417-1,NA,280.6,0.269,8.48e-4
 Dactylis glomerata,species,Poaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:397309-1,NA,247.66,0.704666666666667,9.18702666666667e-4
-Danthonia alpina,species,Poaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:397443-1,graminoid,NA,0.225,NA
+Danthonia alpina,species,Poaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:397443-1,graminoid,NA,0.225,0.0018537333333333331
 Danthonia decumbens,species,Poaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:397531-1,NA,169.42,0.185,0.001383125
 Daphne cneorum,species,Thymelaeaceae,0,0,0,I,2,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:831193-1,shrub,NA,0.25,0.0044
 Daucus carota,species,Apiaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:841063-1,NA,197.63,0.572666666666667,0.0010029375
 Deschampsia cespitosa,species,Poaceae,0,1,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:397953-1,NA,202.045,0.515666666666667,0.0055817076
 Dianthus carthusianorum,species,Caryophyllaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:302053-2,forb,163.55,0.26,0.001399
 Epilobium parviflorum,species,Onagraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:612163-1,forb,297.75,0.6165,9.21666666666667e-5
-Erica carnea,species,Ericaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:332092-2,subshrub,NA,NA,8e-5
+Erica carnea,species,Ericaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:332092-2,subshrub,101.16994288487147,0.159875,8e-5
 Erigeron annuus,species,Asteraceae,0,0,0,N,nb,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:203539-1,forb,280.65,0.694,5.2e-5
 Euphorbia cyparissias,species,Euphorbiaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:346205-1,forb,225.7,0.175,0.001868
-Euphorbia verrucosa,species,Euphorbiaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:348671-1,NA,276.6,0.4,NA
+Euphorbia verrucosa,species,Euphorbiaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:348671-1,NA,276.6,0.4,0.044518666666666665
 Euphrasia micrantha,species,Orobanchaceae,0,0,0,I,2,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:802686-1,forb,NA,0.25,NA
 Euphrasia officinalis,species,Orobanchaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:802732-1,herb,172.93,0.221,1.88666666666667e-4
-Euphrasia picta,species,Orobanchaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:802764-1,NA,NA,NA,NA
+Euphrasia picta,species,Orobanchaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:802764-1,NA,250.9,0.17204,2.747653333666667e-4
 Festuca rubra,species,Poaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30010036-2,NA,193.57,0.431,0.006072465875
-Festuca rupicola,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:403454-1,graminoid,NA,0.325,5.35e-4
+Festuca rupicola,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:403454-1,graminoid,148.04,0.325,5.35e-4
 Filipendula vulgaris,species,Rosaceae,1,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:724945-1,forb,183.94,0.325,8.10952333333333e-4
 Fragaria viridis,species,Rosaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:60441587-2,herb,170.5,0.062,3.75e-4
 Fraxinus excelsior,species,Oleaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:609009-1,tree,136.51,28.6,0.064259159
@@ -73,9 +73,9 @@ Galium pumilum,species,Rubiaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/ur
 Galium verrucosum,species,Rubiaceae,0,0,0,N,nb,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77177145-1,forb,194.7,0.103,0.015488
 Galium verum,species,Rubiaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:750829-1,NA,207.87,0.383,0.015347225
 Genista tinctoria,species,Fabaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:496408-1,shrub,180.82,0.7665,0.0044945
-Gentiana verna,species,Gentianaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:369094-1,herb,NA,0.032,7.4e-5
+Gentiana verna,species,Gentianaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:369094-1,herb,74.58350756801491,0.032,7.4e-5
 Globularia bisnagarica,species,Plantaginaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:813058-1,herb,81.35,0.102,5.95255666666667e-4
-Globularia cordifolia,species,Plantaginaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:813062-1,herb,NA,0.02,5.555e-4
+Globularia cordifolia,species,Plantaginaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:813062-1,herb,66.96539567333802,0.02,5.555e-4
 Gymnadenia conopsea,species,Orchidaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:636509-1,forb,176.07,0.3,7e-6
 Helianthemum nummularium subsp. obscurum,subspecies,Cistaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77251819-1,subshrub,152.8,0.114,0.00100718333333333
 Helictochloa pratensis,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77113502-1,graminoid,99.76,0.65,0.002312
@@ -84,7 +84,7 @@ Hieracium,genus,Asteraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid
 Hippocrepis comosa,species,Fabaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:498352-1,forb,152.32,0.163,0.0036416665
 Hypericum perforatum,species,Hypericaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:433719-1,NA,260.64,0.454,1.62254e-4
 Hypochaeris maculata,species,Asteraceae,0,0,0,I,2,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:225539-1,herb,198.7,0.4325,0.0016445
-Jacobaea vulgaris,species,Asteraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:226649-1,forb,NA,0.75,2.48667e-4
+Jacobaea vulgaris,species,Asteraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:226649-1,forb,263.4109599358535,0.75,2.48667e-4
 Knautia arvensis,species,Caprifoliaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:319318-1,NA,197.06,0.433,0.0040089
 Koeleria macrantha,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:406615-1,graminoid,118.07,0.2665,4.21871e-4
 Koeleria pyramidata,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:406677-1,graminoid,165.3,0.325,0.0023
@@ -95,18 +95,18 @@ Leontodon incanus,species,Asteraceae,0,0,0,I,3,https://powo.science.kew.org/taxo
 Leucanthemum vulgare,species,Asteraceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30296198-2,NA,192.73,0.50975,8.119666e-4
 Linum catharticum,species,Linaceae,2,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:544405-1,NA,301.64,0.125,1.53e-4
 Linum perenne,species,Linaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:544634-1,NA,258.8,0.405666666666667,0.002214608
-Lolium arundinaceum,species,Poaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:973267-1,NA,NA,NA,0.001994772
+Lolium arundinaceum,species,Poaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:973267-1,NA,254.52807147801505,NA,0.001994772
 Lotus corniculatus,species,Fabaceae,5,5,5,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30179739-2,NA,278.32,0.42725,0.00106879585714286
-Lotus germanicus,species,Fabaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77110166-1,subshrub,NA,0.225,0.0024195
-Medicago falcata,species,Fabaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:506175-1,NA,NA,NA,0.00282875
+Lotus germanicus,species,Fabaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77110166-1,subshrub,117.53,0.225,0.0024195
+Medicago falcata,species,Fabaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:506175-1,NA,219.5,0.52,0.00282875
 Medicago lupulina,species,Fabaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:506268-1,NA,272.39,0.393333333333333,0.00166047725
 Myosotis arvensis,species,Boraginaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:118914-1,NA,293.8,0.265,4.22708333333333e-4
-Ophrys apifera,species,Orchidaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:647746-1,forb,196.67,0.15,NA
+Ophrys apifera,species,Orchidaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:647746-1,forb,196.67,0.15,1.1144e-6
 Origanum vulgare,species,Lamiaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:453395-1,forb,246.73,0.504,9.74666666666667e-5
-Orobanche gracilis,species,Orobanchaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:662378-1,NA,NA,NA,NA
+Orobanche gracilis,species,Orobanchaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:662378-1,NA,NA,0.38269230769230766,3.2e-5
 Papaver rhoeas,species,Papaveraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306058-2,NA,330.7,0.4035,1.59e-4
-Pentanema hirtum,species,Asteraceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77178414-1,NA,NA,NA,0.00112
-Pentanema salicinum,species,Asteraceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77178422-1,forb,NA,NA,4.485e-4
+Pentanema hirtum,species,Asteraceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77178414-1,NA,159.4399155965776,0.2996,0.00112
+Pentanema salicinum,species,Asteraceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:77178422-1,forb,NA,0.31,4.485e-4
 Peucedanum oreoselinum,species,Apiaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:846307-1,herb,162.7,0.5,0.0039685
 Phleum phleoides,species,Poaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:415866-1,graminoid,175.2,0.3,1.605e-4
 Picris hieracioides,species,Asteraceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:237848-1,forb,247.78,0.63075,0.001218
@@ -114,7 +114,7 @@ Pilosella officinarum,species,Asteraceae,1,0,0,I,*,https://powo.science.kew.org/
 Pimpinella saxifraga,species,Apiaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:847025-1,forb,157.97,0.413,0.001161375
 Plantago lanceolata,species,Plantaginaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:321285-2,NA,186.26,0.278333333333333,0.00142481333333333
 Plantago media,species,Plantaginaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:685411-1,forb,192.61,0.172,3.475e-4
-Platanthera bifolia,species,Orchidaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:651671-1,herb,269.1,0.16,NA
+Platanthera bifolia,species,Orchidaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:651671-1,herb,269.1,0.16,1.331925e-6
 Poa angustifolia,species,Poaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:320037-2,herb,155.5,0.36,1.86777666666667e-4
 Poa annua,species,Poaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:320035-2,NA,364.34,0.125,2.8735e-4
 Poa pratensis,species,Poaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:417792-1,NA,212.92,0.353333333333333,0.00682161714285714
@@ -131,12 +131,12 @@ Potentilla verna,species,Rosaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/u
 Primula veris,species,Primulaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:702751-1,forb,186.8,0.15,8.6095e-4
 Prunella grandiflora,species,Lamiaceae,1,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:60464253-2,herb,201.1,0.132,9.52e-4
 Prunus spinosa,species,Rosaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:730297-1,NA,143.73,3.976,0.305353235333333
-Pulsatilla patens,species,Ranunculaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30094592-2,forb,NA,0.225,0.0022905
+Pulsatilla patens,species,Ranunculaceae,0,0,0,I,1,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30094592-2,forb,153.93,0.225,0.0022905
 Pulsatilla vulgaris,species,Ranunculaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:712079-1,herb,100.92,0.15,0.0032188335
 Ranunculus bulbosus,species,Ranunculaceae,1,1,1,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:712367-1,forb,181.41,0.2375,0.00238725
 Rhamnus cathartica,species,Rhamnaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:718256-1,tree,167.06,5.3335,0.0267202733333333
 Rhamnus saxatilis,species,Rhamnaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:718640-1,shrub,135,0.6048,0.01053
-Rhinanthus glacialis,species,Orobanchaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:808763-1,NA,NA,0.35,0.002607
+Rhinanthus glacialis,species,Orobanchaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:808763-1,NA,198.01,0.35,0.002607
 Rhinanthus minor,species,Orobanchaceae,0,1,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30116962-2,forb,198.01,0.379,0.00248229166666667
 Rubus,genus,Rosaceae,0,0,0,N,nb,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:30000199-2,NA,NA,NA,NA
 Rubus caesius,species,Rosaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:735608-1,NA,193,0.9875,0.003694625
@@ -149,12 +149,12 @@ Scabiosa canescens,species,Caprifoliaceae,0,0,0,I,3,https://powo.science.kew.org
 Scabiosa columbaria,species,Caprifoliaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:319793-1,forb,192.08,0.3575,0.001968643
 Scorzonera purpurea,species,Asteraceae,0,0,0,I,2,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:243361-1,herb,NA,0.35,5.44e-4
 Sedum acre,species,Crassulaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:274996-1,NA,109,0.0585,3.735e-5
-Seseli annuum,species,Apiaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:848452-1,herb,NA,NA,NA
+Seseli annuum,species,Apiaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:848452-1,herb,91.52,0.4666666666666667,6.432e-4
 Sesleria caerulea,species,Poaceae,1,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:1005554-2,graminoid,192,0.09,0.001598
 Silene nutans,species,Caryophyllaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:157927-1,forb,221.87,0.3835,4.02533333333333e-4
 Silene vulgaris,species,Caryophyllaceae,0,0,0,I,*,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:158668-1,NA,198.7,0.385,8.766876e-4
 Tanacetum corymbosum,species,Asteraceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:252281-1,forb,174.2,0.675,4.783335e-4
-Taraxacum campylodes,species,Asteraceae,0,0,0,NA,NA,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:252973-1,forb,NA,NA,NA
+Taraxacum campylodes,species,Asteraceae,0,0,0,NA,NA,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:252973-1,forb,286.74962218565213,0.2136708825857655,6.406079755892389e-4
 Teucrium montanum,species,Lamiaceae,0,0,0,I,V,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:460563-1,subshrub,179.3,0.2,7.251665e-4
 Thesium linophyllon,species,Santalaceae,0,0,0,I,3,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:780950-1,forb,175.2,0.2,0.0066
 Thymus praecox,species,Lamiaceae,1,0,0,NA,NA,https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:461536-1,NA,134.04,0.07,1.4866675e-4
