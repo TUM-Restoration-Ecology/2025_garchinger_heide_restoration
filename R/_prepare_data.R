@@ -661,13 +661,14 @@ try_sla <- rtry_import(
 ### e Combine TRY and traits --------------------------------------------------
 
 data_traits2 <- data_traits %>%
+  ungroup() %>%
   left_join(try_sla, by = "accepted_name", suffix = c("", "_new")) %>%
   left_join(try_height, by = "accepted_name", suffix = c("", "_new")) %>%
   left_join(try_seedmass, by = "accepted_name", suffix = c("", "_new")) %>%
   mutate(
-    sla = coalesce(sla, sla_new),
-    height = coalesce(height, height_new),
-    seedmass = coalesce(seedmass, seedmass_new)
+    sla = dplyr::coalesce(sla, sla_new),
+    height = dplyr::coalesce(height, height_new),
+    seedmass = dplyr::coalesce(seedmass, seedmass_new)
     ) %>%
   select(-ends_with("_new"))
 
