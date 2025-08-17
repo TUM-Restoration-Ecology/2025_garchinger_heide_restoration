@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Plant height
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-08-04</b>
+<b>2025-08-17</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -102,26 +102,26 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##     upper      mean     lower 
-    ## 0.3128474 0.2993275 0.2858075
+    ## 0.3126535 0.2992185 0.2857835
 
 ``` r
 median(sites$y)
 ```
 
-    ## [1] 0.2568093
+    ## [1] 0.2566
 
 ``` r
 sd(sites$y)
 ```
 
-    ## [1] 0.1042898
+    ## [1] 0.1036345
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ```
 
-    ##        5%       95% 
-    ## 0.1845692 0.4843522
+    ##       5%      95% 
+    ## 0.183895 0.484350
 
 ### Graphs of raw data
 
@@ -158,14 +158,14 @@ summary(m)
 ## Permutation method  Comb. 2 and 4  ( 999  permutations)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
-##                      Test Stat          Obs   Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 914.77964906 4.4683735   greater  0.005
-## 2     grass_cover / log_y    r   0.38685726 2.5154245 two-sided  0.003
-## 3 graminoid_cover / log_y    r   0.02466519 0.5252431 two-sided  0.629
+##                      Test Stat          Obs  Std.Obs     Alter Pvalue
+## 1       treatment / log_y    F 934.89429397 5.186601   greater  0.002
+## 2     grass_cover / log_y    r   0.38481589 2.620364 two-sided  0.003
+## 3 graminoid_cover / log_y    r   0.02188485 0.404291 two-sided  0.730
 ##   Pvalue.adj   
-## 1      0.010 **
-## 2      0.009 **
-## 3      0.629   
+## 1      0.006 **
+## 2      0.006 **
+## 3      0.730   
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -180,21 +180,21 @@ m
 ## ---
 ## 
 ##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.28658327  5.3601379      less      1
-## 2    treat.control_2018 / log_y Homog. 0.20643636  1.3821120      less  0.898
-## 3    treat.control_2021 / log_y Homog. 0.22667209 -0.2305029      less  0.434
-## 4 treat.topsoil_removal / log_y Homog. 0.03822266 -0.2711166      less  0.507
-## 5      treat.cut_summer / log_y Homog. 0.02769074 -1.2476593      less  0.094
-## 6      treat.cut_autumn / log_y Homog. 0.02816805 -1.3673402      less  0.049
-## 7           grass_cover / log_y      r 0.38685726  2.5154245 two-sided  0.003
-## 8       graminoid_cover / log_y      r 0.02466519  0.7399019 two-sided   0.48
+## 1    treat.control_2003 / log_y Homog. 0.28679299  5.3566912      less      1
+## 2    treat.control_2018 / log_y Homog. 0.20664691  1.3054119      less  0.886
+## 3    treat.control_2021 / log_y Homog. 0.22726508 -0.2524151      less  0.442
+## 4 treat.topsoil_removal / log_y Homog. 0.03830401 -0.1849814      less  0.542
+## 5      treat.cut_summer / log_y Homog. 0.02783716 -1.2621520      less  0.086
+## 6      treat.cut_autumn / log_y Homog. 0.02843573 -1.4147555      less  0.051
+## 7           grass_cover / log_y      r 0.38481589  2.6203640 two-sided  0.003
+## 8       graminoid_cover / log_y      r 0.02188485  0.6009281 two-sided   0.52
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
 ## 3          1  
 ## 4          1  
-## 5      0.564  
-## 6      0.343  
+## 5      0.516  
+## 6      0.357  
 ## 7      0.024 *
 ## 8          1  
 ## 
@@ -249,13 +249,13 @@ summary(m_sub)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
 ##                      Test Stat          Obs   Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 807.31547293 4.5733076   greater  0.005
-## 2     grass_cover / log_y    r   0.38985888 2.5640644 two-sided  0.002
-## 3 graminoid_cover / log_y    r   0.02193272 0.4938806 two-sided  0.658
-##   Pvalue.adj   
-## 1      0.010 **
-## 2      0.006 **
-## 3      0.658   
+## 1       treatment / log_y    F 825.48407579 4.6296515   greater  0.004
+## 2     grass_cover / log_y    r   0.38743140 2.6022713 two-sided  0.004
+## 3 graminoid_cover / log_y    r   0.01924632 0.4014947 two-sided  0.727
+##   Pvalue.adj  
+## 1      0.012 *
+## 2      0.012 *
+## 3      0.727  
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -270,22 +270,22 @@ m_sub
 ## ---
 ## 
 ##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.29906062  4.9571384      less      1
-## 2    treat.control_2018 / log_y Homog. 0.21542425  0.9750581      less  0.832
-## 3    treat.control_2021 / log_y Homog. 0.23654101 -0.2937049      less  0.405
-## 4 treat.topsoil_removal / log_y Homog. 0.03192715 -0.2441495      less  0.536
-## 5      treat.cut_summer / log_y Homog. 0.01334038 -1.2534592      less  0.062
-## 6      treat.cut_autumn / log_y Homog. 0.02939444 -1.4342456      less  0.041
-## 7           grass_cover / log_y      r 0.38985888  2.5640644 two-sided  0.002
-## 8       graminoid_cover / log_y      r 0.02193272  0.6569129 two-sided  0.522
+## 1    treat.control_2003 / log_y Homog. 0.29932412  5.2167939      less      1
+## 2    treat.control_2018 / log_y Homog. 0.21567614  0.9876678      less  0.824
+## 3    treat.control_2021 / log_y Homog. 0.23719520 -0.2424747      less   0.43
+## 4 treat.topsoil_removal / log_y Homog. 0.03190574 -0.1906956      less  0.553
+## 5      treat.cut_summer / log_y Homog. 0.01338069 -1.1371987      less  0.075
+## 6      treat.cut_autumn / log_y Homog. 0.02967820 -1.3181545      less   0.05
+## 7           grass_cover / log_y      r 0.38743140  2.6022713 two-sided  0.004
+## 8       graminoid_cover / log_y      r 0.01924632  0.6409875 two-sided  0.531
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
 ## 3          1  
 ## 4          1  
-## 5      0.372  
-## 6      0.287  
-## 7      0.016 *
+## 5       0.45  
+## 6       0.35  
+## 7      0.032 *
 ## 8          1  
 ## 
 ## ---
@@ -306,7 +306,7 @@ m_sub
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/Denver
+    ## time zone: America/New_York
     ## tzcode source: internal
     ## 
     ## attached base packages:

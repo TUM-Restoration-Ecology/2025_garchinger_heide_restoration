@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Specific leaf area (SLA)
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-08-04</b>
+<b>2025-08-17</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -102,26 +102,26 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##    upper     mean    lower 
-    ## 5.291553 5.282784 5.274016
+    ## 5.255785 5.243640 5.231495
 
 ``` r
 median(sites$y)
 ```
 
-    ## [1] 5.293181
+    ## [1] 5.25939
 
 ``` r
 sd(sites$y)
 ```
 
-    ## [1] 0.06763991
+    ## [1] 0.09368147
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ```
 
     ##       5%      95% 
-    ## 5.165400 5.379251
+    ## 5.072625 5.365440
 
 ### Graphs of raw data
 
@@ -159,9 +159,9 @@ summary(m)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
 ##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 74.49564888 -0.6521323   greater  0.738
-## 2     grass_cover / log_y    r  0.04714067  0.2904212 two-sided  0.802
-## 3 graminoid_cover / log_y    r  0.02335564  0.3914064 two-sided  0.712
+## 1       treatment / log_y    F 98.59457854 -0.4629397   greater  0.581
+## 2     grass_cover / log_y    r  0.11924479  0.8484839 two-sided  0.441
+## 3 graminoid_cover / log_y    r  0.03225685  0.4793071 two-sided  0.658
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -179,15 +179,15 @@ m
 ## 
 ## ---
 ## 
-##                            Test   Stat        Obs     Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.21661182  2.85769727      less  0.998
-## 2    treat.control_2018 / log_y Homog. 0.21079831  2.18633464      less  0.985
-## 3    treat.control_2021 / log_y Homog. 0.26593131 -0.17480411      less  0.441
-## 4 treat.topsoil_removal / log_y Homog. 0.06272698  1.12202098      less  0.877
-## 5      treat.cut_summer / log_y Homog. 0.09073927 -0.07358478      less  0.514
-## 6      treat.cut_autumn / log_y Homog. 0.13353032  0.45070375      less  0.676
-## 7           grass_cover / log_y      r 0.04714067  0.29042123 two-sided  0.802
-## 8       graminoid_cover / log_y      r 0.02335564  0.39140640 two-sided  0.712
+##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
+## 1    treat.control_2003 / log_y Homog. 0.38986309  6.9066415      less      1
+## 2    treat.control_2018 / log_y Homog. 0.19963229  0.5718157      less  0.725
+## 3    treat.control_2021 / log_y Homog. 0.22456398 -0.3898366      less  0.355
+## 4 treat.topsoil_removal / log_y Homog. 0.04391515  0.2180794      less  0.672
+## 5      treat.cut_summer / log_y Homog. 0.04828316 -1.0229749      less  0.169
+## 6      treat.cut_autumn / log_y Homog. 0.07038695 -1.0394639      less   0.15
+## 7           grass_cover / log_y      r 0.11924479  0.8484839 two-sided  0.441
+## 8       graminoid_cover / log_y      r 0.03225685  0.4793071 two-sided  0.658
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -249,9 +249,9 @@ summary(m_sub)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
 ##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 65.83091136 -0.6674529   greater  0.725
-## 2     grass_cover / log_y    r  0.05151706  0.2861313 two-sided  0.791
-## 3 graminoid_cover / log_y    r  0.02322695  0.3666199 two-sided  0.780
+## 1       treatment / log_y    F 83.54484242 -0.5297270   greater  0.611
+## 2     grass_cover / log_y    r  0.11973163  0.7417849 two-sided  0.511
+## 3 graminoid_cover / log_y    r  0.03160538  0.4766762 two-sided  0.669
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -270,14 +270,14 @@ m_sub
 ## ---
 ## 
 ##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.22864446  2.5853216      less  0.997
-## 2    treat.control_2018 / log_y Homog. 0.22250800  2.0282324      less  0.979
-## 3    treat.control_2021 / log_y Homog. 0.28070360 -0.4756903      less  0.317
-## 4 treat.topsoil_removal / log_y Homog. 0.04969867  0.9812129      less  0.858
-## 5      treat.cut_summer / log_y Homog. 0.05926611  0.0852479      less   0.59
-## 6      treat.cut_autumn / log_y Homog. 0.14094784  0.1439109      less  0.575
-## 7           grass_cover / log_y      r 0.05151706  0.2861313 two-sided  0.791
-## 8       graminoid_cover / log_y      r 0.02322695  1.2681150 two-sided  0.212
+## 1    treat.control_2003 / log_y Homog. 0.40307319  6.6486446      less      1
+## 2    treat.control_2018 / log_y Homog. 0.20639662  0.3722368      less  0.689
+## 3    treat.control_2021 / log_y Homog. 0.23217309 -0.5236230      less  0.299
+## 4 treat.topsoil_removal / log_y Homog. 0.03391669  0.1333237      less  0.648
+## 5      treat.cut_summer / log_y Homog. 0.03094117 -0.8292853      less  0.216
+## 6      treat.cut_autumn / log_y Homog. 0.07277193 -1.0039973      less  0.156
+## 7           grass_cover / log_y      r 0.11973163  0.7417849 two-sided  0.511
+## 8       graminoid_cover / log_y      r 0.03160538  0.4766762 two-sided  0.669
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -306,7 +306,7 @@ m_sub
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/Denver
+    ## time zone: America/New_York
     ## tzcode source: internal
     ## 
     ## attached base packages:
