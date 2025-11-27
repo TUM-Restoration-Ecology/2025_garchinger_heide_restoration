@@ -67,7 +67,11 @@ species <- read_csv(
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 species_wide <- species
 
-phi_taxa <- multipatt(species_wide, sites$treatment,
+sites$treatment2 <- ifelse(sites$treatment %in% c("control_2003", "control_2018", 
+                                                  "control_2021"),
+                                 "control", sites$treatment)
+# significant indicator species
+phi_taxa <- multipatt(species_wide, sites$treatment2,
                       func = "r.g", duleg = TRUE,
                       control = how(nperm = 999))
 
@@ -77,45 +81,44 @@ phi_taxa <- as.data.frame(phi_taxa$sign)
 
 phi_taxa$species <- rownames(phi_taxa)
 
-phi_sig <- subset(phi_taxa, p.value <= 0.05)
-
-species_sig <- phi_sig$species
+phi_sig <- subset(phi_taxa, p.value <= 0.01)
 
 
-species$id <- rownames(species)
+# # significant species names
+# species_sig <- phi_sig$species
+# 
+# # likelihood
+# species$id <- rownames(species)
+# 
+# species_long <- species %>%
+#   pivot_longer(
+#     cols = -id,
+#     names_to = "species",
+#     values_to = "cover") %>%
+#   mutate(presence = ifelse(cover > 0, 1, 0)) %>%
+#   merge(sites %>% select(id,treatment2), by = "id")
+# 
+# all_species <- unique(species_long$species)
+# 
+# 
+# glm_species <- function(x) {
+#   
+#   df <- species_long %>% filter(species == x)
+#   
+#   m  <- glm(presence ~ treatment2, data = df,
+#               family = binomial)
+#   
+#   pred <- ggeffects::ggeffect(m, terms = "treatment2")
+#   pred$species <- x
+#   
+#   pred$likelihood <- logLik(m)
+#   return(pred)
+# }
+# 
+# pred_list <- map_df(all_species, glm_species)
+# 
+# ggplot(pred_list) +
+#   geom_point(aes(x = likelihood, y = species)) +
+#   theme_mb()
+# 
 
-species_long <- species %>%
-  pivot_longer(
-    cols = -id,
-    names_to = "species",
-    values_to = "cover") %>%
-  mutate(presence = ifelse(cover > 0, 1, 0)) %>%
-  merge(sites %>% select(id,treatment), by = "id")
-
-all_species <- unique(species_long$species)
-
-
-glm_species <- function(x) {
-  
-  df <- species_long %>% filter(species == x)
-  
-  m  <- glm(presence ~ treatment, data = df,
-              family = binomial)
-  
-  pred <- ggeffects::ggeffect(m, terms = "treatment")
-  pred$species <- x
-  
-  return(pred)
-}
-
-pred_list <- map_df(all_species, glm_species)
-
-pred_sig <- pred_list %>% filter(species %in% species_sig) %>%
-  group_by(species) %>%
-  slice_max(predicted, n = 1, with_ties = FALSE) %>%
-  select(species, dominant_treatment = x, max_likelihood = predicted)
-
-plot <- pred_sig %>%
-  left_join(pred_sig, by = "species")
-
-ggplot(plot, aes(x = predicted, y = species))
