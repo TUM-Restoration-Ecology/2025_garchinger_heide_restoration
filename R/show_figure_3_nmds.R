@@ -121,6 +121,9 @@ data_nmds <-  sites %>%
   mutate(mean1 = mean(NMDS1), mean2 = mean(NMDS2))
 
 
+species_scores <- as.data.frame(scores(ordi,"species"))
+species_scores$species <- rownames(species_scores)
+
 #### * Site scores ####
 
 (graph_a <- ggplot() +
@@ -214,8 +217,6 @@ data_nmds <-  sites %>%
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # C Save ######################################################################
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 ggsave(
   here("outputs", "figures", "figure_3_nmds_subset_800dpi_16.5x11cm.tiff"),
