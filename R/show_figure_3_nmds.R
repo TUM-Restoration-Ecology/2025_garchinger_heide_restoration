@@ -67,6 +67,12 @@ species <- read_csv(
   pivot_wider(names_from = "accepted_name", values_from = "value") %>%
   column_to_rownames(var = "id")
 
+indicator_sp <- read_csv(
+  here("data", "processed", "data_indicator_species.csv"),
+  col_names = TRUE, na = c("na", "NA", ""), col_types =
+    cols(
+      .default = "?"
+    ))
 
 #### * Choosen model ####
 
@@ -78,7 +84,8 @@ envfit <- ef_vector1
 
 rm(
   list = setdiff(
-    ls(), c("sites", "envfit", "ordi", "theme_mb", "vegan_cov_ellipse")
+    ls(), c("sites", "envfit", "ordi", "theme_mb", "vegan_cov_ellipse",
+            "species","indicator_sp")
   )
 )
 
@@ -123,6 +130,13 @@ data_nmds <-  sites %>%
 
 species_scores <- as.data.frame(scores(ordi,"species"))
 species_scores$species <- rownames(species_scores)
+
+species_indicator <- indicator_sp$species
+
+species_scores <- species_scores %>%
+  filter(species %in% species_indicator) %>%
+  mutate(short_label = gsub("^(\\w{3})\\w*\\s+(\\w{3}).*", "\\1 \\2", species))
+
 
 #### * Site scores ####
 
@@ -220,5 +234,63 @@ species_scores$species <- rownames(species_scores)
 
 ggsave(
   here("outputs", "figures", "figure_3_nmds_subset_800dpi_16.5x11cm.tiff"),
+  dpi = 800, width = 16.5, height = 11, units = "cm"
+)
+
+
+
+#### * Indicator species score ####
+(graph_b <- ggplot() +
+  geom_point(
+    aes(y = NMDS2, x = NMDS1),
+    color = "white",
+    data = data_nmds,
+    cex = 2, alpha = .8
+  ) +
+   
+   #### * Ellipses ####
+ 
+ stat_ellipse(
+   aes(y = NMDS2, x = NMDS1, color = group, group = group),
+   data = data_nmds,
+   geom = "path", level = 0.95, show.legend = TRUE
+  ) + 
+   
+   #### * Design ####
+ 
+ scale_color_manual(
+   labels = c(
+     "control_2003" = "Reference\n2003",
+     "control_2018" = "Reference\n2018",
+     "control_2021" = "Reference\n2021",
+     "cut_summer" = "Mowing\nsummer",
+     "cut_autumn" = "Mowing\nautumn",
+     "topsoil_removal" = "Topsoil\nremoval"
+   ),
+   values = c(
+     "control_2003" = "#a153a6", 
+     "control_2018" = "#de47f5", 
+     "control_2021" = "#f947d1", 
+     "cut_summer" = "#61a161", 
+     "cut_autumn" = "#87ceeb", 
+     "topsoil_removal" = "#b06e13"
+   )
+ ) +
+   theme_mb() +
+  
+  ### * Indicator species
+  
+  geom_text(data = species_scores, aes(x = NMDS1, y = NMDS2+0.03, 
+                                       label = short_label),
+            size = 3, col = "black", alpha = 0.7))
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# D Save ######################################################################
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ggsave(
+  here("outputs", "figures", "figure_nmds_indicator_sp_800dpi_16.5x11cm.tiff"),
   dpi = 800, width = 16.5, height = 11, units = "cm"
 )
