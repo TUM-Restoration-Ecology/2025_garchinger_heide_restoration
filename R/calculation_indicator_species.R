@@ -81,8 +81,13 @@ phi_taxa <- as.data.frame(phi_taxa$sign)
 
 phi_taxa$species <- rownames(phi_taxa)
 
-phi_sig <- subset(phi_taxa, p.value <= 0.01)
+phi_sig <- subset(phi_taxa, p.value <= 0.05)
 
+# Save processed data
+write_csv(
+  phi_sig,
+  here("data", "processed", "data_indicator_species.csv")
+)
 
 # # significant species names
 # species_sig <- phi_sig$species
