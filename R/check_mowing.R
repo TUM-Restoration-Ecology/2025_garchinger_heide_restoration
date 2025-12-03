@@ -48,49 +48,63 @@ sites <- read_csv(
     cols(
       .default = "?"
     )) %>% 
-  arrange(id)
-
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# B Boxplots ###################################################################
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-sites <- sites %>%
+  arrange(id) %>%
   filter(treatment %in% c("cut_summer", "cut_autumn"))
 
 sites$mowing_start_decades <- ifelse(sites$mowing_date_start < 2015, 
                                      "> 10 years", "< 10 years")
 
+
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# B Boxplots ###################################################################
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 ggplot(sites, aes(x = treatment, y = richness_total, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
-  theme_mb()
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+  ) +
+  theme_mb()#
 
 ggplot(sites, aes(x = treatment, y = richness_R1A, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
-  theme_mb()
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+    ) +
+  theme_mb()#
 
 ggplot(sites, aes(x = treatment, y = richness_R22, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
-  theme_mb()
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+  ) +
+  theme_mb()#
 
 ggplot(sites, aes(x = treatment, y = rlg, fill = mowing_start_decades))+
-  geom_boxplot() +
+  geom_boxplot(alpha = .5) +
   geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
   theme_mb()
 
 ggplot(sites, aes(x = treatment, y = CWM_Height, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+  ) +
   theme_mb()
 
 ggplot(sites, aes(x = treatment, y = CWM_Seed, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+  ) +
   theme_mb()
 
 ggplot(sites, aes(x = treatment, y = CWM_SLA, fill = mowing_start_decades))+
-  geom_boxplot() +
-  geom_jitter(aes(col = mowing_start_decades), width = 0.1) +
+  geom_boxplot(alpha = .5) +
+  geom_jitter(
+    aes(col = mowing_start_decades), position = position_jitterdodge()
+  ) +
   theme_mb()
