@@ -4,7 +4,7 @@
 #
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Markus Bauer, Sina Appeltauer
-# 2025-08-17
+# 2025-12-03
 
 
 
@@ -762,7 +762,7 @@ rm(list = setdiff(ls(), c("species", "sites", "traits", "coordinates")))
 ## 6 Create variables #########################################################
 
 
-### Grass cover ---------------------------------------------------------------
+### a Grass cover --------------------------------------------------------------
 
 data <- species %>%
   left_join(
@@ -776,7 +776,7 @@ sites <- sites %>%
   left_join(data, by = "id")
 
 
-### Graminoid cover ---------------------------------------------------------------
+### b Graminoid cover ---------------------------------------------------------
 
 data <- species %>%
   left_join(
@@ -794,6 +794,22 @@ data <- species %>%
     )
 sites <- sites %>%
   left_join(data, by = "id")
+
+
+### c restoration age ----------------------------------------------------------
+
+sites <- sites %>%
+  mutate(
+    mowing_age = if_else(mowing_date_start < 2015, "> 10 years", "< 10 years"),
+    treatment_age = case_when(
+      mowing_age == "> 10 years" ~ paste0(treatment, "_old"),
+      mowing_age == "< 10 years" ~ paste0(treatment, "_young"),
+      treatment %in% c(
+        "topsoil_removal", "control_2003", "control_2018", "control_2021"
+        ) ~ treatment
+      )
+  ) %>%
+  relocate(treatment_age, mowing_age, .after = treatment)
 
 
 
