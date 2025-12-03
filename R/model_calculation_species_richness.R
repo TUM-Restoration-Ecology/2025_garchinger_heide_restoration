@@ -4,7 +4,7 @@
 # Model building
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Sina Appeltauer, Markus Bauer
-# 2025-08-04
+# 2025-12-03
 
 
 
@@ -54,6 +54,8 @@ sites <- read_csv(
 
 ggplot(sites, aes(y = y, x = treatment)) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
+ggplot(sites, aes(y = y, x = treatment_age)) +
+  geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
 ggplot(sites, aes(y = y, x = as_factor(year_hay_transfer))) +
   geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
 ggplot(sites, aes(y = y, x = as.factor(mowing_date_start))) +
@@ -87,10 +89,10 @@ sites %>%
 
 ### a Full dataset ------------------------------------------------------------
 
-m1 <- lm(y ~ treatment, data = sites)
+m1 <- lm(y ~ treatment_age, data = sites)
 simulateResiduals(m1, plot = TRUE)
 
-m2 <- lm(y ~ treatment + mem2, data = sites)
+m2 <- lm(y ~ treatment_age + mem2, data = sites)
 simulateResiduals(m2, plot = TRUE)
 
 
