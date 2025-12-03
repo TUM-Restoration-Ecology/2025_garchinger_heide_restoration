@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Species richness
 ================
 <b>Markus Bauer</b> & <b>Sina Appeltauer</b> <br>
-<b>2025-08-05</b>
+<b>2025-12-03</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -73,6 +73,11 @@ sites <- read_csv(
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
+      ),
+      treatment_age = col_factor(
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer_old",
+                   "cut_summer_young", "cut_autumn_old", "cut_autumn_young",
+                   "topsoil_removal")
       )
     )
   ) %>%
@@ -128,15 +133,17 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Outliers, zero-inflation, transformations? (Step 1, 3, 4)
 
-    ## # A tibble: 6 × 2
-    ##   treatment           n
-    ##   <fct>           <int>
-    ## 1 control_2003       42
-    ## 2 control_2018       42
-    ## 3 control_2021       62
-    ## 4 cut_summer         25
-    ## 5 cut_autumn         30
-    ## 6 topsoil_removal    30
+    ## # A tibble: 8 × 2
+    ##   treatment_age        n
+    ##   <fct>            <int>
+    ## 1 control_2003        42
+    ## 2 control_2018        42
+    ## 3 control_2021        62
+    ## 4 cut_summer_old      15
+    ## 5 cut_summer_young    10
+    ## 6 cut_autumn_old      10
+    ## 7 cut_autumn_young    20
+    ## 8 topsoil_removal     30
 
 ![](model_check_species_richness_files/figure-gfm/outliers-1.png)<!-- -->
 
@@ -172,15 +179,19 @@ m_2 <- m2sub
 m_1
 ## 
 ## Call:
-## lm(formula = y ~ treatment + mem2, data = sites)
+## lm(formula = y ~ treatment_age + mem2, data = sites)
 ## 
 ## Coefficients:
-##              (Intercept)     treatmentcontrol_2018     treatmentcontrol_2021  
-##                  30.3924                    0.3095                    3.7530  
-##      treatmentcut_summer       treatmentcut_autumn  treatmenttopsoil_removal  
-##                  -5.7946                   -5.2412                  -10.9079  
-##                     mem2  
-##                  -0.9574
+##                   (Intercept)      treatment_agecontrol_2018  
+##                       30.3924                         0.3095  
+##     treatment_agecontrol_2021    treatment_agecut_autumn_old  
+##                        3.7530                        -4.7746  
+## treatment_agecut_autumn_young    treatment_agecut_summer_old  
+##                       -5.4746                        -3.7412  
+## treatment_agecut_summer_young   treatment_agetopsoil_removal  
+##                       -8.8746                       -10.9079  
+##                          mem2  
+##                       -0.9574
 m_2
 ## 
 ## Call:
@@ -212,7 +223,7 @@ simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ![](model_check_species_richness_files/figure-gfm/dharma_all-2.png)<!-- -->
 
 ``` r
-plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
+plotResiduals(simulation_output_1$scaledResiduals, sites$treatment_age)
 ```
 
 ![](model_check_species_richness_files/figure-gfm/dharma_single-1.png)<!-- -->
@@ -276,9 +287,9 @@ Remove VIF \> 3 or \> 10 <br> Zuur et al. 2010 Methods Ecol Evol [DOI:
 car::vif(m_1)
 ```
 
-    ##              GVIF Df GVIF^(1/(2*Df))
-    ## treatment 1.05719  5        1.005577
-    ## mem2      1.05719  1        1.028197
+    ##                  GVIF Df GVIF^(1/(2*Df))
+    ## treatment_age 1.05719  7        1.003980
+    ## mem2          1.05719  1        1.028197
 
 ``` r
 car::vif(m_2)
@@ -295,7 +306,7 @@ car::vif(m_2)
 ``` r
 MuMIn::r.squaredGLMM(m_1)
 ##            R2m       R2c
-## [1,] 0.4937266 0.4937266
+## [1,] 0.5067626 0.5067626
 MuMIn::r.squaredGLMM(m_2)
 ##            R2m       R2c
 ## [1,] 0.5033755 0.5033755
@@ -311,7 +322,7 @@ MuMIn::AICc(m_1, m_2) %>%
   arrange(AICc)
 ##     df     AICc
 ## m_2  8 1293.078
-## m_1  8 1395.021
+## m_1 10 1392.201
 ```
 
 ## Predicted values
@@ -324,27 +335,29 @@ summary(m_1)
 
     ## 
     ## Call:
-    ## lm(formula = y ~ treatment + mem2, data = sites)
+    ## lm(formula = y ~ treatment_age + mem2, data = sites)
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -11.8598  -3.1827   0.1238   3.2517  12.2333 
+    ## -11.8598  -3.1550   0.2333   3.2167  12.2333 
     ## 
     ## Coefficients:
-    ##                          Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)               30.3924     0.7531  40.357  < 2e-16 ***
-    ## treatmentcontrol_2018      0.3095     1.0594   0.292 0.770422    
-    ## treatmentcontrol_2021      3.7530     0.9715   3.863 0.000146 ***
-    ## treatmentcut_summer       -5.7946     1.2386  -4.678 5.01e-06 ***
-    ## treatmentcut_autumn       -5.2412     1.1735  -4.466 1.26e-05 ***
-    ## treatmenttopsoil_removal -10.9079     1.1735  -9.295  < 2e-16 ***
-    ## mem2                      -0.9574     0.3284  -2.915 0.003916 ** 
+    ##                               Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)                    30.3924     0.7448  40.805  < 2e-16 ***
+    ## treatment_agecontrol_2018       0.3095     1.0477   0.295 0.767949    
+    ## treatment_agecontrol_2021       3.7530     0.9608   3.906 0.000124 ***
+    ## treatment_agecut_autumn_old    -4.7746     1.6982  -2.812 0.005371 ** 
+    ## treatment_agecut_autumn_young  -5.4746     1.3158  -4.161 4.54e-05 ***
+    ## treatment_agecut_summer_old    -3.7412     1.4545  -2.572 0.010756 *  
+    ## treatment_agecut_summer_young  -8.8746     1.6982  -5.226 3.99e-07 ***
+    ## treatment_agetopsoil_removal  -10.9079     1.1606  -9.398  < 2e-16 ***
+    ## mem2                           -0.9574     0.3248  -2.948 0.003546 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 4.855 on 224 degrees of freedom
-    ## Multiple R-squared:  0.5003, Adjusted R-squared:  0.487 
-    ## F-statistic: 37.38 on 6 and 224 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 4.801 on 222 degrees of freedom
+    ## Multiple R-squared:  0.5156, Adjusted R-squared:  0.4982 
+    ## F-statistic: 29.54 on 8 and 222 DF,  p-value: < 2.2e-16
 
 ### Forest plot
 
@@ -367,41 +380,56 @@ necessary.
 ``` r
 (emm <- emmeans(
   m_1,
-  revpairwise ~ treatment,
+  revpairwise ~ treatment_age,
   type = "response"
   ))
 ```
 
     ## $emmeans
-    ##  treatment       emmean    SE  df lower.CL upper.CL
-    ##  control_2003      30.4 0.753 224     28.9     31.9
-    ##  control_2018      30.7 0.753 224     29.2     32.2
-    ##  control_2021      34.1 0.617 224     32.9     35.4
-    ##  cut_summer        24.6 0.976 224     22.7     26.5
-    ##  cut_autumn        25.2 0.892 224     23.4     26.9
-    ##  topsoil_removal   19.5 0.892 224     17.7     21.2
+    ##  treatment_age    emmean    SE  df lower.CL upper.CL
+    ##  control_2003       30.4 0.745 222     28.9     31.9
+    ##  control_2018       30.7 0.745 222     29.2     32.2
+    ##  control_2021       34.1 0.610 222     32.9     35.3
+    ##  cut_autumn_old     25.6 1.520 222     22.6     28.6
+    ##  cut_autumn_young   24.9 1.080 222     22.8     27.0
+    ##  cut_summer_old     26.7 1.240 222     24.2     29.1
+    ##  cut_summer_young   21.5 1.520 222     18.5     24.5
+    ##  topsoil_removal    19.5 0.882 222     17.7     21.2
     ## 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##  contrast                       estimate    SE  df t.ratio p.value
-    ##  control_2018 - control_2003       0.310 1.060 224   0.292  0.9997
-    ##  control_2021 - control_2003       3.753 0.971 224   3.863  0.0020
-    ##  control_2021 - control_2018       3.443 0.971 224   3.545  0.0063
-    ##  cut_summer - control_2003        -5.795 1.240 224  -4.678  0.0001
-    ##  cut_summer - control_2018        -6.104 1.240 224  -4.928  <.0001
-    ##  cut_summer - control_2021        -9.548 1.160 224  -8.253  <.0001
-    ##  cut_autumn - control_2003        -5.241 1.170 224  -4.466  0.0002
-    ##  cut_autumn - control_2018        -5.551 1.170 224  -4.730  0.0001
-    ##  cut_autumn - control_2021        -8.994 1.090 224  -8.276  <.0001
-    ##  cut_autumn - cut_summer           0.553 1.310 224   0.421  0.9983
-    ##  topsoil_removal - control_2003  -10.908 1.170 224  -9.295  <.0001
-    ##  topsoil_removal - control_2018  -11.217 1.170 224  -9.559  <.0001
-    ##  topsoil_removal - control_2021  -14.661 1.090 224 -13.489  <.0001
-    ##  topsoil_removal - cut_summer     -5.113 1.310 224  -3.890  0.0018
-    ##  topsoil_removal - cut_autumn     -5.667 1.250 224  -4.521  0.0001
+    ##  contrast                            estimate    SE  df t.ratio p.value
+    ##  control_2018 - control_2003             0.31 1.050 222   0.295  1.0000
+    ##  control_2021 - control_2003             3.75 0.961 222   3.906  0.0031
+    ##  control_2021 - control_2018             3.44 0.961 222   3.584  0.0097
+    ##  cut_autumn_old - control_2003          -4.77 1.700 222  -2.812  0.0974
+    ##  cut_autumn_old - control_2018          -5.08 1.700 222  -2.994  0.0602
+    ##  cut_autumn_old - control_2021          -8.53 1.640 222  -5.197  <.0001
+    ##  cut_autumn_young - control_2003        -5.47 1.320 222  -4.161  0.0012
+    ##  cut_autumn_young - control_2018        -5.78 1.320 222  -4.396  0.0004
+    ##  cut_autumn_young - control_2021        -9.23 1.240 222  -7.437  <.0001
+    ##  cut_autumn_young - cut_autumn_old      -0.70 1.860 222  -0.376  0.9999
+    ##  cut_summer_old - control_2003          -3.74 1.450 222  -2.572  0.1718
+    ##  cut_summer_old - control_2018          -4.05 1.450 222  -2.785  0.1040
+    ##  cut_summer_old - control_2021          -7.49 1.390 222  -5.403  <.0001
+    ##  cut_summer_old - cut_autumn_old         1.03 1.960 222   0.527  0.9995
+    ##  cut_summer_old - cut_autumn_young       1.73 1.640 222   1.057  0.9648
+    ##  cut_summer_young - control_2003        -8.87 1.700 222  -5.226  <.0001
+    ##  cut_summer_young - control_2018        -9.18 1.700 222  -5.408  <.0001
+    ##  cut_summer_young - control_2021       -12.63 1.640 222  -7.696  <.0001
+    ##  cut_summer_young - cut_autumn_old      -4.10 2.150 222  -1.909  0.5459
+    ##  cut_summer_young - cut_autumn_young    -3.40 1.860 222  -1.828  0.6014
+    ##  cut_summer_young - cut_summer_old      -5.13 1.960 222  -2.619  0.1547
+    ##  topsoil_removal - control_2003        -10.91 1.160 222  -9.398  <.0001
+    ##  topsoil_removal - control_2018        -11.22 1.160 222  -9.665  <.0001
+    ##  topsoil_removal - control_2021        -14.66 1.070 222 -13.639  <.0001
+    ##  topsoil_removal - cut_autumn_old       -6.13 1.750 222  -3.498  0.0130
+    ##  topsoil_removal - cut_autumn_young     -5.43 1.390 222  -3.920  0.0029
+    ##  topsoil_removal - cut_summer_old       -7.17 1.520 222  -4.720  0.0001
+    ##  topsoil_removal - cut_summer_young     -2.03 1.750 222  -1.160  0.9423
     ## 
-    ## P value adjustment: tukey method for comparing a family of 6 estimates
+    ## P value adjustment: tukey method for comparing a family of 8 estimates
 
 ``` r
 plot(emm, comparison = TRUE)
@@ -411,7 +439,7 @@ plot(emm, comparison = TRUE)
 
 # Session info
 
-    ## R version 4.5.0 (2025-04-11 ucrt)
+    ## R version 4.5.1 (2025-06-13 ucrt)
     ## Platform: x86_64-w64-mingw32/x64
     ## Running under: Windows 11 x64 (build 26100)
     ## 
@@ -423,7 +451,7 @@ plot(emm, comparison = TRUE)
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/Chicago
+    ## time zone: Europe/Berlin
     ## tzcode source: internal
     ## 
     ## attached base packages:
@@ -437,30 +465,30 @@ plot(emm, comparison = TRUE)
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Rdpack_2.6.4           gridExtra_2.3          rlang_1.1.6           
-    ##  [4] magrittr_2.0.3         compiler_4.5.0         mgcv_1.9-1            
+    ##  [4] magrittr_2.0.3         compiler_4.5.1         mgcv_1.9-3            
     ##  [7] vctrs_0.6.5            pkgconfig_2.0.3        crayon_1.5.3          
     ## [10] fastmap_1.2.0          backports_1.5.0        labeling_0.4.3        
     ## [13] utf8_1.2.6             ggstance_0.3.7         promises_1.3.3        
     ## [16] rmarkdown_2.29         tzdb_0.5.0             nloptr_2.2.1          
     ## [19] bit_4.6.0              xfun_0.52              later_1.4.2           
-    ## [22] parallel_4.5.0         R6_2.6.1               gap.datasets_0.0.6    
+    ## [22] parallel_4.5.1         R6_2.6.1               gap.datasets_0.0.6    
     ## [25] stringi_1.8.7          qgam_2.0.0             RColorBrewer_1.1-3    
     ## [28] GGally_2.2.1           car_3.1-3              boot_1.3-31           
     ## [31] estimability_1.5.1     Rcpp_1.1.0             iterators_1.0.14      
     ## [34] knitr_1.50             parameters_0.27.0      httpuv_1.6.16         
-    ## [37] Matrix_1.7-3           splines_4.5.0          timechange_0.3.0      
+    ## [37] Matrix_1.7-3           splines_4.5.1          timechange_0.3.0      
     ## [40] tidyselect_1.2.1       rstudioapi_0.17.1      abind_1.4-8           
     ## [43] yaml_2.3.10            MuMIn_1.48.11          doParallel_1.0.17     
-    ## [46] codetools_0.2-20       lattice_0.22-6         plyr_1.8.9            
+    ## [46] codetools_0.2-20       lattice_0.22-7         plyr_1.8.9            
     ## [49] shiny_1.11.1           withr_3.0.2            bayestestR_0.16.1     
     ## [52] coda_0.19-4.1          evaluate_1.0.4         marginaleffects_0.28.0
     ## [55] ggstats_0.10.0         pillar_1.11.0          gap_1.6               
-    ## [58] carData_3.0-5          foreach_1.5.2          stats4_4.5.0          
+    ## [58] carData_3.0-5          foreach_1.5.2          stats4_4.5.1          
     ## [61] reformulas_0.4.1       insight_1.3.1          generics_0.1.4        
     ## [64] vroom_1.6.5            rprojroot_2.1.0        hms_1.1.3             
     ## [67] scales_1.4.0           minqa_1.2.8            xtable_1.8-4          
-    ## [70] glue_1.8.0             tools_4.5.0            data.table_1.17.8     
-    ## [73] lme4_1.1-37            mvtnorm_1.3-3          grid_4.5.0            
+    ## [70] glue_1.8.0             tools_4.5.1            data.table_1.17.8     
+    ## [73] lme4_1.1-37            mvtnorm_1.3-3          grid_4.5.1            
     ## [76] rbibutils_2.3          datawizard_1.1.0       nlme_3.1-168          
     ## [79] Rmisc_1.5.1            performance_0.15.0     beeswarm_0.4.0        
     ## [82] vipor_0.4.7            Formula_1.2-5          cli_3.6.5             

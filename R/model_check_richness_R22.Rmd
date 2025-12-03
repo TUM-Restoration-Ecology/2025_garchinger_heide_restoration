@@ -69,6 +69,11 @@ sites <- read_csv(
       treatment = col_factor(
         levels = c("control_2003", "control_2018", "control_2021", "cut_summer",
                    "cut_autumn", "topsoil_removal")
+      ),
+      treatment_age = col_factor(
+        levels = c("control_2003", "control_2018", "control_2021", "cut_summer_old",
+                   "cut_summer_young", "cut_autumn_old", "cut_autumn_young",
+                   "topsoil_removal")
       )
     )
   ) %>%
@@ -102,8 +107,9 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ### Graphs of raw data (Step 2, 6, 7)
 
 ```{r data-exploration, echo = FALSE, warning = FALSE, message = FALSE}
-ggplot(sites, aes(y = y, x = treatment)) +
-  geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent")
+ggplot(sites, aes(y = y, x = treatment_age)) +
+  geom_quasirandom(color = "grey") + geom_boxplot(fill = "transparent") +
+  theme(axis.text.x = element_text(angle = 15))
 ggplot(sites, aes(y = y, x = height_vegetation)) +
   geom_quasirandom(color = "grey") + geom_smooth(method = "lm")
 ggplot(sites, aes(y = y, x = cover_vegetation)) +
@@ -118,8 +124,8 @@ ggplot(sites, aes(y = y, x = graminoid_cover)) +
 
 ```{r outliers, echo = FALSE, warning = FALSE}
 sites %>%
-  count(treatment)
-plot1 <- ggplot(sites, aes(x = treatment, y = y)) +
+  count(treatment_age)
+plot1 <- ggplot(sites, aes(x = treatment_age, y = y)) +
   geom_quasirandom()
 plot2 <- ggplot(sites, aes(x = y)) +
   geom_histogram()
@@ -170,7 +176,7 @@ simulation_output_2 <- simulateResiduals(m_2, plot = TRUE)
 ```
 
 ```{r dharma_single, collapse = TRUE, fig.height = 3, fig.width = 4.5, warning = FALSE}
-plotResiduals(simulation_output_1$scaledResiduals, sites$treatment)
+plotResiduals(simulation_output_1$scaledResiduals, sites$treatment_age)
 plotResiduals(simulation_output_2$scaledResiduals, subset$treatment) # dataframe subset
 plotResiduals(simulation_output_1$scaledResiduals, sites$mem2)
 plotResiduals(simulation_output_2$scaledResiduals, subset$mem2) # dataframe subset
@@ -235,7 +241,7 @@ Effect sizes of chosen model just to get exact values of means etc. if necessary
 ```{r effect-sizes, message = FALSE}
 (emm <- emmeans(
   m_1,
-  revpairwise ~ treatment,
+  revpairwise ~ treatment_age,
   type = "response"
   ))
 plot(emm, comparison = TRUE)
