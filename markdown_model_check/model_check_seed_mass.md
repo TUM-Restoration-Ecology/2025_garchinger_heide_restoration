@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Seed mass
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-12-03</b>
+<b>2025-12-08</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -55,7 +55,13 @@ sites <- read_csv(
       treatment_age = "f"
     )
 ) %>%
-  rename(y = CWM_Seed)
+  rename(y = CWM_Seed) %>%
+  filter(
+    !(id %in% c(
+      "X2021tum03", "X2021tum27", "X2021tum43", "X2021tum48", "X2021tum51",
+      "X2003roederS11", "X2018roederS12", "X2018roederS16", "X2018roederS18"
+    )) # Plots with >=10% of Polygonatum odoratum (seed mass = 0.08 g)
+  )
 
 sites_fc <- sites %>%
   select(
@@ -106,26 +112,26 @@ Rmisc::CI(sites$y, ci = .95)
 ```
 
     ##       upper        mean       lower 
-    ## 0.004067080 0.003639004 0.003210929
+    ## 0.003175532 0.003044595 0.002913657
 
 ``` r
 median(sites$y)
 ```
 
-    ## [1] 0.00293
+    ## [1] 0.00287
 
 ``` r
 sd(sites$y)
 ```
 
-    ## [1] 0.003302076
+    ## [1] 0.0009899388
 
 ``` r
 quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 ```
 
-    ##       5%      95% 
-    ## 0.001575 0.006395
+    ##        5%       95% 
+    ## 0.0015615 0.0045430
 
 ### Graphs of raw data
 
@@ -137,9 +143,9 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
     ## # Groups:   treatment_age [8]
     ##   treatment_age    treatment           n
     ##   <fct>            <fct>           <int>
-    ## 1 control_2003     control_2003       42
-    ## 2 control_2018     control_2018       42
-    ## 3 control_2021     control_2021       62
+    ## 1 control_2003     control_2003       41
+    ## 2 control_2018     control_2018       39
+    ## 3 control_2021     control_2021       57
     ## 4 topsoil_removal  topsoil_removal    30
     ## 5 cut_summer_old   cut_summer         15
     ## 6 cut_summer_young cut_summer         10
@@ -149,6 +155,15 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
 ![](model_check_seed_mass_files/figure-gfm/outliers-1.png)<!-- -->
+
+    ## # A tibble: 0 × 42
+    ## # ℹ 42 variables: id <chr>, plot <chr>, location <chr>, elevation <dbl>,
+    ## #   plot_size <dbl>, treatment <fct>, treatment_age <fct>, mowing_age <chr>,
+    ## #   mowing <dbl>, survey_date <date>, year <dbl>, cover_vegetation <dbl>,
+    ## #   height_vegetation <dbl>, parcel <chr>, block <chr>,
+    ## #   year_topsoil_removal <chr>, year_hay_transfer <chr>, mowing_date <chr>,
+    ## #   mowing_date_start <dbl>, mowing_date_former <chr>,
+    ## #   mowing_date_former_start <dbl>, cover_soil_2024 <dbl>, grass_cover <dbl>, …
 
 ## Model
 
@@ -166,10 +181,10 @@ summary(m)
 ## Permutation method  Comb. 2 and 4  ( 999  permutations)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
-##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1   treatment_age / log_y    F 86.77361205 -0.3749101   greater  0.509
-## 2     grass_cover / log_y    r  0.13536512  0.9273574 two-sided  0.392
-## 3 graminoid_cover / log_y    r  0.03452561  0.5945132 two-sided  0.584
+##                      Test Stat          Obs    Std.Obs     Alter Pvalue
+## 1   treatment_age / log_y    F 105.73173212 -0.2501908   greater  0.464
+## 2     grass_cover / log_y    r   0.15285480  0.9580061 two-sided  0.386
+## 3 graminoid_cover / log_y    r   0.04361163  0.6876947 two-sided  0.525
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -188,16 +203,16 @@ m
 ## ---
 ## 
 ##                              Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1      treat.control_2003 / log_y Homog. 0.28807361  3.9633565      less      1
-## 2      treat.control_2018 / log_y Homog. 0.22604799  1.6192712      less  0.932
-## 3      treat.control_2021 / log_y Homog. 0.25025172 -0.5348164      less  0.321
-## 4   treat.topsoil_removal / log_y Homog. 0.03256314 -0.4147405      less  0.418
-## 5    treat.cut_summer_old / log_y Homog. 0.04432780 -0.5897104      less  0.297
-## 6  treat.cut_summer_young / log_y Homog. 0.01919271 -0.5476576      less  0.339
-## 7  treat.cut_autumn_young / log_y Homog. 0.06898688 -0.8772573      less  0.177
-## 8    treat.cut_autumn_old / log_y Homog. 0.04164114 -0.1022319      less  0.565
-## 9             grass_cover / log_y      r 0.13536512  0.9273574 two-sided  0.392
-## 10        graminoid_cover / log_y      r 0.03452561  1.2700839 two-sided  0.202
+## 1      treat.control_2003 / log_y Homog. 0.31272933  4.6074070      less      1
+## 2      treat.control_2018 / log_y Homog. 0.20396298  0.9742687      less  0.836
+## 3      treat.control_2021 / log_y Homog. 0.21102442 -0.4096974      less  0.338
+## 4   treat.topsoil_removal / log_y Homog. 0.03715987 -0.2683677      less  0.493
+## 5    treat.cut_summer_old / log_y Homog. 0.05058528 -0.3536641      less  0.387
+## 6  treat.cut_summer_young / log_y Homog. 0.02190202 -0.3861740      less  0.422
+## 7  treat.cut_autumn_young / log_y Homog. 0.07872532 -0.4981355      less  0.356
+## 8    treat.cut_autumn_old / log_y Homog. 0.04751936  0.1379336      less  0.687
+## 9             grass_cover / log_y      r 0.15285480  0.9580061 two-sided  0.386
+## 10        graminoid_cover / log_y      r 0.04361163  0.6876947 two-sided  0.525
 ##    Pvalue.adj  
 ## 1           1  
 ## 2           1  
@@ -260,10 +275,10 @@ summary(m_sub)
 ## Permutation method  Comb. 2 and 4  ( 999  permutations)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
-##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 96.83790690 -0.4619430   greater  0.564
-## 2     grass_cover / log_y    r  0.12581276  0.7783048 two-sided  0.477
-## 3 graminoid_cover / log_y    r  0.01766672  0.2810713 two-sided  0.799
+##                      Test Stat          Obs    Std.Obs     Alter Pvalue
+## 1       treatment / log_y    F 120.31863003 -0.2847703   greater  0.489
+## 2     grass_cover / log_y    r   0.14266498  0.9520615 two-sided  0.399
+## 3 graminoid_cover / log_y    r   0.02646352  0.4442478 two-sided  0.700
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -282,14 +297,14 @@ m_sub
 ## ---
 ## 
 ##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.30141905  3.6849004      less      1
-## 2    treat.control_2018 / log_y Homog. 0.23652001  1.3738630      less  0.898
-## 3    treat.control_2021 / log_y Homog. 0.26184501  0.3231958      less  0.679
-## 4 treat.topsoil_removal / log_y Homog. 0.02325084 -0.6014364      less  0.311
-## 5      treat.cut_summer / log_y Homog. 0.03700819 -0.5708915      less  0.322
-## 6      treat.cut_autumn / log_y Homog. 0.11575322 -0.2888835      less  0.426
-## 7           grass_cover / log_y      r 0.12581276  0.7783048 two-sided  0.477
-## 8       graminoid_cover / log_y      r 0.01766672  0.6526413 two-sided  0.534
+## 1    treat.control_2003 / log_y Homog. 0.32945247  4.3613582      less      1
+## 2    treat.control_2018 / log_y Homog. 0.21486986  0.8370529      less   0.78
+## 3    treat.control_2021 / log_y Homog. 0.22230891 -0.4178623      less  0.354
+## 4 treat.topsoil_removal / log_y Homog. 0.02671429 -0.4495861      less  0.397
+## 5      treat.cut_summer / log_y Homog. 0.04252093 -0.4340229      less  0.376
+## 6      treat.cut_autumn / log_y Homog. 0.13299581 -0.3842274      less  0.422
+## 7           grass_cover / log_y      r 0.14266498  0.9520615 two-sided  0.399
+## 8       graminoid_cover / log_y      r 0.02646352  0.9184619 two-sided   0.37
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -306,7 +321,7 @@ m_sub
 
 # Session info
 
-    ## R version 4.5.1 (2025-06-13 ucrt)
+    ## R version 4.5.2 (2025-10-31 ucrt)
     ## Platform: x86_64-w64-mingw32/x64
     ## Running under: Windows 11 x64 (build 26100)
     ## 
@@ -333,13 +348,13 @@ m_sub
     ## loaded via a namespace (and not attached):
     ##  [1] Rmisc_1.5.1        utf8_1.2.6         generics_0.1.4     lattice_0.22-7    
     ##  [5] stringi_1.8.7      hms_1.1.3          digest_0.6.37      magrittr_2.0.3    
-    ##  [9] evaluate_1.0.4     grid_4.5.1         timechange_0.3.0   RColorBrewer_1.1-3
+    ##  [9] evaluate_1.0.4     grid_4.5.2         timechange_0.3.0   RColorBrewer_1.1-3
     ## [13] fastmap_1.2.0      plyr_1.8.9         rprojroot_2.1.0    scales_1.4.0      
     ## [17] cli_3.6.5          rlang_1.1.6        crayon_1.5.3       bit64_4.6.0-1     
-    ## [21] withr_3.0.2        yaml_2.3.10        parallel_4.5.1     tools_4.5.1       
+    ## [21] withr_3.0.2        yaml_2.3.10        parallel_4.5.2     tools_4.5.2       
     ## [25] tzdb_0.5.0         vctrs_0.6.5        R6_2.6.1           lifecycle_1.0.4   
     ## [29] bit_4.6.0          vipor_0.4.7        vroom_1.6.5        MASS_7.3-65       
     ## [33] pkgconfig_2.0.3    beeswarm_0.4.0     pillar_1.11.0      gtable_0.3.6      
     ## [37] glue_1.8.0         Rcpp_1.1.0         xfun_0.52          tidyselect_1.2.1  
     ## [41] rstudioapi_0.17.1  knitr_1.50         farver_2.1.2       htmltools_0.5.8.1 
-    ## [45] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.1
+    ## [45] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.2
