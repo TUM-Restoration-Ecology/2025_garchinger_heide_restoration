@@ -4,7 +4,7 @@
 # Show figure 4b
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Markus Bauer
-# 2025-08-17
+# 2025-12-08
 
 
 
@@ -31,6 +31,7 @@ theme_mb <- function() {
     strip.text = element_text(size = 10),
     axis.text = element_text(angle = 0, hjust = 0.5, size = 8.5,
                              color = "black"),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
     axis.title = element_text(angle = 0, hjust = 0.5, size = 8.5,
                               color = "black"),
     axis.line = element_line(),
@@ -51,15 +52,21 @@ sites <- read_csv(
     ) %>%
   rename(y = CWM_Height) %>%
   mutate(
-    treatment = fct_relevel(
-      treatment, "control_2003", "control_2018", "control_2021", "cut_summer",
-      "cut_autumn", "topsoil_removal"
+    treatment_age = fct_relevel(
+      treatment_age, "control_2003", "control_2018", "control_2021",
+      "cut_summer_old", "cut_summer_young", "cut_autumn_old",
+      "cut_autumn_young", "topsoil_removal"
     ),
-    treatment = fct_recode(
-      treatment, "Ref.\n2003" = "control_2003",
-      "Ref.\n2018" = "control_2018", "Ref.\n2021" = "control_2021",
-      "Mowing\nsummer" = "cut_summer", "Mowing\nautumn" = "cut_autumn",
-      "Topsoil\nremoval" = "topsoil_removal"
+    treatment_age = fct_recode(
+      treatment_age,
+      "Reference\n2003" = "control_2003",
+      "Reference\n2018" = "control_2018",
+      "Reference\n2021" = "control_2021",
+      "Mowing summer\n>10 yrs" = "cut_summer_old",
+      "Mowing summer\n<10 yrs" = "cut_summer_young",
+      "Mowing autumn\n>10 yrs" = "cut_autumn_old",
+      "Mowing autumn\n<10 yrs" = "cut_autumn_young",
+      "Topsoil removal" = "topsoil_removal"
     )
   )
 
@@ -73,7 +80,7 @@ sites <- read_csv(
 
 data <- sites %>%
   #mutate(y = exp(y)) %>%
-  rename(predicted = y, x = treatment)
+  rename(predicted = y, x = treatment_age)
 
 (graph <- ggplot(
   data = data,
@@ -82,18 +89,20 @@ data <- sites %>%
     geom_quasirandom(color = "grey20", dodge.width = .6, size = 1, shape = 16) +
     geom_boxplot(alpha = .5, color = "black") +
     annotate(
-      "text", x = 1.9, y = .66, size = 3,
-      label = expression(4^th~corner*":"~italic(p)[adj]*" = .006")
+      "text", x = 2.1, y = .66, size = 3,
+      label = expression(4^th ~ corner*":" ~ italic(p)[adj]*" = .004")
     ) +
     scale_y_continuous(limits = c(0, .66), breaks = seq(-100, 400, .1)) +
     scale_fill_manual(
       values = c(
-        "Ref.\n2003" = "#f947d1", 
-        "Ref.\n2018" = "#f947d1", 
-        "Ref.\n2021" = "#f947d1", 
-        "Mowing\nsummer" = "#61a161", 
-        "Mowing\nautumn" = "#87ceeb", 
-        "Topsoil\nremoval" = "#b06e13"
+        "Reference\n2003" = "#f947d1", 
+        "Reference\n2018" = "#f947d1", 
+        "Reference\n2021" = "#f947d1", 
+        "Mowing summer\n>10 yrs" = "#61a161", 
+        "Mowing summer\n<10 yrs" = "#61a161", 
+        "Mowing autumn\n>10 yrs" = "#87ceeb", 
+        "Mowing autumn\n<10 yrs" = "#87ceeb", 
+        "Topsoil removal" = "#b06e13"
       )
     ) +
     labs(x = "", y = expression(CWM ~ plant ~ height ~ "[" * m * "]")) +
