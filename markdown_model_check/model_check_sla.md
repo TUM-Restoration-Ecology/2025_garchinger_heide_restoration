@@ -1,7 +1,7 @@
 Garchinger Heide and restoration sites: <br> Specific leaf area (SLA)
 ================
 <b>Markus Bauer</b> <br>
-<b>2025-08-17</b>
+<b>2025-12-03</b>
 
 - [Preparation](#preparation)
 - [Statistics](#statistics)
@@ -51,14 +51,15 @@ sites <- read_csv(
   col_names = TRUE, na = c("na", "NA", ""), col_types =
     cols(
       .default = "?",
-      treatment = "f"
+      treatment = "f",
+      treatment_age = "f"
     )
 ) %>%
   rename(y = CWM_SLA)
 
 sites_fc <- sites %>%
   select(
-    id, treatment, grass_cover, graminoid_cover
+    id, treatment_age, grass_cover, graminoid_cover
     ) %>% 
   column_to_rownames(var = "id")
 
@@ -129,16 +130,18 @@ quantile(sites$y, probs = c(0.05, 0.95), na.rm = TRUE)
 
 ### Outliers, zero-inflation, transformations?
 
-    ## # A tibble: 6 × 2
-    ## # Groups:   treatment [6]
-    ##   treatment           n
-    ##   <fct>           <int>
-    ## 1 control_2003       42
-    ## 2 control_2018       42
-    ## 3 control_2021       62
-    ## 4 topsoil_removal    30
-    ## 5 cut_summer         25
-    ## 6 cut_autumn         30
+    ## # A tibble: 8 × 3
+    ## # Groups:   treatment_age [8]
+    ##   treatment_age    treatment           n
+    ##   <fct>            <fct>           <int>
+    ## 1 control_2003     control_2003       42
+    ## 2 control_2018     control_2018       42
+    ## 3 control_2021     control_2021       62
+    ## 4 topsoil_removal  topsoil_removal    30
+    ## 5 cut_summer_old   cut_summer         15
+    ## 6 cut_summer_young cut_summer         10
+    ## 7 cut_autumn_young cut_autumn         20
+    ## 8 cut_autumn_old   cut_autumn         10
 
 ![](model_check_sla_files/figure-gfm/outliers-1.png)<!-- -->
 
@@ -159,9 +162,9 @@ summary(m)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
 ##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 98.59457854 -0.4629397   greater  0.581
-## 2     grass_cover / log_y    r  0.11924479  0.8484839 two-sided  0.441
-## 3 graminoid_cover / log_y    r  0.03225685  0.4793071 two-sided  0.658
+## 1   treatment_age / log_y    F 74.06943776 -0.4847422   greater  0.599
+## 2     grass_cover / log_y    r  0.11924479  0.7297322 two-sided  0.507
+## 3 graminoid_cover / log_y    r  0.03225685  0.5092041 two-sided  0.644
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -179,24 +182,28 @@ m
 ## 
 ## ---
 ## 
-##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.38986309  6.9066415      less      1
-## 2    treat.control_2018 / log_y Homog. 0.19963229  0.5718157      less  0.725
-## 3    treat.control_2021 / log_y Homog. 0.22456398 -0.3898366      less  0.355
-## 4 treat.topsoil_removal / log_y Homog. 0.04391515  0.2180794      less  0.672
-## 5      treat.cut_summer / log_y Homog. 0.04828316 -1.0229749      less  0.169
-## 6      treat.cut_autumn / log_y Homog. 0.07038695 -1.0394639      less   0.15
-## 7           grass_cover / log_y      r 0.11924479  0.8484839 two-sided  0.441
-## 8       graminoid_cover / log_y      r 0.03225685  0.4793071 two-sided  0.658
-##   Pvalue.adj  
-## 1          1  
-## 2          1  
-## 3          1  
-## 4          1  
-## 5          1  
-## 6          1  
-## 7          1  
-## 8          1  
+##                              Test   Stat        Obs    Std.Obs     Alter Pvalue
+## 1      treat.control_2003 / log_y Homog. 0.38986309  6.6323640      less      1
+## 2      treat.control_2018 / log_y Homog. 0.19963229  0.6065495      less  0.728
+## 3      treat.control_2021 / log_y Homog. 0.22456398 -0.3779675      less  0.347
+## 4   treat.topsoil_removal / log_y Homog. 0.04391515  0.1762127      less  0.666
+## 5    treat.cut_summer_old / log_y Homog. 0.03383842 -0.9792180      less  0.178
+## 6  treat.cut_summer_young / log_y Homog. 0.01427677 -0.8509109      less  0.188
+## 7  treat.cut_autumn_young / log_y Homog. 0.04103355 -0.9702890      less  0.164
+## 8    treat.cut_autumn_old / log_y Homog. 0.02833998 -0.9326348      less  0.173
+## 9             grass_cover / log_y      r 0.11924479  0.7297322 two-sided  0.507
+## 10        graminoid_cover / log_y      r 0.03225685  0.5092041 two-sided  0.644
+##    Pvalue.adj  
+## 1           1  
+## 2           1  
+## 3           1  
+## 4           1  
+## 5           1  
+## 6           1  
+## 7           1  
+## 8           1  
+## 9           1  
+## 10          1  
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -249,9 +256,9 @@ summary(m_sub)
 ## 
 ## Adjustment method for multiple comparisons:   holm 
 ##                      Test Stat         Obs    Std.Obs     Alter Pvalue
-## 1       treatment / log_y    F 83.54484242 -0.5297270   greater  0.611
-## 2     grass_cover / log_y    r  0.11973163  0.7417849 two-sided  0.511
-## 3 graminoid_cover / log_y    r  0.03160538  0.4766762 two-sided  0.669
+## 1       treatment / log_y    F 83.54484242 -0.5210494   greater  0.619
+## 2     grass_cover / log_y    r  0.11973163  0.7581013 two-sided  0.500
+## 3 graminoid_cover / log_y    r  0.03160538  0.4772694 two-sided  0.658
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -269,15 +276,15 @@ m_sub
 ## 
 ## ---
 ## 
-##                            Test   Stat        Obs    Std.Obs     Alter Pvalue
-## 1    treat.control_2003 / log_y Homog. 0.40307319  6.6486446      less      1
-## 2    treat.control_2018 / log_y Homog. 0.20639662  0.3722368      less  0.689
-## 3    treat.control_2021 / log_y Homog. 0.23217309 -0.5236230      less  0.299
-## 4 treat.topsoil_removal / log_y Homog. 0.03391669  0.1333237      less  0.648
-## 5      treat.cut_summer / log_y Homog. 0.03094117 -0.8292853      less  0.216
-## 6      treat.cut_autumn / log_y Homog. 0.07277193 -1.0039973      less  0.156
-## 7           grass_cover / log_y      r 0.11973163  0.7417849 two-sided  0.511
-## 8       graminoid_cover / log_y      r 0.03160538  0.4766762 two-sided  0.669
+##                            Test   Stat        Obs     Std.Obs     Alter Pvalue
+## 1    treat.control_2003 / log_y Homog. 0.40307319  6.86549010      less      1
+## 2    treat.control_2018 / log_y Homog. 0.20639662  0.36291674      less   0.66
+## 3    treat.control_2021 / log_y Homog. 0.23217309 -0.56615131      less  0.308
+## 4 treat.topsoil_removal / log_y Homog. 0.03391669  0.06520792      less  0.636
+## 5      treat.cut_summer / log_y Homog. 0.03094117 -0.75783442      less  0.247
+## 6      treat.cut_autumn / log_y Homog. 0.07277193 -0.94521302      less  0.186
+## 7           grass_cover / log_y      r 0.11973163  0.75810131 two-sided    0.5
+## 8       graminoid_cover / log_y      r 0.03160538  0.47726945 two-sided  0.658
 ##   Pvalue.adj  
 ## 1          1  
 ## 2          1  
@@ -294,7 +301,7 @@ m_sub
 
 # Session info
 
-    ## R version 4.5.0 (2025-04-11 ucrt)
+    ## R version 4.5.1 (2025-06-13 ucrt)
     ## Platform: x86_64-w64-mingw32/x64
     ## Running under: Windows 11 x64 (build 26100)
     ## 
@@ -306,7 +313,7 @@ m_sub
     ## [3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   
     ## [5] LC_TIME=German_Germany.utf8    
     ## 
-    ## time zone: America/New_York
+    ## time zone: Europe/Berlin
     ## tzcode source: internal
     ## 
     ## attached base packages:
@@ -319,15 +326,15 @@ m_sub
     ## [13] tidyverse_2.0.0  here_1.0.1      
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Rmisc_1.5.1        utf8_1.2.6         generics_0.1.4     lattice_0.22-6    
+    ##  [1] Rmisc_1.5.1        utf8_1.2.6         generics_0.1.4     lattice_0.22-7    
     ##  [5] stringi_1.8.7      hms_1.1.3          digest_0.6.37      magrittr_2.0.3    
-    ##  [9] evaluate_1.0.4     grid_4.5.0         timechange_0.3.0   RColorBrewer_1.1-3
+    ##  [9] evaluate_1.0.4     grid_4.5.1         timechange_0.3.0   RColorBrewer_1.1-3
     ## [13] fastmap_1.2.0      plyr_1.8.9         rprojroot_2.1.0    scales_1.4.0      
     ## [17] cli_3.6.5          rlang_1.1.6        crayon_1.5.3       bit64_4.6.0-1     
-    ## [21] withr_3.0.2        yaml_2.3.10        parallel_4.5.0     tools_4.5.0       
+    ## [21] withr_3.0.2        yaml_2.3.10        parallel_4.5.1     tools_4.5.1       
     ## [25] tzdb_0.5.0         vctrs_0.6.5        R6_2.6.1           lifecycle_1.0.4   
     ## [29] bit_4.6.0          vipor_0.4.7        vroom_1.6.5        MASS_7.3-65       
     ## [33] pkgconfig_2.0.3    beeswarm_0.4.0     pillar_1.11.0      gtable_0.3.6      
     ## [37] glue_1.8.0         Rcpp_1.1.0         xfun_0.52          tidyselect_1.2.1  
     ## [41] rstudioapi_0.17.1  knitr_1.50         farver_2.1.2       htmltools_0.5.8.1 
-    ## [45] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.0
+    ## [45] labeling_0.4.3     rmarkdown_2.29     compiler_4.5.1
