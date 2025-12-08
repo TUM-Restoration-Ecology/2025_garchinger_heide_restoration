@@ -36,7 +36,8 @@ graph_a + graph_b + graph_c + graph_d +
   theme(plot.tag = element_text(size = 10, face = "bold"))
 
 ### Save ###
+
 ggsave(
-  here("outputs", "figures", "figure_2_800dpi_17x15cm.tiff"),
-  dpi = 800, width = 17, height = 15, units = "cm"
+  here("outputs", "figures", "figure_2_800dpi_17x17cm.tiff"),
+  dpi = 800, width = 17, height = 17, units = "cm"
 )
