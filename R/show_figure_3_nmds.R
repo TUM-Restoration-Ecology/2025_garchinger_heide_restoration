@@ -18,6 +18,7 @@
 library(here)
 library(tidyverse)
 library(vegan)
+library(ggrepel)
 
 ### Start ###
 rm(list = setdiff(ls(), c("graph_a", "graph_b", "graph_c", "graph_d")))
@@ -239,75 +240,71 @@ ggsave(
 )
 
 
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# D NMDS Indicator species ####################################################
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+data_nmds <- data_nmds %>%
+  mutate(sites = recode(group,
+                        "control_2003" = "Reference",
+                        "control_2018" = "Reference",
+                        "control_2021" = "Reference",
+                        "cut_summer" = "Mowing summer",
+                        "cut_autumn" = "Mowing autumn",
+                        "topsoil_removal" = "Topsoil removal"))
 
 #### * Indicator species score ####
 (graph_b <- ggplot() +
   geom_point(
     aes(y = NMDS2, x = NMDS1),
     color = "white",
-    data = data_nmds,
-    cex = 2, alpha = .8
+    data = data_nmds
   ) +
    
    #### * Ellipses ####
  
  stat_ellipse(
-   aes(y = NMDS2, x = NMDS1, color = group, group = group),
+   aes(y = NMDS2, x = NMDS1, color = sites, sites = sites),
    data = data_nmds,
-   geom = "path", level = 0.95, show.legend = FALSE
+   geom = "path", level = 0.95, show.legend = TRUE
   ) + 
-   
-   #### * Design ####
- 
- scale_color_manual(
-   labels = c(
-     "control_2003" = "Reference\n2003",
-     "control_2018" = "Reference\n2018",
-     "control_2021" = "Reference\n2021",
-     "cut_summer" = "Mowing\nsummer",
-     "cut_autumn" = "Mowing\nautumn",
-     "topsoil_removal" = "Topsoil\nremoval"
-   ),
-   values = c(
-     "control_2003" = "#a153a6", 
-     "control_2018" = "#de47f5", 
-     "control_2021" = "#f947d1", 
-     "cut_summer" = "#61a161", 
-     "cut_autumn" = "#87ceeb", 
-     "topsoil_removal" = "#b06e13"
-   )
- ) +
-   theme_mb() +
-  
+
   ### * Indicator species
   
-  geom_text(data = species_scores, aes(x = NMDS1, y = NMDS2, 
-                                       label = short_label,
-                                       color = sites,
-                                       sites = sites),
-            size = 3, alpha = 0.7)) +
+  geom_text_repel(data = species_scores, 
+                  aes(x = NMDS1, y = NMDS2,label = short_label, color = sites,
+                  sites = sites),
+                  size = 3, show.legend = FALSE) +
   
   #### * Design ####
 
 scale_color_manual(
+  name = NULL,
   labels = c(
     "Reference" = "Reference",
     "Mowing summer" = "Mowing\nsummer",
     "Mowing autumn" = "Mowing\nautumn",
     "Topsoil removal" = "Topsoil\nremoval"
-  ),
+  ), 
   values = c(
-    "Reference" = "#de47f5", 
+    "Reference" = "#f947d1", 
     "Mowing summer" = "#61a161", 
     "Mowing autumn" = "#87ceeb", 
     "Topsoil removal" = "#b06e13"
-  )
+    )) +
+  
+  annotate(
+    "text", x = 1.2, y = 1.8, cex = 3, label = "2D stress = .18"
+  ) +
+    
+  theme_mb()
 )
 
 
 
+
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# D Save ######################################################################
+# E Save ######################################################################
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ggsave(
