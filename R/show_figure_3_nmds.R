@@ -135,6 +135,7 @@ species_indicator <- indicator_sp$species
 
 species_scores <- species_scores %>%
   filter(species %in% species_indicator) %>%
+  left_join(indicator_sp %>% select(species, sites), by = "species") %>%
   mutate(short_label = gsub("^(\\w{3})\\w*\\s+(\\w{3}).*", "\\1 \\2", species))
 
 
@@ -253,7 +254,7 @@ ggsave(
  stat_ellipse(
    aes(y = NMDS2, x = NMDS1, color = group, group = group),
    data = data_nmds,
-   geom = "path", level = 0.95, show.legend = TRUE
+   geom = "path", level = 0.95, show.legend = FALSE
   ) + 
    
    #### * Design ####
@@ -280,9 +281,28 @@ ggsave(
   
   ### * Indicator species
   
-  geom_text(data = species_scores, aes(x = NMDS1, y = NMDS2+0.03, 
-                                       label = short_label),
-            size = 3, col = "black", alpha = 0.7))
+  geom_text(data = species_scores, aes(x = NMDS1, y = NMDS2, 
+                                       label = short_label,
+                                       color = sites,
+                                       sites = sites),
+            size = 3, alpha = 0.7)) +
+  
+  #### * Design ####
+
+scale_color_manual(
+  labels = c(
+    "Reference" = "Reference",
+    "Mowing summer" = "Mowing\nsummer",
+    "Mowing autumn" = "Mowing\nautumn",
+    "Topsoil removal" = "Topsoil\nremoval"
+  ),
+  values = c(
+    "Reference" = "#de47f5", 
+    "Mowing summer" = "#61a161", 
+    "Mowing autumn" = "#87ceeb", 
+    "Topsoil removal" = "#b06e13"
+  )
+)
 
 
 
