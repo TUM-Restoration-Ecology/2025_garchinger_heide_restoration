@@ -17,7 +17,7 @@ library(here)
 library(tidyverse)
 library(indicspecies)
 library(ggplot2)
-#library(gt)
+# library(gt)
 
 ### Start ###
 rm(list = ls())
