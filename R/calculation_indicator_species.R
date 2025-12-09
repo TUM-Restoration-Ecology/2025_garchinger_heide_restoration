@@ -17,8 +17,7 @@ library(here)
 library(tidyverse)
 library(indicspecies)
 library(ggplot2)
-library(lme4)
-library(tidytable)
+#library(gt)
 
 ### Start ###
 rm(list = ls())
@@ -81,49 +80,29 @@ phi_taxa <- as.data.frame(phi_taxa$sign)
 
 phi_taxa$species <- rownames(phi_taxa)
 
-phi_sig <- subset(phi_taxa, p.value <= 0.05)
+phi_sig <- subset(phi_taxa, p.value <= 0.001)
+
+# Create table
+
+phi_sig <- phi_sig %>%
+  mutate(index = as.character(index)) %>%
+  mutate(index = recode (index,
+                         "1" = "Reference",
+                         "2" = "Mowing autumn",
+                         "3" = "Mowing summer",
+                         "4" = "Topsoil removal")) %>%
+  rename(sites = index) %>%
+  select(-c("s.control", "s.cut_autumn", "s.cut_summer", "s.topsoil_removal")) %>%
+  mutate(stat = round(stat,3)) %>%
+  select(species, everything()) %>%
+  mutate(sites = factor(sites, levels = c("Reference", "Mowing summer", 
+                                          "Mowing autumn", "Topsoil removal"))) %>%
+  arrange(sites, species)
+
 
 # Save processed data
+
 write_csv(
   phi_sig,
   here("data", "processed", "data_indicator_species.csv")
 )
-
-# # significant species names
-# species_sig <- phi_sig$species
-# 
-# # likelihood
-# species$id <- rownames(species)
-# 
-# species_long <- species %>%
-#   pivot_longer(
-#     cols = -id,
-#     names_to = "species",
-#     values_to = "cover") %>%
-#   mutate(presence = ifelse(cover > 0, 1, 0)) %>%
-#   merge(sites %>% select(id,treatment2), by = "id")
-# 
-# all_species <- unique(species_long$species)
-# 
-# 
-# glm_species <- function(x) {
-#   
-#   df <- species_long %>% filter(species == x)
-#   
-#   m  <- glm(presence ~ treatment2, data = df,
-#               family = binomial)
-#   
-#   pred <- ggeffects::ggeffect(m, terms = "treatment2")
-#   pred$species <- x
-#   
-#   pred$likelihood <- logLik(m)
-#   return(pred)
-# }
-# 
-# pred_list <- map_df(all_species, glm_species)
-# 
-# ggplot(pred_list) +
-#   geom_point(aes(x = likelihood, y = species)) +
-#   theme_mb()
-# 
-
