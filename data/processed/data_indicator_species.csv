@@ -4,8 +4,8 @@ Asperula tinctoria,Reference,0.47,0.001
 Biscutella laevigata,Reference,0.344,0.001
 Briza media,Reference,0.578,0.001
 Buphthalmum salicifolium,Reference,0.412,0.001
-Carex,Reference,0.323,0.001
 Carex humilis,Reference,0.855,0.001
+Centaurea jacea,Reference,0.403,0.001
 Centaurea montana,Reference,0.424,0.001
 Cynanchica pyrenaica subsp. cynanchica,Reference,0.437,0.001
 Danthonia decumbens,Reference,0.552,0.001
@@ -18,8 +18,8 @@ Potentilla cinerea,Reference,0.561,0.001
 Pulsatilla vulgaris,Reference,0.345,0.001
 Thymus praecox,Reference,0.364,0.001
 Viola hirta,Reference,0.591,0.001
-Brachypodium pinnatum,Mowing summer,0.33,0.001
 Campanula rapunculoides,Mowing summer,0.346,0.001
+Galium mollugo,Mowing summer,0.316,0.001
 Plantago media,Mowing summer,0.341,0.001
 Poa pratensis,Mowing summer,0.48,0.001
 Trisetum flavescens,Mowing summer,0.322,0.001
@@ -27,7 +27,6 @@ Achillea millefolium,Mowing autumn,0.303,0.001
 Arrhenatherum elatius,Mowing autumn,0.262,0.001
 Betonica officinalis,Mowing autumn,0.445,0.001
 Bromus erectus,Mowing autumn,0.434,0.001
-Convolvulus arvensis,Mowing autumn,0.266,0.001
 Coronilla varia,Mowing autumn,0.373,0.001
 Dianthus carthusianorum,Mowing autumn,0.49,0.001
 Festuca rubra,Mowing autumn,0.519,0.001
@@ -36,9 +35,9 @@ Picris hieracioides,Mowing autumn,0.238,0.001
 Pimpinella saxifraga,Mowing autumn,0.424,0.001
 Plantago lanceolata,Mowing autumn,0.376,0.001
 Rhinanthus minor,Mowing autumn,0.294,0.001
-Tanacetum corymbosum,Mowing autumn,0.275,0.001
 Trifolium campestre,Mowing autumn,0.276,0.001
 Veronica chamaedrys,Mowing autumn,0.397,0.001
+Vicia sativa,Mowing autumn,0.318,0.001
 Centaurea triumfettii,Topsoil removal,0.257,0.001
 Globularia bisnagarica,Topsoil removal,0.544,0.001
 Helianthemum nummularium subsp. obscurum,Topsoil removal,0.316,0.001
