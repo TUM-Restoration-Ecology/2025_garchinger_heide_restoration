@@ -61,6 +61,11 @@ species <- read_csv(
   pivot_wider(names_from = "accepted_name", values_from = "value") %>%
   column_to_rownames(var = "id")
 
+traits <- read_csv(
+  here("data", "processed", "data_processed_traits.csv"),
+  col_names = TRUE, na = c("na", "NA", ""), col_types = cols(.default = "?")
+)
+
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # B Indicator species ##########################################################
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -70,6 +75,8 @@ sites$treatment2 <- ifelse(sites$treatment %in% c("control_2003", "control_2018"
                                                   "control_2021"),
                                  "control", sites$treatment)
 # significant indicator species
+set.seed(1)
+
 phi_taxa <- multipatt(species_wide, sites$treatment2,
                       func = "r.g", duleg = TRUE,
                       control = how(nperm = 999))
@@ -106,3 +113,9 @@ write_csv(
   phi_sig,
   here("data", "processed", "data_indicator_species.csv")
 )
+
+# Compare with traits
+
+x <- phi_sig %>%
+  left_join(traits, by = c("species" = "accepted_name"))
+            
