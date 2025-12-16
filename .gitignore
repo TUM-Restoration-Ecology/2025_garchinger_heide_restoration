@@ -7,3 +7,4 @@ data/raw/spatial/ecoregions2017.shp
 data/raw/spatial/ecoregions2017.prj
 data/raw/spatial/ecoregions2017.dbf
 data/raw/data_raw_coordinates_reference.csv
+data/processed/data_processed_traits.csv
