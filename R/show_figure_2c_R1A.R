@@ -4,7 +4,7 @@
 # Show figure 2b
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Sina Appeltauer, Markus Bauer
-# 2025-12-08
+# 2026-01-08
 
 
 
@@ -131,7 +131,7 @@ data <- sites %>%
     annotate("text", label = "b", x = 8, y = 49) +
     annotate(
       "text", label = expression(italic(R)^2 ~ "=" ~ 0.36),
-      x = 7, y = 41, size = 2.5
+      x = 7, y = 41, size = 3
     ) +
     scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
     scale_color_manual(
@@ -147,7 +147,7 @@ data <- sites %>%
       )
     ) +
     labs(
-      x = "", y = expression(Indicator ~ species ~ R1A ~ "[" * '# / 4m²' * "]")
+      x = "", y = expression(Specialists ~ R1A ~ "[" * '# / 4m²' * "]")
       ) +
     theme_mb())
 

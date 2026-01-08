@@ -131,7 +131,7 @@ graph <- ggplot() +
   annotate("text", label = "d", x = 8, y = 49) +
   annotate(
     "text", label = expression(italic(R)^2 ~ "=" ~ 0.51),
-    x = 7, y = 41, size = 2.5
+    x = 7, y = 41, size = 3
     ) +
   scale_y_continuous(limits = c(0, 49), breaks = seq(-100, 400, 5)) +
   scale_color_manual(
