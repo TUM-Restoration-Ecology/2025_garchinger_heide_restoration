@@ -14,8 +14,8 @@ treatment,Restoration measure either cutted in summer after 01.07. or in autumn 
 mowing,Year when mowing regime started,YYYY,NA,NA,NA,date,NA,NA
 grass_cover,Summed cover of all Poaceae species,NA,NA,percent,real,numeric,NA,NA
 richness_total,Total species richness,NA,NA,NA,integer,numeric,NA,NA
-richness_R1A,Species richness of R1A indicator species,NA,NA,NA,integer,numeric,NA,NA
-richness_R22,Species richness of R22 indicator species,NA,NA,NA,integer,numeric,NA,NA
+richness_R1A,Species richness of R1A diagnostic and constant species,NA,NA,NA,integer,numeric,NA,Chytrý et al. (2024) Appl Veg Sci https://doi.org/10.1111/avsc.12798
+richness_R22,Species richness of R22 diagnostic and constant species,NA,NA,NA,integer,numeric,NA,Chytrý et al. (2024) Appl Veg Sci https://doi.org/10.1111/avsc.12798
 richness_both,Species richness of R1A and R22 indicator species,NA,NA,NA,integer,numeric,NA,NA
 rlg_VU,Species richness of vulnerable species (see data_processed_traits),NA,NA,NA,integer,numeric,NA,NA
 rlg_NT,Species richness of near threatened species (see data_processed_traits),NA,NA,NA,integer,numeric,NA,NA
