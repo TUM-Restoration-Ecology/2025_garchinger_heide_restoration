@@ -147,7 +147,7 @@ data <- sites %>%
       )
     ) +
     labs(
-      x = "", y = expression(Red ~ List ~ species ~ (Germany) ~ "[" * '# / 4m²' * "]")
+      x = "", y = expression(Red ~ List ~ species ~ "[" * '# / 4m²' * "]")
     ) +
     theme_mb())
 
