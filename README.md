@@ -10,9 +10,9 @@ Johannes Kollmann <a href="https://orcid.org/0000-0002-4990-3636"><img src="http
 
 Data and code for:
 
-Appeltauer S*, Bauer M*, Knöppler M, Teschauer M & Kollmann J (submitted) __Title__ &ndash; *XXX* XX, XXX&ndash;XXX.
+Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (in press) __The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference__ &ndash; _Applied Vegetation Science_ XX, XXX&ndash;XXX.
 
-[![DOI:10.XXX](http://img.shields.io/badge/DOI-10.XXX-informational.svg)](https://doi.org/10.XXX)
+[![DOI:10.XXX](http://img.shields.io/badge/DOI-10.1111/avsc.70067-informational.svg)](https://doi.org/10.1111/avsc.70067)
 
 **Study region**: [Conservation Area of the Garchinger Heide and surroundings](https://www.openstreetmap.org/#map=15/48.29102/11.65040) <br> <br> \## Content of the repository
 
@@ -48,13 +48,13 @@ When using the **data available** in this repository, please cite the original p
 
 **Publication**
 
-> Appeltauer S*, Bauer M*, Knöppler M, Teschauer M & Kollmann J (submitted) Title. &ndash; *XXX* XX, XXX&ndash;XXX. <https://doi.org/10.XXX>
+> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (in press) The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference. &ndash; _Applied Vegetation Science_ XX, XXX&ndash;XXX. <https://doi.org/10.1111/avsc.70067>
 
 **Dataset**
 
-> Appeltauer S*, Bauer M*, Knöppler M, Teschauer M & Kollmann J (2025) Data and code for Appeltauer, Bauer et al. (prepared) (v0.0.1) [Data set]. &ndash; *Zenodo*. [<https://doi.org/10.5281/zenodo.15065628>](https://doi.org/10.5281/zenodo.15065628)
+> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2025) Data and code for Appeltauer, Bauer et al. (prepared) (v0.0.1) [Data set]. &ndash; *Zenodo*. [<https://doi.org/10.5281/zenodo.15065628>](https://doi.org/10.5281/zenodo.15065628)
 
 This dataset is also linked to PANGAEA
-> Bauer M, Appeltauer S, Knöppler M, Teschauer M & Kollmann J (XXX) XXX. &ndash; *PANGAEA*. https://doi.org/10.XXX
+> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (XXX) XXX. &ndash; *PANGAEA*. https://doi.org/10.XXX
 
 Contact [markus1.bauer\@tum.de](mailto:markus1.bauer@tum.de) for any further information.
