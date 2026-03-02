@@ -14,7 +14,9 @@ Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (in press) __The re
 
 [![DOI:10.XXX](http://img.shields.io/badge/DOI-10.1111/avsc.70067-informational.svg)](https://doi.org/10.1111/avsc.70067)
 
-**Study region**: [Conservation Area of the Garchinger Heide and surroundings](https://www.openstreetmap.org/#map=15/48.29102/11.65040) <br> <br> \## Content of the repository
+**Study region**: [Conservation Area of the Garchinger Heide and surroundings](https://www.openstreetmap.org/#map=15/48.29102/11.65040) <br> <br>
+
+## Content of the repository
 
 1.  **Data**: the folder `data` contains
     -   `Raw` and `processed` data of the sites variables (.csv)
