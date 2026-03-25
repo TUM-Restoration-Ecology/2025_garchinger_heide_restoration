@@ -1,4 +1,4 @@
-# Data and code for Appeltauer et al. (in press)
+# Data and code for Appeltauer et al. (2026)
 
 Sina Appeltauer <a href="https://orcid.org/0009-0002-3244-6720"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
 Malte Knöppler <a href="https://orcid.org/0009-0007-4844-3272"><img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16"/></a>,
@@ -10,9 +10,9 @@ Markus Bauer <a href="https://orcid.org/0000-0001-5372-4174"><img src="https://i
 
 Data and code for:
 
-Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (in press) __The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference__ &ndash; _Applied Vegetation Science_ XX, XXX&ndash;XXX.
+Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2026) __The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference__ &ndash; _Applied Vegetation Science_ 29, e70067.
 
-[![DOI:10.XXX](http://img.shields.io/badge/DOI-10.1111/avsc.70067-informational.svg)](https://doi.org/10.1111/avsc.70067)
+[![DOI:10.1111/avsc.70067](http://img.shields.io/badge/DOI-10.1111/avsc.70067-informational.svg)](https://doi.org/10.1111/avsc.70067)
 
 **Study region**: [Conservation Area of the Garchinger Heide and surroundings](https://www.openstreetmap.org/#map=15/48.29102/11.65040) <br> <br>
 
@@ -50,11 +50,11 @@ When using the **data available** in this repository, please cite the original p
 
 **Publication**
 
-> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (in press) The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference. &ndash; _Applied Vegetation Science_ XX, XXX&ndash;XXX. <https://doi.org/10.1111/avsc.70067>
+> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2026) The restoration debt remains: Topsoil removal and different mowing regimes reach desired states of calcareous grassland but do not match the reference. &ndash; _Applied Vegetation Science_ 29, e70067. <https://doi.org/10.1111/avsc.70067>
 
 **Dataset**
 
-> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2025) Data and code for Appeltauer, Bauer et al. (prepared) (v0.0.1) [Data set]. &ndash; *Zenodo*. [<https://doi.org/10.5281/zenodo.15065628>](https://doi.org/10.5281/zenodo.15065628)
+> Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (2026) Data and code for Appeltauer et al. (2026) (v1.1.0) [Data set]. &ndash; *Zenodo*. [<https://doi.org/10.5281/zenodo.15065628>](https://doi.org/10.5281/zenodo.15065628)
 
 This dataset is also linked to PANGAEA
 > Appeltauer S, Knöppler M, Teschauer M, Kollmann J & Bauer M (XXX) XXX. &ndash; *PANGAEA*. https://doi.org/10.XXX
